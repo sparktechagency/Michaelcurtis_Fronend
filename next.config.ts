@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   images: {
     domains: ["ui-avatars.com", "10.10.10.55"], // add any external host you use
   },
