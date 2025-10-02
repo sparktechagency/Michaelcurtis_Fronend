@@ -28,14 +28,39 @@ export const reviewApi = createApi({
 
         getAllReview: builder.query({
             query: () => ({
-                url: `/reviews/?include=user&sort=-id&per_page=10&filter[status]=pending`,
+                url: `/reviews/?include=user,provider&sort=-id&per_page=10`,
                 method: "GET"
             }),
             providesTags: ["review"]
+        }),
+        singleReview: builder.query({
+            query: (reviewId) => ({
+                url: `/reviews/${reviewId}`,
+                method: "GET"
+            }),
+            providesTags: ["review"]
+        }),
+
+        reviewStatusUpdate: builder.mutation({
+            query: ({ formData, reviewId }) => ({
+                url: `/reviews/${reviewId}/status`,
+                method: "POST",
+                body: formData
+
+            }),
+            invalidatesTags: ["review"]
+        }),
+
+        deleteReview: builder.mutation({
+            query: (id) => ({
+                url: `/reviews/${id}`,
+                method: "DELETE"
+            })
         })
+
 
 
     }),
 });
 
-export const { useGetAllReviewQuery } = reviewApi;
+export const { useGetAllReviewQuery, useSingleReviewQuery, useReviewStatusUpdateMutation,useDeleteReviewMutation } = reviewApi;
