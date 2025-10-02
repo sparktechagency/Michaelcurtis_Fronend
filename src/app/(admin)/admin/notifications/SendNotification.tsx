@@ -1,18 +1,46 @@
 "use client";
+import { useSendNotificationMutation } from "@/app/api/admin/notificationApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa6";
+import { toast } from "sonner";
 
 export default function SendNotification() {
     const [recipientType, setRecipientType] = useState("Select Recipient");
+    const [notificationType, setNotificationType] = useState<string>("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [message, setMessage] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [sendNotification, { isLoading }] = useSendNotificationMutation();
+
+    const formData = new FormData();
+
+    formData.append("recipient_type", recipientType);
+    formData.append("notification_type", notificationType);
+    formData.append("body", message)
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({
-            recipientType,
-            message,
-        });
+
+        try {
+            const res = await sendNotification(formData).unwrap();
+            if (res) {
+                setMessage("")
+                setRecipientType("Select Recipient");
+                setNotificationType("");
+                toast.success(res?.message)
+            }
+        } catch (err) {
+
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+
+        }
+
+
+
     };
 
     return (
@@ -51,7 +79,7 @@ export default function SendNotification() {
                             </button>
                             {dropdownOpen && (
                                 <ul className="absolute left-0 right-0 mt-2 bg-white  rounded-md shadow-lg z-10 w-[12%] ">
-                                    {["All Users", "Doctors", "Patients", "Admins"].map((option) => (
+                                    {["all", "Doctors", "Patients", "Admins"].map((option) => (
                                         <li
                                             key={option}
                                             onClick={() => {
@@ -75,7 +103,13 @@ export default function SendNotification() {
                         <label className="block text-sm font-medium  text-[#000000]">
                             Notification Type
                         </label>
-                        <input type="text" name="" id="" className=" border border-[#686868] focus:outline-0 w-full mt-3 py-2 px-4 rounded-lg " placeholder="Enter Notification title" />
+                        <input
+                            type="text"
+                            value={notificationType}
+                            onChange={(e) => setNotificationType(e.target.value)}
+                            className="border border-[#686868] focus:outline-0 w-full mt-3 py-2 px-4 rounded-lg"
+                            placeholder="Enter Notification title"
+                        />
                     </div>
 
                     {/* Message */}
@@ -94,10 +128,13 @@ export default function SendNotification() {
 
                     {/* Submit */}
                     <button
+                        disabled={isLoading}
                         type="submit"
                         className=" text-sm font-semibold rounded-[39px] bg-[#D09A40] text-white py-3 px-5 cursor-pointer  transition"
                     >
-                        Send Now
+                        {
+                            isLoading ? "Loading.." : "Send Now"
+                        }
                     </button>
 
                 </form>
