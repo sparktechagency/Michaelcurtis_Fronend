@@ -1,5 +1,5 @@
-// Policy type
-type Policy = {
+// ✅ Policy Type
+export interface Policy {
     id: number;
     name: string;
     slug: string;
@@ -8,30 +8,30 @@ type Policy = {
     status: string;
     created_at: string;
     updated_at: string;
-};
+}
 
-// State type
-type State = {
+// ✅ State Type
+export interface State {
     id: number;
     name: string;
     code: string;
     created_at: string;
     updated_at: string;
-};
+}
 
-// Provider type
-export interface AllProviderType {
+// ✅ Main Provider Type
+export interface InsuranceProvider {
     id: number;
     name: string;
     slug: string;
-    logo_url: string | null;
+    logo_url: string;
     pros: string[];
     cons: string[];
     price: string;
     is_sponsored: boolean;
     status: string;
     about: string;
-    states_count: number | null;
+    states_count: number;
     reviews_count: number;
     avg_overall_rating: string;
     avg_grade: string;
@@ -39,6 +39,6 @@ export interface AllProviderType {
     avg_score: string | null;
     created_at: string;
     updated_at: string;
-
+    policies: Policy[];
     states: State[];
-};
+}

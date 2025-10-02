@@ -36,14 +36,40 @@ export const insuranceApi = createApi({
         }),
         allProvider: builder.query({
             query: () => ({
-                url: `/providers?include=policyCategories,states&filter[status]=active&sort=-created_at`,
+                url: `/providers?include=policyCategories,states,statesCount`,
+                method: "GET"
+            }),
+            providesTags: ["insurance"]
+        }),
+
+
+        allState: builder.query({
+            query: () => ({
+                url: `/user/states`,
+                method: "GET"
+            })
+        }),
+
+
+        deleteProvider: builder.mutation({
+            query: (slug) => ({
+                url: `/providers/${slug}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["insurance"]
+        }),
+
+        singleProvider: builder.query({
+            query: (providerSlug) => ({
+                url: `/providers/${providerSlug}`,
                 method: "GET"
             })
         })
 
 
 
+
     }),
 });
 
-export const { useCreateInsuranceMutation, useAllProviderQuery } = insuranceApi;
+export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery } = insuranceApi;
