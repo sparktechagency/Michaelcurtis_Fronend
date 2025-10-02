@@ -1,44 +1,25 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import ViewReview from "./ViewReview";
-import { useGetAllReviewQuery } from "@/app/api/website/review/reviewApi";
+import { useDeleteReviewMutation, useGetAllReviewQuery, useReviewStatusUpdateMutation } from "@/app/api/website/review/reviewApi";
 import { Review } from "@/utility/types/website/review-type/reviewType";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { toast } from "sonner";
+import { deleteAlert } from "@/helper/deleteAlert";
+import Loading from "@/app/components/loading/Loading";
 
-interface ReviewType {
-    id: number;
-    reviewer: string;
-    provider: string;
-    score: number;
-    comment: string;
-    date: string;
-    status: "Pending" | "Approved" | "Rejected";
-}
 
-// const initialReviews: ReviewType[] = [
-//     { id: 1, reviewer: "Alice", provider: "Virtue Insurance", score: 4.5, comment: "Good service", date: "2025-09-16", status: "Pending" },
-//     { id: 2, reviewer: "Bob", provider: "Hope Coverage", score: 3.8, comment: "Average", date: "2025-09-15", status: "Approved" },
-//     { id: 3, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 4, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 5, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 6, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 7, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 8, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 9, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 10, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 11, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     { id: 12, reviewer: "Charlie", provider: "Gloirepaluku", score: 4.9, comment: "Excellent", date: "2025-09-14", status: "Rejected" },
-//     // add more dummy data
-// ];
+
 
 export default function AllReview() {
 
-    const { data } = useGetAllReviewQuery([]);
+    const { data, isLoading } = useGetAllReviewQuery([]);
 
-    console.log(data?.data)
 
 
     const initialReviews: Review[] = data?.data || [];
+
 
 
 
@@ -52,9 +33,9 @@ export default function AllReview() {
 
     // Filtered reviews
     const filteredReviews = initialReviews.filter((r) => {
-        const matchesSearch = r.user?.full_name.toLowerCase().includes(search.toLowerCase()) || r.provider.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = r.user?.full_name.toLowerCase().includes(search.toLowerCase()) || r.user?.first_name.toLowerCase().includes(search.toLowerCase());
         const matchesStatus = statusFilter === "All" ? true : r.status === statusFilter;
-        const matchesScore = scoreFilter === "All" ? true : r.score === Number(scoreFilter);
+        const matchesScore = scoreFilter === "All" ? true : r.overall_rating === Number(scoreFilter);
 
         return matchesSearch && matchesStatus && matchesScore;
     });
@@ -69,9 +50,89 @@ export default function AllReview() {
 
     const [reviewModal, setReviewModal] = useState<boolean>(false);
 
-    const openReviewModal = () => {
-        setReviewModal(true)
+    const [reviewId, setReviewId] = useState<number | undefined>();
+
+    const openReviewModal = (id: number) => {
+        setReviewModal(true);
+        setReviewId(id)
     }
+
+
+    // status update 
+    const [statusModal, setStatusModal] = useState<boolean>(false);
+
+    const [status, setStatus] = useState("Pending");
+
+
+    const statusOptions = ["pending", "approved", "rejected"];
+
+
+    const openStatusModal = (id: number) => {
+        setReviewId(id);
+        setStatusModal(true);
+    };
+
+
+    const statusModalClose = () => {
+        setStatusModal(false)
+    }
+
+    const [reviewStatusUpdate] = useReviewStatusUpdateMutation();
+
+    const formData = new FormData();
+
+    formData.append("_method", "PUT");
+    formData.append("status", status)
+
+
+    const handleStatusUpdate = async () => {
+        try {
+            const res = await reviewStatusUpdate({ formData, reviewId });
+            if (res) {
+                toast.success(res?.data?.message);
+                setStatusModal(false);
+            }
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    }
+
+
+    const [deleteReview] = useDeleteReviewMutation();
+
+
+    const handleDeleteReview = async (id: number) => {
+        try {
+            const res = await deleteAlert();
+            if (res?.isConfirmed) {
+                const res = await deleteReview(id).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    }
+
+
+    if (isLoading) {
+        return (
+            <div className=" flex justify-center items-center mt-60 " >
+
+                <Loading></Loading>
+            </div>
+        )
+    }
+
+
+
 
     return (
         <>
@@ -126,8 +187,8 @@ export default function AllReview() {
                             {paginatedReviews.length > 0 ? (
                                 paginatedReviews.map((r) => (
                                     <tr className="" key={r.id}>
-                                        <td className="px-4 py-2 text-lg font-normal ">{r.reviewer}</td>
-                                        <td className="px-4 py-2 text-lg font-normal">{r.provider}</td>
+                                        <td className="px-4 py-2 text-lg font-normal ">{r.user?.full_name}</td>
+                                        <td className="px-4 py-2 text-lg font-normal">{r.provider?.name}</td>
                                         <td className="px-4 py-2">
                                             <div className=" flex flex-row items-center gap-x-1 " >
                                                 <span>
@@ -137,36 +198,37 @@ export default function AllReview() {
 
                                                 </span>
                                                 <span className=" font-thin " >
-                                                    4.8/5 <span className="text-lg font-normal" >(A+)</span>
+                                                    {/* 4.8/5 <span className="text-lg font-normal" >(A+)</span> */}
+                                                    {
+                                                        r?.display_score
+                                                    }
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className="px-4 py-2 text-lg font-thin text-[#000000] ">{r.comment}</td>
-                                        <td className="px-4 py-2 text-lg font-thin text-[#000000] ">{r.date}</td>
+                                        <td className="px-4 py-2 text-lg font-thin text-[#000000] ">{r.comment.slice(0, 20)}...</td>
+                                        <td className="px-4 py-2 text-lg font-thin text-[#000000] ">{r.created_at_human}</td>
                                         <td className="px-4 py-2">
                                             <span
-                                                className={`px-3 py-1 cursor-pointer rounded  text-sm ${r.status === "Pending" ? "bg-[#FFFDC8] text-[#909824] " : r.status === "Approved" ? "bg-[#C8FFD1] text-[#24983F] " : "bg-[#FFC8C8] text-[#982424] "
+                                                className={`px-3 py-1 cursor-pointer rounded  text-sm ${r.status === "pending" ? "bg-[#FFFDC8] text-[#909824] " : r.status === "approved" ? "bg-[#C8FFD1] text-[#24983F] " : "bg-[#FFC8C8] text-[#982424] "
                                                     }`}
                                             >
                                                 {r.status}
                                             </span>
                                         </td>
                                         <td className="px-4 py-2 flex gap-2">
-                                            <button onClick={openReviewModal} className="px-2 py-1  cursor-pointer border border-[#989DA3] rounded-[6px] ">
+                                            <button onClick={() => { openReviewModal(r?.id) }} className="px-2 py-1  cursor-pointer border border-[#989DA3] rounded-[6px] ">
                                                 <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M2.275 12.296C1.425 11.192 1 10.639 1 9C1 7.36 1.425 6.809 2.275 5.704C3.972 3.5 6.818 1 11 1C15.182 1 18.028 3.5 19.725 5.704C20.575 6.81 21 7.361 21 9C21 10.64 20.575 11.191 19.725 12.296C18.028 14.5 15.182 17 11 17C6.818 17 3.972 14.5 2.275 12.296Z" stroke="#697079" />
                                                     <path d="M14 9C14 9.79565 13.6839 10.5587 13.1213 11.1213C12.5587 11.6839 11.7956 12 11 12C10.2044 12 9.44129 11.6839 8.87868 11.1213C8.31607 10.5587 8 9.79565 8 9C8 8.20435 8.31607 7.44129 8.87868 6.87868C9.44129 6.31607 10.2044 6 11 6C11.7956 6 12.5587 6.31607 13.1213 6.87868C13.6839 7.44129 14 8.20435 14 9Z" stroke="#697079" />
                                                 </svg>
 
                                             </button>
-                                            <button className="px-2 cursor-pointer  py-1 border border-[#989DA3] rounded-[6px] ">
+                                            <button onClick={() => { openStatusModal(r?.id) }} className="px-2 cursor-pointer  py-1 border border-[#989DA3] rounded-[6px] ">
                                                 <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M5.54996 11.3081L0.579956 6.3381L1.29396 5.6251L5.54996 9.8811L14.706 0.725098L15.419 1.4391L5.54996 11.3081Z" fill="#697079" />
                                                 </svg>
-
-
                                             </button>
-                                            <button className="px-2 cursor-pointer  py-1 border border-[#989DA3] rounded-[6px] ">
+                                            <button onClick={() => { handleDeleteReview(r?.id) }} className="px-2 cursor-pointer  py-1 border border-[#989DA3] rounded-[6px] ">
                                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1 1L13 13M13 1L1 13" stroke="#697079" strokeLinecap="round" />
                                                 </svg>
@@ -214,9 +276,45 @@ export default function AllReview() {
 
             {
                 reviewModal && (
-                    <ViewReview reviewModal={reviewModal} setReviewModal={setReviewModal} ></ViewReview>
+                    <ViewReview reviewModal={reviewModal} setReviewModal={setReviewModal} reviewId={reviewId} ></ViewReview>
                 )
             }
+
+
+
+
+            {statusModal && (
+                <div className="fixed inset-0 flex items-center justify-center transition-all  bg-opacity-50 z-50">
+                    <div className="bg-white rounded shadow-lg w-xl p-4">
+                        <h2 className="text-lg font-semibold mb-3">Select Status</h2>
+                        {statusOptions.map((opt) => (
+                            <button
+                                key={opt}
+                                className={`w-full text-left px-4 py-2 mb-2 rounded ${status === opt ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                    }`}
+                                onClick={() => {
+                                    setStatus(opt);
+                                }}
+                            >
+                                <p className=" cursor-pointer " >{opt}</p>
+                            </button>
+                        ))}
+                        <div className="flex justify-end space-x-4 mt-8">
+                            <button
+                                onClick={statusModalClose}
+                                className="flex items-center space-x-2 px-8 cursor-pointer py-3 text-[#D09A40] rounded-[36px] border border-[#D09A40] transition"
+                            >
+                                Cancel
+                            </button>
+                            <button onClick={handleStatusUpdate} className="px-8 cursor-pointer py-3 bg-[#D09A40] text-white rounded-[36px] hover:bg-[#b8802f] transition">
+                                Approve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
 
         </>
     );

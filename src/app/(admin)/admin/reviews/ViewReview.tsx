@@ -1,15 +1,20 @@
 
+import { useSingleReviewQuery } from "@/app/api/website/review/reviewApi";
+import Loading from "@/app/components/loading/Loading";
+import { Review } from "@/utility/types/website/review-type/reviewType";
 import React, { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa6";
 
 type PolicyViewProps = {
     reviewModal: boolean;
     setReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
+    reviewId: number | undefined
 };
 
 const ViewReview: React.FC<PolicyViewProps> = ({
     reviewModal,
     setReviewModal,
+    reviewId
 }) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const firstFocusableRef = useRef<HTMLButtonElement>(null);
@@ -72,37 +77,32 @@ const ViewReview: React.FC<PolicyViewProps> = ({
 
 
 
-    // Claims
-
-    const [ClaimsRating, setClaimsRating] = useState(0);
-    const [Claimshover, setClaimsHover] = useState(0);
 
 
-    // ServiceRating
 
 
-    const [ServiceRating, setServiceRating] = useState(0);
-    const [ServiceHover, setServiceHover] = useState(0);
 
 
-    // Pricing
 
 
-    const [PricingRating, setPricingRating] = useState(0);
-    const [PricingHover, setPricingHover] = useState(0);
-
-    // Coverage
 
 
-    const [CoverageRating, setCoverageRating] = useState(0);
-    const [CoverageHover, setCoverageHover] = useState(0);
+
+    const { data, isLoading } = useSingleReviewQuery(reviewId);
+
+    console.log(data?.data);
+
+    const singleReviewData: Review = data?.data;
 
 
-    // Digital Tools
 
-
-    const [DigitalRating, setDigitalRating] = useState(0);
-    const [DigitalHover, setDigitalHover] = useState(0);
+    if (isLoading) {
+        return (
+            <div className=" z-50 max-w-3xl w-full mx-auto " >
+                <Loading></Loading>
+            </div>
+        )
+    }
 
 
 
@@ -134,13 +134,17 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                 </button>
 
                 <div className='  ' >
-                    <h1 className=' text-[#000000] text-4xl ' >Progressive review by John D.</h1>
-                    <p className='  mt-3 font-thin lg:text-xl text-sm text-[#000000] ' >Submitted on 2024-09-09 </p>
+                    <h1 className=' text-[#000000] text-4xl ' >Progressive review by {singleReviewData?.user?.full_name} </h1>
+                    <p className='  mt-3 font-thin lg:text-xl text-sm text-[#000000] ' >Submitted on {new Date(singleReviewData?.created_at).toLocaleDateString()} </p>
                     <div className='  mt-7 ' >
                         <h1 className=' font-normal lg:text-xl text-sm text-black  ' >Full Comment</h1>
                     </div>
                     <div className=' mt-2 border border-[#989DA3] rounded-[7px] p-1  ' >
-                        <p className='  font-thin ' >&quot;I&lsquo;ve been with Liberty Mutual for 5 years and they&lsquo;ve been fantastic. When I had a fender bender last year, their claims process was smooth and stress-free. The digital app makes everything so easy to manage - I can view my ID cards, make payments,</p>
+                        <p className='  font-thin ' >
+                            {
+                                singleReviewData?.comment
+                            }
+                        </p>
                     </div>
                     <div className="w-full  mx-auto mt-4 ">
                         <h1 className=" text-lg font-normal " >Category Scores</h1>
@@ -162,13 +166,14 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setClaimsRating(star)}
-                                    onMouseEnter={() => setClaimsHover(star)}
-                                    onMouseLeave={() => setClaimsHover(0)}
+
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (Claimshover || ClaimsRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.overall_rating))
+                                            ? "text-yellow-400"
+                                            : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -190,13 +195,11 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setServiceRating(star)}
-                                    onMouseEnter={() => setServiceHover(star)}
-                                    onMouseLeave={() => setServiceHover(0)}
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (ServiceHover || ServiceRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.scores?.claims)) ? "text-yellow-400" : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -216,13 +219,11 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setServiceRating(star)}
-                                    onMouseEnter={() => setServiceHover(star)}
-                                    onMouseLeave={() => setServiceHover(0)}
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (ServiceHover || ServiceRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.scores?.service)) ? "text-yellow-400" : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -245,13 +246,11 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setPricingRating(star)}
-                                    onMouseEnter={() => setPricingHover(star)}
-                                    onMouseLeave={() => setPricingHover(0)}
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (PricingHover || PricingRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.scores?.pricing)) ? "text-yellow-400" : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -277,13 +276,11 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setCoverageRating(star)}
-                                    onMouseEnter={() => setCoverageHover(star)}
-                                    onMouseLeave={() => setCoverageHover(0)}
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (CoverageHover || CoverageRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.scores?.coverage)) ? "text-yellow-400" : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -305,13 +302,11 @@ const ViewReview: React.FC<PolicyViewProps> = ({
                                 <button
                                     key={star}
                                     type="button"
-                                    onClick={() => setDigitalRating(star)}
-                                    onMouseEnter={() => setDigitalHover(star)}
-                                    onMouseLeave={() => setDigitalHover(0)}
+
                                     className="focus:outline-none"
                                 >
                                     <FaStar
-                                        className={`w-8 h-8 cursor-pointer ${star <= (DigitalHover || DigitalRating) ? "text-yellow-400" : "text-gray-300"
+                                        className={`w-8 h-8 cursor-pointer ${star <= (Number(singleReviewData?.scores?.transparency_trust)) ? "text-yellow-400" : "text-gray-300"
                                             }`}
                                     />
                                 </button>
@@ -331,25 +326,6 @@ const ViewReview: React.FC<PolicyViewProps> = ({
 
 
 
-
-
-
-
-
-
-
-
-                    <h1 className='text-lg lg:text-[27px] font-normal text-[#000000] mt-6 ' >Which state are you in?</h1>
-
-                    <div className="w-full  mx-auto mt-4 ">
-                        <select className="w-full   border border-[#989DA3] rounded-lg px-6 py-3 text-gray-700 focus:outline-none ">
-
-                            <option disabled selected value="all">Select your State</option>
-                            <option value="verified">Verified Reviews</option>
-                            <option value="high-rating">High Rating</option>
-                            <option value="low-rating">Low Rating</option>
-                        </select>
-                    </div>
 
 
 
