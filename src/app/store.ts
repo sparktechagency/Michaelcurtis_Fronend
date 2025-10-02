@@ -7,6 +7,7 @@ import { faqApi } from "./api/admin/faqApi";
 import { contentApi } from "./api/admin/contentApi";
 import { insuranceApi } from "./api/admin/insuranceApi";
 import { reviewApi } from "./api/website/review/reviewApi";
+import { notificationApi } from "./api/admin/notificationApi";
 
 
 export const store = configureStore({
@@ -19,9 +20,10 @@ export const store = configureStore({
         [contentApi.reducerPath]: contentApi.reducer,
         [insuranceApi.reducerPath]: insuranceApi.reducer,
         [reviewApi.reducerPath]: reviewApi.reducer,
+        [notificationApi.reducerPath]: notificationApi?.reducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware),
+        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware, notificationApi?.middleware),
 });
 
 // types
