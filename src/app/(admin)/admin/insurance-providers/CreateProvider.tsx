@@ -1,6 +1,7 @@
 "use client"
-import { useCreateInsuranceMutation } from "@/app/api/admin/insuranceApi";
+import { useAllStateQuery, useCreateInsuranceMutation } from "@/app/api/admin/insuranceApi";
 import { useAllPolicyQuery } from "@/app/api/admin/policyApi";
+import { StateName, StateType } from "@/utility/types/admin/insurance-provider/providerType";
 import { AllPolicyApiResponse } from "@/utility/types/admin/policy/policyType";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
@@ -79,7 +80,6 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
 
     const [logo, setLogo] = useState<File | null>(null);
 
-    console.log(logo)
 
 
     // Policy Categories
@@ -90,41 +90,33 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
 
 
 
+    const [selectedStates, setSelectedStates] = useState<StateName[]>([]);
 
-
-
-
-
-    const allStates = [
-        "Alabama",
-        "Alaska",
-        "California",
-        "Texas",
-        "Florida",
-        "New York",
-        "Other",
-    ];
-
-    const [selectedStates, setSelectedStates] = useState<string[]>([]);
-    console.log(selectedStates)
-
-
-    // const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     const values = Array.from(e.target.selectedOptions, (option) => option.value);
-    //     setSelectedStates(values);
-    // };
+    const { data: stateData } = useAllStateQuery([]);
+    const allStates: StateName[] = stateData?.data || [];
 
     const handleStateSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        if (value && !selectedStates.includes(value)) {
-            setSelectedStates([...selectedStates, value]);
+        const selectedId = Number(e.target.value);
+        const selectedState = allStates.find((s) => s.id === selectedId);
+
+        if (selectedState && !selectedStates.some((s) => s.id === selectedState.id)) {
+            setSelectedStates([...selectedStates, selectedState]);
         }
-        e.target.value = ""; // reset dropdown back to placeholder
+
+        e.target.value = ""; // reset dropdown
     };
 
-    const removeState = (state: string) => {
-        setSelectedStates(selectedStates.filter((s) => s !== state));
+    const removeState = (id: number) => {
+        setSelectedStates(selectedStates.filter((s) => s.id !== id));
     };
+
+
+
+
+
+
+
+
 
 
     const [preview, setPreview] = useState<string | null>(null);
@@ -150,7 +142,9 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
     const [cons, setCons] = useState<string[]>([""]);
     const [title, setTitle] = useState("");
 
-    const [policies, setPolicies] = useState<string[]>([""]);
+    const [policies, setPolicies] = useState<number[]>([]);
+
+    console.log(`policy is `, policies)
 
     const [createInsurance, { isLoading }] = useCreateInsuranceMutation();
 
@@ -162,6 +156,9 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
         formData.append("about", about);
         formData.append("price", price);
         formData.append("title", title);
+        if (logo) {
+            formData.append("logo_url", logo);
+        }
 
         // Send arrays with index
         pros.forEach((item, index) => {
@@ -173,11 +170,13 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
         });
 
         selectedStates.forEach((item, index) => {
-            formData.append(`states[${index}]`, item);
+            console.log(item)
+            formData.append(`states[${index}]`, item.id.toString());
         });
 
-        policies.forEach((item, index) => {
-            formData.append(`policies[${index}]`, item);
+        // 3. FormData append
+        policies.forEach((id, index) => {
+            formData.append(`policies[${index}]`, id.toString());
         });
 
         formData.forEach((value, key) => {
@@ -187,7 +186,9 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
         try {
             const res = await createInsurance(formData).unwrap();
             if (res) {
-                console.log(res)
+                setShowModal(false);
+                setTimeout(() => setAddModal(false), 500);
+                toast.success(res?.message)
             }
 
         } catch (err) {
@@ -300,24 +301,24 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                         </div>
 
                         {/* Select States */}
-                        <div className="mb-4 flex-1 w-full  ">
+                        <div className="mb-4 flex-1 w-full">
+                            <label className="block text-lg font-normal text-[#000000] mb-3">
+                                States
+                            </label>
 
-                            <label className="block  text-lg font-normal text-[#000000] mb-3 ">States</label>
-                            {/* Preview Selected States */}
+                            {/* Selected states */}
                             {selectedStates.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mt-3 border border-[#989DA3] rounded-[5px] py-2 px-2  ">
-                                    {selectedStates.map((state, idx) => (
+                                <div className="flex flex-wrap gap-2 mt-3 border border-[#989DA3] rounded-[5px] py-2 px-2">
+                                    {selectedStates.map((state) => (
                                         <span
-                                            key={idx}
+                                            key={state.id}
                                             className="px-3 py-1 bg-[#D09A40] text-white rounded-full text-sm flex items-center"
                                         >
-                                            <p  >
-                                                {state}
-                                            </p>
+                                            <p>{state.name}</p>
                                             <button
                                                 type="button"
-                                                onClick={() => removeState(state)}
-                                                className="ml-2 text-white cursor-pointer  "
+                                                onClick={() => removeState(state.id)}
+                                                className="ml-2 text-white cursor-pointer"
                                             >
                                                 ✕
                                             </button>
@@ -325,19 +326,19 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                                     ))}
                                 </div>
                             )}
+
+                            {/* Dropdown */}
                             <select
                                 onChange={handleStateSelect}
-                                className="w-full p-3 mt-2 border border-[#989DA3] rounded-md focus:outline-none focus:ring-0 cursor-pointer "
+                                className="w-full p-3 mt-2 border border-[#989DA3] rounded-md focus:outline-none focus:ring-0 cursor-pointer"
                             >
                                 <option value="">Select a state</option>
-                                {allStates.map((state, idx) => (
-                                    <option key={idx} value={state}>
-                                        {state}
+                                {allStates.map((state) => (
+                                    <option key={state.id} value={state.id}>
+                                        {state.name}
                                     </option>
                                 ))}
                             </select>
-
-
                         </div>
                     </div>
 
@@ -348,28 +349,25 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                         </label>
 
                         <div className="flex flex-wrap gap-4">
-                            {policyData?.map((item, i) => {
-                                const isChecked = policies.includes(item.name);
+                            {policyData?.map((item) => {
+                                const isChecked = policies.includes(item.id);
 
                                 return (
-                                    <div key={i}>
+                                    <div key={item.id}>
                                         <label className="flex items-center">
                                             <input
                                                 type="checkbox"
                                                 checked={isChecked}
-                                                value={item.name}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        // add policy
-                                                        setPolicies([...policies, item.name]);
+                                                        setPolicies([...policies, item.id]);
                                                     } else {
-                                                        // remove policy
-                                                        setPolicies(policies.filter((p) => p !== item.name));
+                                                        setPolicies(policies.filter((p) => p !== item.id));
                                                     }
                                                 }}
                                                 className="form-checkbox h-4 w-4 text-blue-500"
                                             />
-                                            <span className="ml-2 text-sm text-gray-600">{item?.name}</span>
+                                            <span className="ml-2 text-sm text-gray-600">{item.name}</span>
                                         </label>
                                     </div>
                                 );

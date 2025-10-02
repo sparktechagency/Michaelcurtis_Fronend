@@ -5,9 +5,12 @@ import { FiSearch } from "react-icons/fi";
 import ViewInsurance from "./ViewInsurance";
 import CreateProvider from "./CreateProvider";
 import { useAllPolicyQuery } from "@/app/api/admin/policyApi";
-import { useAllProviderQuery } from "@/app/api/admin/insuranceApi";
-import { AllProviderType } from "@/utility/types/admin/insurance-provider/providerType";
+import { useAllProviderQuery, useDeleteProviderMutation } from "@/app/api/admin/insuranceApi";
+import { InsuranceProvider } from "@/utility/types/admin/insurance-provider/providerType";
 import { AllPolicyApiResponse } from "@/utility/types/admin/policy/policyType";
+import { toast } from "sonner";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { deleteAlert } from "@/helper/deleteAlert";
 
 
 
@@ -20,9 +23,13 @@ const Provider = () => {
     const { data: policyData } = useAllPolicyQuery({});
     const policyOptions: AllPolicyApiResponse[] = policyData?.data || [];
 
+
     // Fetch all providers
     const { data: allProviderData } = useAllProviderQuery({});
-    const [providers, setProviders] = useState<AllProviderType[]>([]);
+
+
+
+    const [providers, setProviders] = useState<InsuranceProvider[]>([]);
 
     // Sync providers when API data is loaded
     useEffect(() => {
@@ -30,6 +37,8 @@ const Provider = () => {
             setProviders(allProviderData.data);
         }
     }, [allProviderData]);
+
+
 
     // Filters & search
     const [search, setSearch] = useState("");
@@ -44,18 +53,17 @@ const Provider = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const providersPerPage = 5;
 
-    // Filtered providers
-    const filteredProviders = providers.filter(() => {
-        // const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        // const matchesStatus =
-        //     statusFilter === ""
-        //         ? true
-        //         : statusFilter === "Sponsored"
-        //             ? p.is_sponsored
-        //             : !p.is_sponsored;
-        // const matchesPolicy = policyFilter === "" ? true : p.policies.includes(policyFilter);
+    const filteredProviders = providers.filter((p) => {
+        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
 
-        // return matchesSearch && matchesStatus && matchesPolicy;
+        const matchesStatus =
+            statusFilter === ""
+                ? true
+                : statusFilter === "active"
+                    ? p.status === "active"
+                    : p.status === "inactive";
+
+        return matchesSearch && matchesStatus;
     });
 
     const totalPages = Math.ceil(filteredProviders.length / providersPerPage);
@@ -74,8 +82,36 @@ const Provider = () => {
         setCurrentPage(page);
     };
 
-    const handleOpenModal = () => setViewModal(true);
 
+    const [providerSlug, setProviderSlug] = useState<string | undefined>();
+
+    const handleOpenModal = (slug: string) => {
+        setViewModal(true);
+        setProviderSlug(slug)
+    }
+
+
+
+    const [deleteProvider] = useDeleteProviderMutation();
+
+    const handleDeleteInsurance = async (slug: string) => {
+        try {
+
+            const res = await deleteAlert();
+            if (res.isConfirmed) {
+                const res = await deleteProvider(slug).unwrap();
+                if (res) {
+                    toast.success(res?.message);
+                }
+            }
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    }
 
 
 
@@ -121,8 +157,8 @@ const Provider = () => {
                             className="border border-[#B9B9B9] rounded-[6px] px-10 py-2 text-[#686868] text-[16px] font-normal    "
                         >
                             <option value="">All Status</option>
-                            <option value="Sponsored">Sponsored</option>
-                            <option value="Not Sponsored">Not Sponsored</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                         <select
                             value={policyFilter}
@@ -159,14 +195,14 @@ const Provider = () => {
                             {displayedProviders.map((provider, index) => (
                                 <tr key={index} className="border-b border-[#989DA3] ">
                                     <td className="px-6 py-3">
-                                        <div className=" flex flex-row items-center gap-x-2 " >
-                                            <Image src={"/images/user/user.png"} width={37} height={37} alt="" className=" rounded-full " />
+                                        <div className=" flex flex-row items-center gap-x-2  " >
+                                            <Image src={provider?.logo_url} width={2000} height={2000} alt="" className=" w-10 h-10 rounded-full " />
                                             <p className=" text-[#000000] font-thin text-[16px] " >
                                                 {provider.name}
                                             </p>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-3 text-[#000000] font-thin text-[16px]  ">{provider.states.length}</td>
+                                    <td className="px-6 py-3 text-[#000000] font-thin text-[16px]  ">{provider.states_count}</td>
                                     <td className="px-6 py-3  ">
                                         <div className=" flex items-center gap-x-1  " >
                                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,7 +214,8 @@ const Provider = () => {
 
                                     </td>
                                     <td className="px-6 py-3 text-[#000000] font-thin text-[16px]">
-                                        {/* {provider?.policies[0]?.name} */}
+                                        {provider?.policies[0]?.name.slice(0, 10)}...
+                                        {provider?.policies[1]?.name.slice(0, 10)}...
                                     </td>
                                     <td className="px-6 py-3  ">
                                         {
@@ -243,7 +280,7 @@ const Provider = () => {
                                     </td>
                                     <td className="px-6 py-3 flex gap-2">
                                         <button
-                                            onClick={handleOpenModal}
+                                            onClick={() => { handleOpenModal(provider?.slug) }}
                                             className=" border border-[#989DA3] rounded-[6px] px-2 py-1 cursor-pointer "
                                         >
                                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -253,7 +290,7 @@ const Provider = () => {
 
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(index)}
+                                            onClick={() => { handleDeleteInsurance(provider?.slug) }}
                                             className="border border-[#E04F4F] rounded-[6px] px-3 py-1 cursor-pointer"
                                         >
                                             <svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -279,7 +316,7 @@ const Provider = () => {
 
                 {/* View Modal */}
                 {viewModal && (
-                    <ViewInsurance viewModal={viewModal} setViewModal={setViewModal} ></ViewInsurance>
+                    <ViewInsurance viewModal={viewModal} setViewModal={setViewModal} providerSlug={providerSlug} ></ViewInsurance>
                 )}
 
                 {/* Add Modal */}
