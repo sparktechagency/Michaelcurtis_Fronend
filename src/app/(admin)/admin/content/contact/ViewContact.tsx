@@ -1,5 +1,10 @@
 
+import { useContactReadMutation, useDeleteContactApiMutation, useSingleContactQuery } from "@/app/api/admin/contactApi";
+import { deleteAlert } from "@/helper/deleteAlert";
+import { readAlert } from "@/helper/readAlert";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import React, { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 
 
@@ -8,11 +13,13 @@ type PolicyViewProps = {
     viewContactModal: boolean;
     setViewcontactModal1: React.Dispatch<React.SetStateAction<boolean>>;
     // blogSlug: string | null
+    contactId: number | undefined
 };
 
 const ViewContact: React.FC<PolicyViewProps> = ({
     viewContactModal,
     setViewcontactModal1,
+    contactId
 }) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const firstFocusableRef = useRef<HTMLButtonElement>(null);
@@ -76,11 +83,60 @@ const ViewContact: React.FC<PolicyViewProps> = ({
 
 
 
+    const id = contactId;
+
+
+    const { data } = useSingleContactQuery(id);
+
+
+    console.log(`single contact is `, data)
 
 
 
 
 
+    const [deleteContactApi] = useDeleteContactApiMutation();
+
+    // ✅ Delete
+    const handleDelete = async () => {
+        try {
+            const res = await deleteAlert();
+            if (res.isConfirmed) {
+                const res = await deleteContactApi(id).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+
+
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
+    const [contactRead] = useContactReadMutation();
+
+
+    const readContact = async () => {
+        try {
+            const res = await readAlert();
+            if (res?.isConfirmed) {
+                const res = await contactRead(id).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    }
 
 
 
@@ -131,6 +187,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                             <input
                                 type="text"
                                 placeholder="Enter name"
+                                defaultValue={data?.data?.name}
                                 className="mt-2 focus:outline-0 w-full border border-[#989DA3] rounded-[7px] py-3 px-4   "
                             />
                         </div>
@@ -141,6 +198,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                             <input
                                 type="email"
                                 placeholder="Enter email"
+                                defaultValue={data?.data?.email}
                                 className="mt-2 focus:outline-0 w-full border border-[#989DA3] rounded-[7px] py-3 px-4   "
                             />
                         </div>
@@ -151,6 +209,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                             <textarea
                                 rows={4}
                                 placeholder="Enter message..."
+                                defaultValue={data?.data?.message}
                                 className="mt-2 focus:outline-0 w-full border border-[#989DA3] rounded-[7px] py-3 px-4"
                             ></textarea>
                         </div>
@@ -158,7 +217,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                     {/* Header */}
                     <div className="flex justify-between items-center mt-20">
                         {/* Left: Mark Read */}
-                        <button className=" gap-x-14 flex items-center ">
+                        <button onClick={readContact} className=" gap-x-14 flex items-center ">
                             <span className=" text-2xl  " >
                                 Mark as Read
                             </span>
@@ -191,7 +250,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                         </button>
 
                         {/* Right: Icons */}
-                        <div className="flex gap-3 cursor-pointer ">
+                        <div onClick={handleDelete} className="flex gap-3 cursor-pointer ">
                             <svg width="130" height="54" viewBox="0 0 130 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.446289" width="129" height="54" rx="27" fill="#D93939" />
                                 <path d="M32.0623 35.0005C31.6176 35.0005 31.2373 34.8421 30.9213 34.5255C30.6053 34.2088 30.447 33.8291 30.4463 33.3865V21.0005H29.9463C29.8043 21.0005 29.6856 20.9525 29.5903 20.8565C29.495 20.7605 29.447 20.6415 29.4463 20.4995C29.4456 20.3575 29.4936 20.2388 29.5903 20.1435C29.687 20.0481 29.8056 20.0005 29.9463 20.0005H33.4463C33.4463 19.7938 33.523 19.6138 33.6763 19.4605C33.8296 19.3071 34.0096 19.2305 34.2163 19.2305H38.6763C38.883 19.2305 39.063 19.3071 39.2163 19.4605C39.3696 19.6138 39.4463 19.7938 39.4463 20.0005H42.9463C43.0883 20.0005 43.207 20.0485 43.3023 20.1445C43.3976 20.2405 43.4456 20.3595 43.4463 20.5015C43.447 20.6435 43.399 20.7621 43.3023 20.8575C43.2056 20.9528 43.087 21.0005 42.9463 21.0005H42.4463V33.3855C42.4463 33.8295 42.288 34.2095 41.9713 34.5255C41.6546 34.8415 41.2746 34.9998 40.8313 35.0005H32.0623ZM41.4463 21.0005H31.4463V33.3855C31.4463 33.5648 31.504 33.7121 31.6193 33.8275C31.7346 33.9428 31.8823 34.0005 32.0623 34.0005H40.8313C41.0106 34.0005 41.158 33.9428 41.2733 33.8275C41.3886 33.7121 41.4463 33.5648 41.4463 33.3855V21.0005ZM34.7543 32.0005C34.8963 32.0005 35.0153 31.9525 35.1113 31.8565C35.2073 31.7605 35.255 31.6418 35.2543 31.5005V23.5005C35.2543 23.3585 35.2063 23.2398 35.1103 23.1445C35.0143 23.0491 34.8953 23.0011 34.7533 23.0005C34.6113 22.9998 34.4926 23.0478 34.3973 23.1445C34.302 23.2411 34.2543 23.3598 34.2543 23.5005V31.5005C34.2543 31.6425 34.3023 31.7611 34.3983 31.8565C34.4943 31.9525 34.613 32.0005 34.7543 32.0005ZM38.1393 32.0005C38.2813 32.0005 38.4 31.9525 38.4953 31.8565C38.5906 31.7605 38.6383 31.6418 38.6383 31.5005V23.5005C38.6383 23.3585 38.5903 23.2398 38.4943 23.1445C38.3983 23.0485 38.2796 23.0005 38.1383 23.0005C37.9963 23.0005 37.8773 23.0485 37.7813 23.1445C37.6853 23.2405 37.6376 23.3591 37.6383 23.5005V31.5005C37.6383 31.6425 37.6863 31.7611 37.7823 31.8565C37.8783 31.9518 37.9973 31.9998 38.1393 32.0005Z" fill="white" />
