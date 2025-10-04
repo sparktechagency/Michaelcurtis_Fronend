@@ -1,61 +1,113 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import ViewContact from "./ViewContact";
+import { useAllContactQuery, useContactReadMutation, useDeleteContactApiMutation } from "@/app/api/admin/contactApi";
+import { ContactListType } from './../../../../../utility/types/admin/contact/contactType';
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { toast } from "sonner";
+import { deleteAlert } from "@/helper/deleteAlert";
+import { readAlert } from "@/helper/readAlert";
 
-type Message = {
-    id: number;
-    name: string;
-    email: string;
-    message: string;
-    date: string;
-    status: "Read" | "Unread";
-};
-
-const sampleMessages: Message[] = [
-    { id: 1, name: "John Doe", email: "john@example.com", message: "I’d like to know more about your services.", date: "2025-09-25", status: "Unread" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", message: "Please update me on my booking status.", date: "2025-09-24", status: "Read" },
-    { id: 3, name: "Mark Lee", email: "mark@example.com", message: "Can you send me more details?", date: "2025-09-23", status: "Unread" },
-    { id: 4, name: "Alice Green", email: "alice@example.com", message: "I want to reschedule my lesson.", date: "2025-09-22", status: "Read" },
-    { id: 5, name: "Bob Brown", email: "bob@example.com", message: "Is there a discount for beginners?", date: "2025-09-21", status: "Unread" },
-    { id: 6, name: "Sophie White", email: "sophie@example.com", message: "Thanks for your quick response!", date: "2025-09-20", status: "Read" },
-    { id: 7, name: "Tom Adams", email: "tom@example.com", message: "I’m interested in evening lessons.", date: "2025-09-19", status: "Unread" },
-];
 
 export default function ContactList() {
-    const [messages, setMessages] = useState<Message[]>(sampleMessages);
+
+
+    const { data } = useAllContactQuery({});
+
+    // Ensure data is mapped correctly
+    const contactList: ContactListType[] = data?.data || [];
+
+    const [messages, setMessages] = useState<ContactListType[]>([]);
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
+    const [viewContactModal, setViewContactModal] = useState(false);
+
     const rowsPerPage = 5;
 
-    // Filter messages
+    // ✅ Update messages when API data changes
+    useEffect(() => {
+        if (contactList.length > 0) {
+            setMessages(contactList);
+        }
+    }, [contactList]);
+
+    // ✅ Filtering
     const filteredMessages = messages.filter((msg) => {
         const matchSearch =
             msg.name.toLowerCase().includes(search.toLowerCase()) ||
             msg.email.toLowerCase().includes(search.toLowerCase()) ||
             msg.message.toLowerCase().includes(search.toLowerCase());
 
-        const matchStatus =
-            statusFilter === "All" || msg.status === statusFilter;
 
-        return matchSearch && matchStatus;
+
+        return matchSearch;
     });
 
-    // Pagination logic
+    // ✅ Pagination
     const totalPages = Math.ceil(filteredMessages.length / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const paginatedMessages = filteredMessages.slice(startIndex, startIndex + rowsPerPage);
+    const paginatedMessages = filteredMessages.slice(
+        startIndex,
+        startIndex + rowsPerPage
+    );
 
-    const handleDelete = (id: number) => {
-        setMessages(messages.filter((msg) => msg.id !== id));
+    console.log(paginatedMessages);
+
+    const [deleteContactApi] = useDeleteContactApiMutation();
+
+    // ✅ Delete
+    const handleDelete = async (id: number) => {
+        try {
+            const res = await deleteAlert();
+            if (res.isConfirmed) {
+                const res = await deleteContactApi(id).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+
+
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
+    const [contactId, setContactId] = useState<number | undefined>()
+
+    // ✅ View modal with selected contact
+    const handleViewModal = (id: number) => {
+        console.log(id)
+        setViewContactModal(true);
+        setContactId(id)
     };
 
 
-    const [viewContactModal, setViewcontactModal1] = useState<boolean>(false);
+    const [contactRead] = useContactReadMutation();
 
-    const handleViewModal = () => {
-        setViewcontactModal1(true)
+
+
+    const readContact = async (id: number) => {
+        try {
+            const res = await readAlert();
+            if (res?.isConfirmed) {
+                const res = await contactRead(id).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
     }
 
 
@@ -71,13 +123,7 @@ export default function ContactList() {
             <div className=" bg-[#FAF5EC]  shadow shadow-[#00000033] pt-5 pb-9 rounded-[12px] px-7  ">
                 <div className=" flex items-center justify-between mb-5 " >
                     <h1 className=" lg:text-[27px] text-sm  " >Contact Messages</h1>
-                    <button className=" bg-[#D09A40] border border-[#D09A40] text-white py-2 px-5 rounded-[36px] flex items-center gap-x-2.5 text-xl cursor-pointer " >
-                        <span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 7.99805H8V12.998C8 13.2633 7.89464 13.5176 7.70711 13.7052C7.51957 13.8927 7.26522 13.998 7 13.998C6.73478 13.998 6.48043 13.8927 6.29289 13.7052C6.10536 13.5176 6 13.2633 6 12.998V7.99805H1C0.734784 7.99805 0.48043 7.89269 0.292893 7.70515C0.105357 7.51762 0 7.26326 0 6.99805C0 6.73283 0.105357 6.47848 0.292893 6.29094C0.48043 6.1034 0.734784 5.99805 1 5.99805H6V0.998047C6 0.73283 6.10536 0.478476 6.29289 0.29094C6.48043 0.103403 6.73478 -0.00195313 7 -0.00195312C7.26522 -0.00195313 7.51957 0.103403 7.70711 0.29094C7.89464 0.478476 8 0.73283 8 0.998047V5.99805H13C13.2652 5.99805 13.5196 6.1034 13.7071 6.29094C13.8946 6.47848 14 6.73283 14 6.99805C14 7.26326 13.8946 7.51762 13.7071 7.70515C13.5196 7.89269 13.2652 7.99805 13 7.99805Z" fill="white" />
-                        </svg>
-                        </span>
-                        New Post
-                    </button>
+
                 </div>
                 {/* Filters */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
@@ -130,20 +176,21 @@ export default function ContactList() {
                                         <td className="p-3  truncate max-w-xs">
                                             {msg.message}
                                         </td>
-                                        <td className="p-3 ">{msg.date}</td>
+                                        <td className="p-3 ">{msg.created_at}</td>
                                         <td className="p-3 ">
                                             <span
-                                                className={`px-3 py-1 text-xs font-semibold rounded-full ${msg.status === "Unread"
+                                                onClick={() => { readContact(msg.id) }}
+                                                className={`px-3 py-1 text-xs font-semibold cursor-pointer rounded-full ${msg.read_at === null
                                                     ? "bg-red-100 text-red-600"
                                                     : "bg-green-100 text-green-600"
                                                     }`}
                                             >
-                                                {msg.status}
+                                                {msg.read_at == null ? "Unread" : "Read"}
                                             </span>
                                         </td>
                                         <td className="p-3 flex justify-center gap-2">
                                             <button
-                                                onClick={() => { handleViewModal() }}
+                                                onClick={() => { handleViewModal(msg?.id) }}
                                                 className=" border border-[#989DA3] rounded-[6px] px-3 py-2 cursor-pointer "
 
                                             >
@@ -253,7 +300,7 @@ export default function ContactList() {
 
             {
                 viewContactModal && (
-                    <ViewContact viewContactModal={viewContactModal} setViewcontactModal1={setViewcontactModal1} />
+                    <ViewContact viewContactModal={viewContactModal} setViewcontactModal1={setViewContactModal} contactId={contactId} />
                 )
             }
 

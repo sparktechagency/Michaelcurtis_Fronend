@@ -13,7 +13,7 @@ export default function Footer() {
     console.log("pathname is ", pathname)
 
     return (
-        <div className="  shadow shadow-[#FAF5EC]  " >
+        <div className="  shadow shadow-[#FAF5EC] pb-10  " >
             <footer className=" ">
                 <MaxWidth>
                     <div className="flex flex-wrap justify-between gap-x-8 pt-10 ">
