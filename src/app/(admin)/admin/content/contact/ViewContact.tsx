@@ -223,7 +223,7 @@ const ViewContact: React.FC<PolicyViewProps> = ({
                             </span>
                             <span className=" cursor-pointer " >
                                 <svg width="93" height="36" viewBox="0 0 93 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_1422_3094)">
+                                    <g clipPath="url(#clip0_1422_3094)">
                                         <rect x="0.513184" y="0.162109" width="91.9328" height="35.6754" rx="17.8377" fill="#45E03C" />
                                         <g filter="url(#filter0_d_1422_3094)">
                                             <circle cx="72.5499" cy="18.6856" r="13.0352" fill="white" />

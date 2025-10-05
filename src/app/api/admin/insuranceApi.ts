@@ -64,6 +64,23 @@ export const insuranceApi = createApi({
                 url: `/providers/${providerSlug}`,
                 method: "GET"
             })
+        }),
+
+        addInsuranceSponser: builder.mutation({
+            query: ({ slug, payload }) => ({
+                url: `providers/${slug}/sponsorship`,
+                method: "POST",
+                body: payload
+            }),
+            invalidatesTags: ["insurance"]
+        }),
+        removeInsurance: builder.mutation({
+            query: ({ slug, payload }) => ({
+                url: `providers/${slug}/sponsorship`,
+                method: "POST",
+                body: payload
+            }),
+            invalidatesTags: ["insurance"]
         })
 
 
@@ -72,4 +89,4 @@ export const insuranceApi = createApi({
     }),
 });
 
-export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery } = insuranceApi;
+export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery, useAddInsuranceSponserMutation, useRemoveInsuranceMutation } = insuranceApi;
