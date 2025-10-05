@@ -5,12 +5,13 @@ import { FiSearch } from "react-icons/fi";
 import ViewInsurance from "./ViewInsurance";
 import CreateProvider from "./CreateProvider";
 import { useAllPolicyQuery } from "@/app/api/admin/policyApi";
-import { useAllProviderQuery, useDeleteProviderMutation } from "@/app/api/admin/insuranceApi";
+import { useAddInsuranceSponserMutation, useAllProviderQuery, useDeleteProviderMutation, useRemoveInsuranceMutation } from "@/app/api/admin/insuranceApi";
 import { InsuranceProvider } from "@/utility/types/admin/insurance-provider/providerType";
 import { AllPolicyApiResponse } from "@/utility/types/admin/policy/policyType";
 import { toast } from "sonner";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { deleteAlert } from "@/helper/deleteAlert";
+import { updateAlert } from "@/helper/updertAlert";
 
 
 
@@ -72,10 +73,7 @@ const Provider = () => {
         currentPage * providersPerPage
     );
 
-    // Handlers
-    const handleDelete = (index: number) => {
-        setProviders(providers.filter((_, i) => i !== index));
-    };
+
 
     const goToPage = (page: number) => {
         if (page < 1 || page > totalPages) return;
@@ -111,7 +109,63 @@ const Provider = () => {
                 (error.data?.message as string) || "Something went wrong ❌";
             toast.error(message);
         }
-    }
+    };
+
+
+    const [addInsuranceSponser] = useAddInsuranceSponserMutation();
+
+
+
+    const handleSponserAdd = async (slug: string) => {
+        const payload = new FormData();
+        payload.append("is_sponsored", "1");
+        payload.append("_method", "PUT");
+
+        try {
+
+            const res = await updateAlert();
+
+            if (res?.isConfirmed) {
+                const res = await addInsuranceSponser({ slug, payload }).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
+    const [removeInsurance] = useRemoveInsuranceMutation();
+
+
+    const handleRemoveInsurance = async (slug: string) => {
+        const payload = new FormData();
+        payload.append("is_sponsored", "0");
+        payload.append("_method", "PUT");
+
+        try {
+
+            const res = await updateAlert();
+
+            if (res?.isConfirmed) {
+                const res = await removeInsurance({ slug, payload }).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
 
 
 
@@ -220,26 +274,28 @@ const Provider = () => {
                                     <td className="px-6 py-3  ">
                                         {
                                             provider?.is_sponsored ? <>
-                                                <span className=" cursor-pointer " >
+
+
+                                                <span onClick={() => { handleRemoveInsurance(provider?.slug) }} className=" cursor-pointer " >
                                                     <svg width="67" height="27" viewBox="0 0 67 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g clipPath="url(#clip0_409_1758)">
-                                                            <rect y="0.5" width="67" height="26" rx="13" fill="#ADB4AC" />
-                                                            <g filter="url(#filter0_d_409_1758)">
-                                                                <circle cx="14.5" cy="14" r="9.5" fill="white" />
+                                                        <g clipPath="url(#clip0_409_1662)">
+                                                            <rect y="0.5" width="67" height="26" rx="13" fill="#45E03C" />
+                                                            <g filter="url(#filter0_d_409_1662)">
+                                                                <circle cx="52.5" cy="14" r="9.5" fill="white" />
                                                             </g>
                                                         </g>
                                                         <defs>
-                                                            <filter id="filter0_d_409_1758" x="-2.3" y="-2.8" width="33.6" height="33.6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                                                            <filter id="filter0_d_409_1662" x="35.7" y="-2.8" width="33.6" height="33.6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                                                                 <feFlood floodOpacity="0" result="BackgroundImageFix" />
                                                                 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                                                                 <feOffset />
                                                                 <feGaussianBlur stdDeviation="3.65" />
                                                                 <feComposite in2="hardAlpha" operator="out" />
                                                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-                                                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_409_1758" />
-                                                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_409_1758" result="shape" />
+                                                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_409_1662" />
+                                                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_409_1662" result="shape" />
                                                             </filter>
-                                                            <clipPath id="clip0_409_1758">
+                                                            <clipPath id="clip0_409_1662">
                                                                 <rect y="0.5" width="67" height="26" rx="13" fill="white" />
                                                             </clipPath>
                                                         </defs>
@@ -247,28 +303,29 @@ const Provider = () => {
                                                 </span>
 
 
+
                                             </> :
                                                 <>
-                                                    <span className=" cursor-pointer " >
+                                                    <span onClick={() => { handleSponserAdd(provider?.slug) }} className=" cursor-pointer " >
                                                         <svg width="67" height="27" viewBox="0 0 67 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <g clipPath="url(#clip0_409_1662)">
-                                                                <rect y="0.5" width="67" height="26" rx="13" fill="#45E03C" />
-                                                                <g filter="url(#filter0_d_409_1662)">
-                                                                    <circle cx="52.5" cy="14" r="9.5" fill="white" />
+                                                            <g clipPath="url(#clip0_409_1758)">
+                                                                <rect y="0.5" width="67" height="26" rx="13" fill="#ADB4AC" />
+                                                                <g filter="url(#filter0_d_409_1758)">
+                                                                    <circle cx="14.5" cy="14" r="9.5" fill="white" />
                                                                 </g>
                                                             </g>
                                                             <defs>
-                                                                <filter id="filter0_d_409_1662" x="35.7" y="-2.8" width="33.6" height="33.6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                                                                <filter id="filter0_d_409_1758" x="-2.3" y="-2.8" width="33.6" height="33.6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                                                                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                                                                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                                                                     <feOffset />
                                                                     <feGaussianBlur stdDeviation="3.65" />
                                                                     <feComposite in2="hardAlpha" operator="out" />
                                                                     <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
-                                                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_409_1662" />
-                                                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_409_1662" result="shape" />
+                                                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_409_1758" />
+                                                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_409_1758" result="shape" />
                                                                 </filter>
-                                                                <clipPath id="clip0_409_1662">
+                                                                <clipPath id="clip0_409_1758">
                                                                     <rect y="0.5" width="67" height="26" rx="13" fill="white" />
                                                                 </clipPath>
                                                             </defs>
