@@ -1,10 +1,11 @@
 "use client"
 import { useAllStateQuery, useCreateInsuranceMutation } from "@/app/api/admin/insuranceApi";
 import { useAllPolicyQuery } from "@/app/api/admin/policyApi";
-import { StateName, StateType } from "@/utility/types/admin/insurance-provider/providerType";
+import { State } from "@/utility/types/admin/insurance-provider/providerType";
 import { AllPolicyApiResponse } from "@/utility/types/admin/policy/policyType";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
+import { Editor } from "primereact/editor";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -90,10 +91,10 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
 
 
 
-    const [selectedStates, setSelectedStates] = useState<StateName[]>([]);
+    const [selectedStates, setSelectedStates] = useState<State[]>([]);
 
     const { data: stateData } = useAllStateQuery([]);
-    const allStates: StateName[] = stateData?.data || [];
+    const allStates: State[] = stateData?.data || [];
 
     const handleStateSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedId = Number(e.target.value);
@@ -391,17 +392,15 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                     {/* About Provider */}
                     <div className=" mt-6 ">
                         <label className="block  text-lg font-normal text-[#000000] mb-3 ">About Provider</label>
-                        <textarea
-                            className="w-full p-3 mt-2 border border-[#989DA3] rounded-md focus:outline-none focus:ring-0"
-                            rows={4}
-                            maxLength={400}
+                        <Editor
                             value={about}
-                            onChange={(e) => setAbout(e.target.value)}
-                            placeholder="Enter about provider"
-                        ></textarea>
+                            onTextChange={(e) => setAbout(e.htmlValue || "")}
+                            style={{ height: "400px" }}
+                            placeholder="Write about yourself..."
+                        />
                         <div className="flex justify-between mt-1 text-xs text-gray-500">
-                            <span>{about.length}/500</span>
-                            <span>{about.length > 0 ? `${500 - about.length}` : '500'} characters left</span>
+                            <span>{about.length}/1000</span>
+                            <span>{about.length > 0 ? `${1000 - about.length}` : '1000'} characters left</span>
                         </div>
                     </div>
 

@@ -58,7 +58,7 @@ const DetailsBanner = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <h1 className=' font-thin lg:text-lg  text-xs text-black  ' >1,456 reviews</h1>
+                                        <h1 className=' font-thin lg:text-lg  text-xs text-black  ' >(1,456 reviews)</h1>
                                     </div>
 
                                 </div>
@@ -108,7 +108,7 @@ const DetailsBanner = () => {
 
                                     {/* Value */}
                                     <span className=" lg:text-xl text-sm font-normal text-black ">
-                                        (A) <span className="font-medium">{item.value.toFixed(1)}</span>
+                                        A <span className="font-medium">{item.value.toFixed(1)}</span>
                                     </span>
                                 </div>
                             ))}

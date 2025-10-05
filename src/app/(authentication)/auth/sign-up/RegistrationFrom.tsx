@@ -209,7 +209,7 @@ export default function LoginForm() {
                                         className="h-4 w-4 cursor-pointer  appearance-none text-black rounded border border-gray-300 checked:bg-yellow-500 checked:border-yellow-500 checked:focus:ring-0"
                                     />
                                     <span className="ml-2 text-[16px] font-normal text-[#475156] ">
-                                        Are you agree to Clicon <span className=" text-[#D09A40] " >Terms of Condition</span> <span>and</span> <span className=" text-[#D09A40] " >Privacy Policy</span>.
+                                        Are you agree to CoverageGrader <span className=" text-[#D09A40] " >Terms of Condition</span> <span>and</span> <span className=" text-[#D09A40] " >Privacy Policy</span>.
                                     </span>
                                 </label>
                             </div>
