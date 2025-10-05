@@ -170,7 +170,7 @@ const BlogBanner = () => {
 
                   <div className=' flex flex-row items-center gap-x-4 ' >
                     <div>
-                      <Image src={"/images/blog/author-image.svg"} width={57} height={57} alt='' className='' />
+                      <Image src={"/images/blog/author-image.svg"} width={60} height={57} alt='' className=' w-full ' />
                     </div>
                     <div>
                       <h1 className=' lg:text-lg font-normal text-xl text-black  ' >JD Vance</h1>
@@ -233,7 +233,7 @@ const BlogBanner = () => {
                     alt={'blog.title'}
                     width={412}
                     height={227}
-                    className=""
+                    className=" w-full "
                   />
                   <div className="px-6 pb-8 pt-6 ">
                     <button className=' py-0.5 px-3 bg-[#C4F0C9] text-[#2D9434] rounded-[4px] ' >Coverage</button>
