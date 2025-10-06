@@ -39,6 +39,14 @@ export const adminApi = createApi({
                 url: `/admin/dashboard/recent-activity`,
                 method: "GET"
             })
+        }),
+
+        adminPasswordUpdate: builder.mutation({
+            query: (payload) => ({
+                url: `/auth/update-password`,
+                method: "POST",
+                body: payload
+            })
         })
 
 
@@ -46,4 +54,4 @@ export const adminApi = createApi({
     }),
 });
 
-export const { useAdminActivityQuery, useRecentActivityQuery } = adminApi;
+export const { useAdminActivityQuery, useRecentActivityQuery, useAdminPasswordUpdateMutation } = adminApi;

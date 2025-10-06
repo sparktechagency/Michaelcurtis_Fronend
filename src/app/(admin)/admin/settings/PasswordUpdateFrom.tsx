@@ -1,5 +1,6 @@
 "use client"
 
+import { useAdminPasswordUpdateMutation } from "@/app/api/admin/adminApi";
 import { usePasswordUpdateMutation } from "@/app/api/website/auth/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import React, { useEffect, useRef, useState } from "react";

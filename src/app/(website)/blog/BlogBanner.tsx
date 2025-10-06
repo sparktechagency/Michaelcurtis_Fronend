@@ -5,86 +5,60 @@ import React, { useState } from 'react'
 
 import Image from "next/image";
 import Link from 'next/link';
+import { useWebAllBlogQuery } from '@/app/api/website/blog/webBlogApi';
+import { AllBlogType } from '@/utility/types/admin/blog/blogType';
 
-type Blog = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  category: "Coverage" | "Claims" | "Pricing" | "Digital Tool" | "Community";
-};
+
 
 const categories = ["All", "Coverage", "Claims", "Pricing", "Trust", "Community"];
 
-const blogs: Blog[] = [
-  {
-    id: 1,
-    title: "Understanding Insurance Coverage",
-    description: "A detailed guide to help you understand what coverage means in your policy.",
-    image: "/images/blog/coverage.jpg",
-    category: "Coverage",
-  },
-  {
-    id: 2,
-    title: "How to File Claims Easily",
-    description: "Step-by-step process to make your claim approval faster and easier.",
-    image: "/images/blog/claims.jpg",
-    category: "Claims",
-  },
-  {
-    id: 3,
-    title: "Smart Pricing Explained",
-    description: "Learn how insurance pricing works and how you can save money.",
-    image: "/images/blog/pricing.jpg",
-    category: "Pricing",
-  },
-  {
-    id: 4,
-    title: "Top Digital Tools for Policy Management",
-    description: "Explore the latest apps and tools to manage your policies digitally.",
-    image: "/images/blog/digital.jpg",
-    category: "Digital Tool",
-  },
-  {
-    id: 5,
-    title: "Building a Supportive Community",
-    description: "Discover how community-driven insurance groups add value to your policy.",
-    image: "/images/blog/community.jpg",
-    category: "Community",
-  },
-];
+
 
 const BlogBanner = () => {
+
+  const { data } = useWebAllBlogQuery([]);
+
+
+  console.log(data?.data);
+
+
+  const blogs: AllBlogType[] = data?.data || [];
+
+
+
+
+
+
   const [query, setQuery] = useState("");
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Searching for:", query);
-    // You can add your search logic here
-  };
-
-
-
   const [activeCategory, setActiveCategory] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
 
-  const filteredBlogs =
+  // Filter blogs by category
+  const filteredByCategory =
     activeCategory === "All"
       ? blogs
       : blogs.filter((blog) => blog.category === activeCategory);
 
-  console.log(filteredBlogs)
-
-
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 6;
+  // Filter blogs by search query
+  const filteredBlogs = filteredByCategory.filter((blog) =>
+    blog.title.toLowerCase().includes(query.toLowerCase())
+  );
 
   // Pagination calculations
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
-  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  // Total pages based on filtered blogs
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+
+  // Search handler
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1); // reset to first page on new search
+    console.log("Searching for:", query);
+  };
 
 
 

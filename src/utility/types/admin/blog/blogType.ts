@@ -48,3 +48,19 @@ export interface BlogApiResponseType {
     policy_categories: Category;
     user: User
 }
+
+
+
+
+export interface AllBlogType {
+    id: string;
+    slug: string;
+    title: string;
+    author_name: string;
+    content: string;
+    featured_image: string;
+    status: string;
+    published_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
