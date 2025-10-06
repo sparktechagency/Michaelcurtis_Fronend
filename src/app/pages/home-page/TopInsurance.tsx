@@ -19,6 +19,8 @@ const TopInsurance = () => {
             pricing: 4.5,
             coverage: 4.5,
             digitalTools: 4.5,
+            grade: "A+"
+
         },
         {
             id: 2,
@@ -32,6 +34,7 @@ const TopInsurance = () => {
             pricing: 4.7,
             coverage: 4.3,
             digitalTools: 4.6,
+            grade: "B+"
         },
         {
             id: 3,
@@ -45,6 +48,7 @@ const TopInsurance = () => {
             pricing: 4.4,
             coverage: 4.6,
             digitalTools: 4.3,
+            grade: "C+"
         },
         {
             id: 4,
@@ -58,6 +62,7 @@ const TopInsurance = () => {
             pricing: 4.4,
             coverage: 4.6,
             digitalTools: 4.3,
+            grade: "D+"
         },
 
 

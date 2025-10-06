@@ -2,10 +2,11 @@ import React from 'react'
 import Report from './Report'
 import ProviderChart from './ProviderChart'
 import ReportFrom from './ReportFrom'
+import ReportList from './ReportList'
 
 const page = () => {
   return (
-    <div>
+    <div className=' pb-16' >
       <div className=' flex flex-row items-center gap-x-4 ' >
         <div className=' flex-1 ' >
           <Report></Report>
@@ -14,8 +15,13 @@ const page = () => {
           <ProviderChart></ProviderChart>
         </div>
       </div>
-      <div>
-        <ReportFrom></ReportFrom>
+      <div className=' flex items-start mt-10  gap-x-8  ' >
+        <div className=' w-full ' >
+          <ReportList></ReportList>
+        </div>
+        <div className=' w-full ' >
+          <ReportFrom></ReportFrom>
+        </div>
       </div>
     </div>
   )

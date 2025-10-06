@@ -22,7 +22,7 @@ export const notificationApi = createApi({
         },
     }),
 
-    tagTypes: ["insurance"],
+    tagTypes: ["notification"],
 
     endpoints: (builder) => ({
 
@@ -32,14 +32,22 @@ export const notificationApi = createApi({
                 method: "POST",
                 body: formData
             }),
-            invalidatesTags: ["insurance"]
+            invalidatesTags: ["notification"]
         }),
 
         allNotification: builder.query({
             query: () => ({
                 url: "/admin/notifications?include=sender&sort=-created_at",
                 method: "GET"
-            })
+            }),
+            providesTags: ["notification"]
+        }),
+        deleteNotification: builder.mutation({
+            query: (id) => ({
+                url: `/admin/notifications/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags : ["notification"]
         })
 
 
@@ -48,4 +56,4 @@ export const notificationApi = createApi({
     }),
 });
 
-export const { useSendNotificationMutation, useAllNotificationQuery } = notificationApi;
+export const { useSendNotificationMutation, useAllNotificationQuery,useDeleteNotificationMutation } = notificationApi;

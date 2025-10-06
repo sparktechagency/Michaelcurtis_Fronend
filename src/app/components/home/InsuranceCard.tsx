@@ -23,7 +23,7 @@ export type Insurer = {
     priceUSD: number;
     rating: number;
     profileHref?: string;
-
+    grade: string;
     claims: number;
     service: number;
     pricing: number;
@@ -156,7 +156,15 @@ export function InsuranceCard({ data }: { data: Insurer }) {
                                 </span>
                                 <div className=" w-1.5 h-1.5 bg-black rounded-full  " ></div>
                                 <div>
-                                    <h1 className=" text-lg font-bold text-[#23C223] " >A+</h1>
+                                    <h1
+                                        className={`text-lg font-bold ${data?.grade === "B+" ? "text-[#00B8DB]" :
+                                            data?.grade === "C+" ? "text-[#FE9A00]" :
+                                                data?.grade === "D+" ? "text-[#FF6900]" :
+                                                    "text-[#23C223]"
+                                            }`}
+                                    >
+                                        {data?.grade}
+                                    </h1>
                                 </div>
                                 <div className=" w-1.5 h-1.5 bg-black rounded-full  " ></div>
                                 <Badge className="gap-1 bg-[#D9AE66] rounded-md px-2 py-1 text-xs">

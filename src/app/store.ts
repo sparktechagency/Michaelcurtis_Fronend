@@ -10,6 +10,7 @@ import { reviewApi } from "./api/website/review/reviewApi";
 import { notificationApi } from "./api/admin/notificationApi";
 import { contactApi } from "./api/admin/contactApi";
 import { adminApi } from "./api/admin/adminApi";
+import { reportApi } from "./api/admin/reportApi";
 
 
 export const store = configureStore({
@@ -24,10 +25,11 @@ export const store = configureStore({
         [reviewApi.reducerPath]: reviewApi.reducer,
         [notificationApi.reducerPath]: notificationApi?.reducer,
         [contactApi.reducerPath]: contactApi.reducer,
-        [adminApi.reducerPath]: adminApi.reducer
+        [adminApi.reducerPath]: adminApi.reducer,
+        [reportApi.reducerPath]: reportApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware, notificationApi?.middleware, contactApi.middleware, adminApi.middleware),
+        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware, notificationApi?.middleware, contactApi.middleware, adminApi.middleware, reportApi.middleware),
 });
 
 // types
