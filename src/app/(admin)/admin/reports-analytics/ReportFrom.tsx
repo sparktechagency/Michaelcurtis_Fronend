@@ -1,14 +1,17 @@
 "use client";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
-const ReportFrom = () => {
+const ReportForm = () => {
     const [reportName, setReportName] = useState<string>("");
     const [reportType, setReportType] = useState<string>("");
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+    const [exportFormat, setExportFormat] = useState<"csv" | "pdf">("csv");
 
-    // CSV Export
     const handleExportCSV = () => {
-        const csvContent = `Report Name,Type,Date\n${reportName},${reportType},${selectedDate}`;
+        const csvContent = `Report Name,Type,Start Date,End Date\n${reportName},${reportType},${startDate},${endDate}`;
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
 
@@ -20,14 +23,13 @@ const ReportFrom = () => {
         document.body.removeChild(link);
     };
 
-    // PDF Export
     const handleExportPDF = () => {
         const content = `
-      Report Name: ${reportName}\n
-      Type: ${reportType}\n
-      Date: ${selectedDate}
-    `;
-
+        Report Name: ${reportName}
+        Type: ${reportType}
+        Start Date: ${startDate}
+        End Date: ${endDate}
+                `;
         const blob = new Blob([content], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
 
@@ -39,12 +41,27 @@ const ReportFrom = () => {
         document.body.removeChild(link);
     };
 
+    const handleGenerateReport = () => {
+        try {
+            if (exportFormat === "csv") {
+                handleExportCSV();
+            } else {
+                handleExportPDF();
+            }
+            toast.success(`Report exported as ${exportFormat.toUpperCase()} ✅`);
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message = (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
     return (
-        <div className="mt-9">
+        <div>
             <div className="bg-[#FAF5EC] shadow shadow-[#00000033] py-5 px-6 rounded-[12px]">
                 <h1 className="text-xl font-normal">Generate Reports</h1>
                 <div className="mt-5">
-                    <form action="" className="space-y-3">
+                    <form className="space-y-3">
                         {/* Report Name */}
                         <div className="flex flex-col">
                             <label className="text-lg font-thin" htmlFor="name">
@@ -71,42 +88,63 @@ const ReportFrom = () => {
                                 className="border border-[#989DA3] rounded-[7px] mt-3 py-3 px-4 focus:outline-none hover:outline-none"
                             >
                                 <option value="">Top Providers by Reviews</option>
-                                <option value="basic">User Growth</option>
-                                <option value="premium">Reviews</option>
+                                <option value="user-growth">User Growth</option>
+                                <option value="reviews">Reviews</option>
                             </select>
                         </div>
 
-                        {/* Date */}
+                        {/* Start Date */}
                         <div className="flex flex-col">
-                            <label className="text-lg font-thin" htmlFor="date">
-                                Date
+                            <label className="text-lg font-thin" htmlFor="start-date">
+                                Start Date
                             </label>
-                            <div className="relative mt-3">
-                                <input
-                                    type="date"
-                                    id="date"
-                                    value={selectedDate}
-                                    onChange={(e) => setSelectedDate(e.target.value)}
-                                    className="w-full border border-[#989DA3] rounded-[7px] py-3 px-4 pr-10 focus:outline-none hover:outline-none"
-                                />
-                            </div>
+                            <input
+                                type="date"
+                                id="start-date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="w-full border border-[#989DA3] rounded-[7px] py-3 px-4 focus:outline-none hover:outline-none mt-3"
+                            />
                         </div>
 
-                        {/* Export Buttons */}
-                        <div className="flex gap-3 pt-4">
+                        {/* End Date */}
+                        <div className="flex flex-col">
+                            <label className="text-lg font-thin" htmlFor="end-date">
+                                End Date
+                            </label>
+                            <input
+                                type="date"
+                                id="end-date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="w-full border border-[#989DA3] rounded-[7px] py-3 px-4 focus:outline-none hover:outline-none mt-3"
+                            />
+                        </div>
+
+                        {/* Export Format Dropdown */}
+                        <div className="flex flex-col">
+                            <label className="text-lg font-thin" htmlFor="format">
+                                Export Format
+                            </label>
+                            <select
+                                id="format"
+                                value={exportFormat}
+                                onChange={(e) => setExportFormat(e.target.value as "csv" | "pdf")}
+                                className="border border-[#989DA3] rounded-[7px] mt-3 py-3 px-4 focus:outline-none hover:outline-none"
+                            >
+                                <option value="csv">CSV</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+
+                        {/* Generate Button */}
+                        <div className="pt-4">
                             <button
                                 type="button"
-                                onClick={handleExportCSV}
-                                className=" border border-[#d19b40]  px-4 py-2 rounded-lg cursor-pointer  "
+                                onClick={handleGenerateReport}
+                                className="border border-[#d19b40] px-4 py-2 rounded-lg cursor-pointer"
                             >
-                                Export CSV
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleExportPDF}
-                                className="border border-[#d19b40]  px-4 py-2 rounded-lg cursor-pointer "
-                            >
-                                Export PDF
+                                Generate Report
                             </button>
                         </div>
                     </form>
@@ -116,4 +154,4 @@ const ReportFrom = () => {
     );
 };
 
-export default ReportFrom;
+export default ReportForm;

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, PieLabelRenderProps } from "recharts";
 import { useAdminActivityQuery } from "@/app/api/admin/adminApi";
 
 // ✅ Default colors
@@ -55,7 +55,7 @@ const ReviewChart: React.FC = () => {
                                 outerRadius={90}
                                 paddingAngle={3}
                                 dataKey="value"
-                                label={({ value }) => value} // show value on slices
+                                label={({ value }: PieLabelRenderProps) => String(value)} // ✅ fixed TS error
                                 labelLine={false} // hide connecting lines
                             >
                                 {chartData.map((_, index) => (
