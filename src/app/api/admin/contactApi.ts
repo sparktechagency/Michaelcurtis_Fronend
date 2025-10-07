@@ -47,14 +47,23 @@ export const contactApi = createApi({
             invalidatesTags: ["contact"]
         }),
 
-        singleContact : builder.query({
-            query : (id)=>({
-                url : `/contacts/${id}`,
-                method : "GET"
+        singleContact: builder.query({
+            query: (id) => ({
+                url: `/contacts/${id}`,
+                method: "GET"
+            })
+        }),
+
+        sendContactInfo: builder.mutation({
+            query: (formData) => ({
+                url: `/contacts`,
+                method: "POST",
+                body: formData
+
             })
         })
 
     }),
 });
 
-export const { useAllContactQuery, useDeleteContactApiMutation,useContactReadMutation,useSingleContactQuery } = contactApi;
+export const { useAllContactQuery, useDeleteContactApiMutation, useContactReadMutation, useSingleContactQuery, useSendContactInfoMutation } = contactApi;

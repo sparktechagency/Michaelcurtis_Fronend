@@ -1,24 +1,16 @@
 "use client";
+import { useContentApiQuery } from '@/app/api/website/content/webContentApi';
 import React from 'react'
-import { useState } from "react";
-import { FiInfo, FiEdit2, FiPieChart, FiMail, FiChevronDown } from "react-icons/fi";
 
-const items = [
-    { id: 1, title: "Information We Collect", icon: <FiInfo className="text-[#D09A40] w-5 h-5" /> },
-    { id: 2, title: "Information We Collect", icon: <FiEdit2 className="text-[#D09A40] w-5 h-5" /> },
-    { id: 3, title: "Information We Collect", icon: <FiPieChart className="text-[#D09A40] w-5 h-5" /> },
-    { id: 4, title: "Information We Collect", icon: <FiMail className="text-[#D09A40] w-5 h-5" /> },
-];
+
+
 
 const PrivacyPolicy = () => {
-    const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-    const toggleAccordion = (index: number) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
 
 
-    
+    const { data } = useContentApiQuery({ pageName: "privacy" });
+    console.log(data?.data?.content);
+
     return (
         <>
             <div className=' bg-[#FAF5EC] py-6 lg:py-12 ' >
@@ -30,37 +22,20 @@ const PrivacyPolicy = () => {
                 </p>
             </div>
 
-            <div className=' pt-6 lg:pt-13 pb-10 lg:pb-20 ' >
-                <div className="max-w-4xl mx-auto bg-white  rounded-lg shadow shadow-[#00000040] px-4 lg:px-8 py-7 lg:py-14  ">
-                    {items.map((item, index) => (
-                        <div key={item.id}>
-                            <button
-                                onClick={() => toggleAccordion(index)}
-                                className="w-full flex items-center justify-between px-4 py-4 text-left"
-                            >
-                                <div className="flex items-center gap-3">
-                                    {item.icon}
-                                    <span className=" lg:text-3xl text-lg text-black font-normal ">{item.title}</span>
-                                </div>
-                                <FiChevronDown
-                                    className={`w-5 cursor-pointer h-5 text-gray-600 transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""
-                                        }`}
-                                />
-                            </button>
-                            {/* Dropdown Content */}
-                            {openIndex === index && (
-                                <div className="px-12 pb-4 text-gray-600 text-sm">
-                                    <p>
-                                        This is the hidden content for <b>{item.title}</b>. You can replace this
-                                        with any text or components.
-                                    </p>
-                                </div>
-                            )}
-                            {index !== items.length - 1 && <div className=" h-0.5 bg-[#989DA3] lg:mt-3 mt-2 " />}
+            <div className=' pb-3 ' >
+                <div className=' lg:mt-14 mt-7 mb-5 lg:mb-10  max-w-4xl mx-auto shadow shadow-[#00000040] rounded-[7px] px-6 py-5 bg-white lg:py-10 lg:px-12 text-2xl ' >
 
 
-                        </div>
-                    ))}
+
+
+                    <p
+                        dangerouslySetInnerHTML={{ __html: data?.data?.content }}
+                    />
+
+
+
+
+
                 </div>
             </div>
 
