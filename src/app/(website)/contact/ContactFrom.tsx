@@ -1,10 +1,14 @@
 "use client";
+import { useSendContactInfoMutation } from '@/app/api/admin/contactApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import { contactSendAlert } from '@/helper/createAlert';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 
 const ContactFrom = () => {
     const [formData, setFormData] = useState({
-        fullName: "",
+        name: "",
         email: "",
         message: "",
     });
@@ -15,11 +19,40 @@ const ContactFrom = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Form submitted:", formData);
-        // here you can add API call or logic
+    const [sendContactInfo, { isLoading }] = useSendContactInfoMutation();
+
+    const initialFormData = {
+        name: "",
+        email: "",
+        message: "",
     };
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+
+            const res = await contactSendAlert();
+            if (res.isConfirmed) {
+                const res = await sendContactInfo(formData).unwrap();
+
+                if (res) {
+                    toast.success(res?.message);
+                    setFormData(initialFormData);
+                }
+            }
+
+
+        } catch (err) {
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+
+    };
+
+
     return (
         <div>
             <MaxWidth>
@@ -38,8 +71,8 @@ const ContactFrom = () => {
                                 <input
                                     type="text"
                                     id="fullName"
-                                    name="fullName"
-                                    value={formData.fullName}
+                                    name="name"
+                                    value={formData.name}
                                     onChange={handleChange}
 
                                     className="w-full px-4 py-4 border border-[#989DA3] rounded-[7px] focus:ring-0 focus:outline-none"
@@ -90,10 +123,13 @@ const ContactFrom = () => {
                             {/* Submit */}
                             <div className='flex justify-end lg:mt-4 mt-2 ' >
                                 <button
+                                    disabled={isLoading}
                                     type="submit"
                                     className="  bg-[#D09A40] cursor-pointer border border-[#D09A40] px-5 py-2 rounded-[26px]  text-white font-semibold   transition"
                                 >
-                                    Send Message
+                                    {
+                                        isLoading ? "Loading..." : "Send Message"
+                                    }
                                 </button>
                             </div>
                         </form>
