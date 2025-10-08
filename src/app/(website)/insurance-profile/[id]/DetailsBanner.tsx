@@ -1,24 +1,55 @@
 "use client"
+import { useSingleProviderQuery } from '@/app/api/admin/insuranceApi'
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import { SinglePolicyApiResponseType } from '@/utility/types/admin/policy/policyType'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import InsuranceBySlugReview from './InsuranceBySlugReview'
 
-const DetailsBanner = () => {
-    const ratings = [
-        { label: "Claims", value: 4.7, color: "bg-green-500" },
-        { label: "Service", value: 4.7, color: "bg-green-500" },
-        { label: "Pricing", value: 4.8, color: "bg-yellow-500" },
-        { label: "Coverage", value: 4.8, color: "bg-green-500" },
-        { label: "Trusts Tools", value: 4.8, color: "bg-green-500" },
-    ];
+const DetailsBanner = ({ slug }: { slug: string }) => {
+
+    const { data } = useSingleProviderQuery(slug);
+
+    console.log("single provider is", data?.data)
+
+
     const router = useRouter();
     const handleReview = () => {
         router.push("/specify-insurance-review")
-
     }
+
+    console.log("single  provider is ", data?.data)
+
+    const ratings = Object.entries(data?.data?.avg_score || {}).map(([key, value]) => {
+        const label = key
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase());
+
+        let color = "bg-green-500";
+        if (value < 3) color = "bg-red-500";
+        else if (value < 4.5) color = "bg-yellow-500";
+
+        return { label, value: Number(value), color };
+    });
+
+
+    type Consype = {
+        cons: string[]
+    }
+
+
+    const pros: string[] = data?.data?.pros || [];
+    const cons: string[] = data?.data?.cons || [];
+    const policies: SinglePolicyApiResponseType[] = data?.data?.policies || [];
+
+
+
+
+
+
     return (
         <div className='  border-b mb-4 border-[#697079]  ' >
             <div className=' bg-[#faf5ec] py-5 lg:py-14   ' >
@@ -27,13 +58,19 @@ const DetailsBanner = () => {
                         {/* logo  */}
                         <div className=' flex items-center gap-x-8 ' >
                             <div>
-                                <Image src={"/images/insurance/insurance-logo.svg"} width={96} height={101} alt='' className='' />
+                                <Image
+                                    src={data?.data?.logo_url || "/images/blog/author-image.svg"}
+                                    alt={data?.data?.slug || "category-logo"}
+                                    width={96}
+                                    height={101}
+                                    className="w-24 h-[91px] object-contain rounded-md"
+                                />
                             </div>
                             <div>
-                                <h1 className=' lg:text-4xl text-lg font-normal text-black ' >Health Shield</h1>
+                                <h1 className=' lg:text-4xl text-lg font-normal text-black ' > {data?.data?.name} </h1>
                                 <div className=' flex flex-row items-center gap-x-4 ' >
                                     <div>
-                                        <h1 className=' text-[#4AF850] lg:text-4xl text-lg font-bold  ' >A+</h1>
+                                        <h1 className=' text-[#4AF850] lg:text-4xl text-lg font-bold  ' >{data?.data?.avg_grade}</h1>
                                     </div>
                                     <div>
                                         <div className=' w-2 h-2 bg-black rounded-full ' >
@@ -49,7 +86,7 @@ const DetailsBanner = () => {
                                         </span>
                                     </div>
                                     <div>
-                                        <p className=' lg:text-xl text-xs font-normal ' >4.9</p>
+                                        <p className=' lg:text-xl text-xs font-normal ' >{data?.data?.avg_overall_rating}</p>
                                     </div>
 
                                     <div>
@@ -58,7 +95,7 @@ const DetailsBanner = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <h1 className=' font-thin lg:text-lg  text-xs text-black  ' >(1,456 reviews)</h1>
+                                        <h1 className=' font-thin lg:text-lg  text-xs text-black  ' >({data?.data?.reviews_count} reviews)</h1>
                                     </div>
 
                                 </div>
@@ -120,20 +157,25 @@ const DetailsBanner = () => {
 
                         <div className='shadow shadow-[#00000033] bg-white lg:max-[20%] pt-3.5 px-8 rounded-[10px] pb-6 ' >
                             <h1 className=' mb-4 lg:text-4xl text-lg font-normal text-black ' >Quick Stats</h1>
-                            <div className=' flex  items-center gap-x-5  ' >
+                            <div className=' flex  items-center gap-x-2  ' >
                                 <span>
                                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M14.5 15V17C14.5 17.2652 14.3946 17.5196 14.2071 17.7071C14.0196 17.8946 13.7652 18 13.5 18H6.5L3.5 21V11C3.5 10.7348 3.60536 10.4804 3.79289 10.2929C3.98043 10.1054 4.23478 10 4.5 10H6.5M21.5 14L18.5 11H11.5C11.2348 11 10.9804 10.8946 10.7929 10.7071C10.6054 10.5196 10.5 10.2652 10.5 10V4C10.5 3.73478 10.6054 3.48043 10.7929 3.29289C10.9804 3.10536 11.2348 3 11.5 3H20.5C20.7652 3 21.0196 3.10536 21.2071 3.29289C21.3946 3.48043 21.5 3.73478 21.5 4V14Z" stroke="#D09A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
 
                                 </span>
-                                <p className=' lg:text-lg font-normal text-black ' >
-                                    Policies: <span className=' lg:text-left font-thin ' >Auto, Home, Renters</span>
-                                </p>
+                                <div className="lg:text-lg font-normal text-black flex items-center gap-x-2  ">
+                                    <p>Policies:</p>
+                                    <ul className="list-none font-thin text-black">
+                                        {policies?.map((item) => (
+                                            <p key={item.id}>{item.name}</p>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
 
 
-                            <div className=' flex  items-center gap-x-5 mt-5 ' >
+                            <div className=' flex  items-center gap-x-2 mt-5 ' >
                                 <span>
                                     <svg width="21" height="25" viewBox="0 0 21 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.1769 23.1575C10.9797 23.2991 10.743 23.3753 10.5002 23.3753C10.2574 23.3753 10.0208 23.2991 9.82356 23.1575C3.98851 18.9984 -2.20419 10.4434 4.05618 4.26158C5.77484 2.57094 8.0894 1.62394 10.5002 1.625C12.9169 1.625 15.2357 2.57354 16.9443 4.26038C23.2046 10.4422 17.0119 18.996 11.1769 23.1575Z" stroke="#D09A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -143,7 +185,7 @@ const DetailsBanner = () => {
 
                                 </span>
                                 <p className=' lg:text-lg font-normal text-black ml-1 ' >
-                                    Available in: <span className=' lg:text-left font-thin ' > 49 States</span>
+                                    Available in: <span className=' lg:text-left font-thin ' > {data?.data?.states_count} States</span>
                                 </p>
                             </div>
 
@@ -151,7 +193,7 @@ const DetailsBanner = () => {
 
 
 
-                            <div className=' flex  items-center gap-x-5 mt-5 ' >
+                            <div className=' flex  items-center gap-x-2 mt-5 ' >
                                 <span>
                                     <svg width="15" height="20" viewBox="0 0 15 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12.5 3H7.5M7.5 3H5C4.07174 3 3.1815 3.36875 2.52513 4.02513C1.86875 4.6815 1.5 5.57174 1.5 6.5C1.5 7.42826 1.86875 8.3185 2.52513 8.97487C3.1815 9.63125 4.07174 10 5 10H7.5M7.5 3V1M7.5 3V10M7.5 10H10C10.4596 10 10.9148 10.0905 11.3394 10.2664C11.764 10.4423 12.1499 10.7001 12.4749 11.0251C12.7999 11.3501 13.0577 11.736 13.2336 12.1606C13.4095 12.5852 13.5 13.0404 13.5 13.5C13.5 13.9596 13.4095 14.4148 13.2336 14.8394C13.0577 15.264 12.7999 15.6499 12.4749 15.9749C12.1499 16.2999 11.764 16.5577 11.3394 16.7336C10.9148 16.9095 10.4596 17 10 17H7.5M7.5 10V17M7.5 17H1.5M7.5 17V19" stroke="#D09A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -161,7 +203,7 @@ const DetailsBanner = () => {
 
                                 </span>
                                 <p className=' lg:text-lg font-normal text-black ml-2.5 ' >
-                                    Average Price:<span className=' lg:text-left font-thin  ' >  $450</span>
+                                    Average Price:<span className=' lg:text-left font-thin  ' >  ${data?.data?.price}</span>
                                 </p>
                             </div>
 
@@ -175,7 +217,11 @@ const DetailsBanner = () => {
 
                         <div className='shadow shadow-[#00000033] bg-white lg:max-[20%] pt-3.5 px-8 rounded-[10px] pb-6 mt-5  ' >
 
-                            <button className=' px-2 py-1 bg-[#F0E0C4] rounded-[3px] text-[#946D2D] text-sm font-normal ' >Sponsored</button>
+                            {
+                                data?.data?.is_sponsored && (
+                                    <button className=' px-2 py-1 bg-[#F0E0C4] rounded-[3px] text-[#946D2D] text-sm font-normal ' >Sponsored</button>
+                                )
+                            }
 
                             <div className=' flex justify-center ' >
                                 <span><svg width="70" height="72" viewBox="0 0 70 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,8 +244,12 @@ const DetailsBanner = () => {
 
                             </div>
                             <div className=' mt-2 text-center ' >
-                                <h1 className=' lg:text-xl text-sm text-black font-normal ' >State Farm</h1>
-                                <p className=' mt-1 font-thin text-lg ' >Compare rate and save up to $500on your insurance</p>
+                                <h1 className=' lg:text-xl text-sm text-black font-normal ' >
+                                    {
+                                        data?.data?.name
+                                    }
+                                </h1>
+                                <p className=' mt-1 font-thin text-lg ' >Compare rate and save up to ${data?.data?.price} on your insurance</p>
                             </div>
 
                             <div>
@@ -226,37 +276,29 @@ const DetailsBanner = () => {
                         <div className=' bg-[#E6FBDC] w-[366px] rounded-[8px] px-9 pt-4 pb-9 ' >
                             <h1 className=' text-[#188625] lg:text-[27px] font-normal text-sm ' >Pros</h1>
                             <div className=' space-y-6 lg:text-lg text-xs text-black font-thin ' >
-                                <p>
-                                    Excellent claims handling process with quick resolution times
-                                </p>
-
-                                <p>
-                                    User-friendly mobile app with full policy management capabilities
-                                </p>
-
-                                <p>
-                                    Wide range of coverage options and policy customization
-                                </p>
-
-                                <p>Knowledgeable and helpful customer service representatives</p>
+                                {
+                                    pros.map((item, i) => {
+                                        return (
+                                            <div key={i} >
+                                                <li className=' list-none  ' >{item}</li>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                         <div className=' bg-[#FBE5DC] w-[366px] rounded-[8px] px-9 pt-4 pb-9 ' >
                             <h1 className=' text-[#861818] lg:text-[27px] font-normal text-sm ' >Cons</h1>
                             <div className=' space-y-6 lg:text-lg text-xs text-black font-thin ' >
-                                <p>
-                                    Premium rates tend to be higher than some competitors
-                                </p>
-
-                                <p>
-                                    Some policy documentation can be complex and difficult to understand
-                                </p>
-
-                                <p>
-                                    Limited availability of local agents in rural areas
-                                </p>
-
-                                <p>Occasional long wait times during peak customer service hours</p>
+                                {
+                                    cons?.map((item, i) => {
+                                        return (
+                                            <div key={i} >
+                                                <li className=' list-none  ' >{item}</li>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
@@ -269,13 +311,11 @@ const DetailsBanner = () => {
                 <div className=' shadow shadow-[#00000033] max-w-3xl   lg:py-8 lg:px-10 p-4 rounded-[7px] lg:space-y-0 my-6   ' >
                     <h1 className=' lg:text-4xl text-lg font-normal text-black ' >About Liberty Mutual</h1>
                     <p className=' mt-8 text-[#000000] lg:text-lg text-xs font-thin ' >
-                        Liberty Mutual Insurance is a diversified global insurer and the third largest property and casualty insurer in the United States. Founded in 1912, the company offers a wide range of insurance products and services, including personal automobile, homeowners, life, commercial automobile, and general liability insurance.
-                        The company operates globally with over 45,000 employees in more than 900 locations throughout the world. Liberty Mutual is structured into three business units: Personal Insurance, Commercial Insurance, and Global Specialty, each focusing on different customer segments and insurance needs.
+                        <p
+                            dangerouslySetInnerHTML={{ __html: data?.data?.about }}
+                        />
                     </p>
-                    <p className='text-[#000000] lg:text-lg text-xs font-thin' >
-                        Liberty Mutual&apos;s strength lies in its financial stability, with an A rating from A.M. Best, indicating excellent financial strength and ability to meet ongoing insurance obligations. The company has also invested significantly in digital transformation, offering a robust mobile app and online platform that allows customers to manage policies, file claims, and access insurance cards digitally.
-                        The insurer is known for its customizable policies, allowing customers to tailor coverage to their specific needs. Liberty Mutual also offers various discounts, including multi-policy, safe driver, and home safety feature discounts, which can help offset their generally higher-than-average premium costs.
-                    </p>
+
                 </div>
             </MaxWidth>
 
@@ -288,58 +328,7 @@ const DetailsBanner = () => {
                 <div className=' shadow shadow-[#00000033] max-w-3xl   lg:py-8 lg:px-10 p-4 rounded-[7px] lg:space-y-0 my-6   ' >
                     <h1 className=' lg:text-4xl text-lg font-normal text-black ' >Customer Reviews </h1>
 
-                    <div className=' shadow shadow-[#00000033] border border-[#989DA3] pt-6 pb-4 px-6 mt-4 rounded-[4px] ' >
-                        <div className=' flex flex-row gap-x-9 ' >
-                            <div>
-                                <Image src={"/images/review/user-img.svg"} width={65} height={65} alt='' className='' />
-                            </div>
-                            <div>
-                                <div>
-                                    <h1 className=' lg:text-[27px] text-[16px] font-normal  ' >John D.</h1>
-                                </div>
-                                <div>
-                                    <div className=' flex items-center gap-x-4   ' >
-                                        <span>
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7.02295 19.23L5.35295 16.416L2.17695 15.731L2.48895 12.454L0.345947 10L2.48995 7.54604L2.17695 4.27004L5.35395 3.58504L7.02295 0.770043L9.99995 2.02704L12.9769 0.769043L14.6469 3.58504L17.8229 4.26904L17.5109 7.54604L19.6549 10L17.5129 12.454L17.8239 15.731L14.6469 16.415L12.9779 19.231L9.99995 17.973L7.02295 19.23ZM8.94995 12.858L13.9079 7.90004L13.1999 7.18004L8.94995 11.43L6.79995 9.29204L6.09195 10L8.94995 12.858Z" fill="#39C85F" />
-                                            </svg>
-
-                                        </span>
-                                        <div><p className=' text-[#39C85F] font-normal lg:text-[16px] text-xs ' >Verified Review</p></div>
-                                        <div className='  w-2 h-2 bg-black rounded-full ' ></div>
-                                        <div><p className=' font-thin lg:text-[16px] text-xs ' >Auto</p></div>
-                                        <div className='  w-2 h-2 bg-black rounded-full ' ></div>
-                                        <div><p className=' font-thin lg:text-[16px] text-xs ' >California</p></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <p className=' mt-8 text-[#000000] lg:text-[16px] text-xs font-thin  ' >&quot;I&apos;ve been with Liberty Mutual for 5 years and they&apos;ve been fantastic. When I had a fender bender last year, their claims process was smooth and stress-free. The digital app makes everything so easy to manage - I can view my ID cards, make payments, and even file a claim right from my phone. Their rates are a bit higher than some competitors, but the service is worth it.&quot;</p>
-                        </div>
-                        <div className=' flex items-center gap-x-5 ' >
-                            <button className=' flex flex-row items-center mt-6 border border-[#697079] px-2 py-1 gap-x-1 rounded-2xl ' >
-                                <span><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4.49996 14.6667V8.00004H1.51162C1.34683 8 1.18575 7.95111 1.04874 7.85954C0.911732 7.76797 0.804949 7.63783 0.741891 7.48558C0.678833 7.33333 0.66233 7.1658 0.69447 7.00418C0.726609 6.84255 0.805948 6.69408 0.922456 6.57754L6.41079 1.0892C6.56706 0.932978 6.77899 0.845215 6.99996 0.845215C7.22093 0.845215 7.43285 0.932978 7.58912 1.0892L13.0775 6.57754C13.194 6.69408 13.2733 6.84255 13.3054 7.00418C13.3376 7.1658 13.3211 7.33333 13.258 7.48558C13.195 7.63783 13.0882 7.76797 12.9512 7.85954C12.8142 7.95111 12.6531 8 12.4883 8.00004H9.49996V14.6667C9.49996 14.8877 9.41216 15.0997 9.25588 15.256C9.0996 15.4122 8.88764 15.5 8.66662 15.5H5.33329C5.11228 15.5 4.90031 15.4122 4.74403 15.256C4.58775 15.0997 4.49996 14.8877 4.49996 14.6667Z" fill="#D09A40" stroke="#D09A40" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                </span>
-                                <span>24</span>
-                            </button>
-                            <button className=' flex flex-row items-center mt-6 border border-[#697079] px-2 py-1 gap-x-1 rounded-2xl ' >
-                                <span>
-                                    <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M4.49996 1.3333V7.99996H1.51162C1.34683 8 1.18575 8.04889 1.04874 8.14046C0.911732 8.23203 0.804949 8.36217 0.741891 8.51442C0.678833 8.66667 0.66233 8.8342 0.69447 8.99582C0.726609 9.15745 0.805948 9.30592 0.922456 9.42246L6.41079 14.9108C6.56706 15.067 6.77899 15.1548 6.99996 15.1548C7.22093 15.1548 7.43285 15.067 7.58912 14.9108L13.0775 9.42246C13.194 9.30592 13.2733 9.15745 13.3054 8.99582C13.3376 8.8342 13.3211 8.66667 13.258 8.51442C13.195 8.36217 13.0882 8.23203 12.9512 8.14046C12.8142 8.04889 12.6531 8 12.4883 7.99996H9.49996V1.3333C9.49996 1.11228 9.41216 0.900321 9.25588 0.74404C9.0996 0.58776 8.88764 0.499963 8.66662 0.499963H5.33329C5.11228 0.499963 4.90031 0.58776 4.74403 0.74404C4.58775 0.900321 4.49996 1.11228 4.49996 1.3333Z" stroke="black" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-
-                                </span>
-                                <span>24</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className=' mt-8 ' >
-                        <button className=' py-2 px-8 rounded-[5px] bg-[#E9EAEB] block mx-auto font-bold cursor-pointer   text-[#000000] text-[16px] ' >Load More Reviews</button>
-                    </div>
+                    <InsuranceBySlugReview slug={slug} />
 
                 </div>
             </MaxWidth>

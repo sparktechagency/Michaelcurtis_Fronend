@@ -10,13 +10,13 @@ const PolicyCategory = () => {
     const { data } = useWebAllPolicyQuery({});
     const policies: SinglePolicyApiResponseType[] = data?.data || [];
     return (
-        <div className=' max-w-lg mx-auto lg:pb-10 pb-5  ' >
+        <div className=' max-w-5xl mx-auto lg:pb-10 pb-5  ' >
             <h1 className=' text-center lg:text-4xl font-normal text-lg ' >Explore Other Categories</h1>
             <div>
                 <div>
 
 
-                    <div className=' flex flex-row gap-x-3 lg:gap-x-9 lg:mt-5  justify-center mt-5 ' >
+                    <div className=' flex flex-wrap gap-x-12 gap-y-8 lg:gap-x-9 lg:mt-5  justify-center mt-5 ' >
                         {
                             policies.map((item, i) => {
                                 return (

@@ -81,6 +81,14 @@ export const insuranceApi = createApi({
                 body: payload
             }),
             invalidatesTags: ["insurance"]
+        }),
+
+
+        insuranceName: builder.query({
+            query: () => ({
+                url: `/providers?filter[status]=active`,
+                method: "GET"
+            })
         })
 
 
@@ -89,4 +97,4 @@ export const insuranceApi = createApi({
     }),
 });
 
-export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery, useAddInsuranceSponserMutation, useRemoveInsuranceMutation } = insuranceApi;
+export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery, useAddInsuranceSponserMutation, useRemoveInsuranceMutation, useInsuranceNameQuery } = insuranceApi;

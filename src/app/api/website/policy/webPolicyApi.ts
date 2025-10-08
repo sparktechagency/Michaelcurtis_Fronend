@@ -20,7 +20,7 @@ export const webPolicyApi = createApi({
         }),
         singlePolicyDetails: builder.query({
             query: (slug) => ({
-                url: `/user/policies/${slug}`,
+                url: `user/policies/${slug}?include=statesCount`,
                 method: "GET"
             })
         })
