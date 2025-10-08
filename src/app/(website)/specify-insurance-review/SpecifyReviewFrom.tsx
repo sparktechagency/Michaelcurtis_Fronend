@@ -210,7 +210,7 @@ const SpecifyReviewFrom = () => {
 
                     <div className="flex flex-row justify-between items-center mt-4">
                         <div>
-                            <h1 className="text-[#697079] lg:text-[27px] text-[15px] font-thin">Digital Tools</h1>
+                            <h1 className="text-[#697079] lg:text-[27px] text-[15px] font-thin">Trust</h1>
                         </div>
 
                         <div className="flex gap-x-2">

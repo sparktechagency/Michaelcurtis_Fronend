@@ -75,8 +75,8 @@ const PolicyBanner = () => {
                                     <div>
                                         <Image
                                             src={policy.logo_url}
-                                            width={110}
-                                            height={40}
+                                            width={2000}
+                                            height={2000}
                                             alt={policy.name}
                                             className="block mx-auto w-28 h-10 "
                                         />
@@ -91,7 +91,7 @@ const PolicyBanner = () => {
 
                                     {/* Description (preview only, plain text) */}
                                     <div>
-                                        <p className="lg:mt-5 mt-2 lg:text-xl text-xs font-thin">
+                                        <p className="lg:mt-5 mt-2 h-20 lg:text-xl text-xs font-thin">
                                             {policy.description
                                                 .replace(/<[^>]+>/g, "")
                                                 .slice(0, 100)}

@@ -1,12 +1,20 @@
-import React from 'react'
-import DetailsBanner from './DetailsBanner';
+import React from "react";
+import DetailsBanner from "./DetailsBanner";
 
-const Page: React.FC = () => {
+interface PageProps {
+    params: {
+        id: string;
+    };
+}
+
+const Page: React.FC<PageProps> = ({ params }) => {
+    const { id } = params;
+
     return (
         <div>
-            <DetailsBanner></DetailsBanner>
+            <DetailsBanner slug={id} />
         </div>
-    )
-}
+    );
+};
 
 export default Page;

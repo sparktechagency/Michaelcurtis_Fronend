@@ -56,6 +56,20 @@ export const reviewApi = createApi({
                 url: `/reviews/${id}`,
                 method: "DELETE"
             })
+        }),
+        reviewByInsuranceSlug: builder.query({
+            query: (slug) => ({
+                url: `/providers/${slug}/reviews`,
+                method: "GET"
+            })
+        }),
+
+        postInsurance: builder.mutation({
+            query: (payload) => ({
+                url: `/reviews/`,
+                method: "POST",
+                body: payload
+            })
         })
 
 
@@ -63,4 +77,4 @@ export const reviewApi = createApi({
     }),
 });
 
-export const { useGetAllReviewQuery, useSingleReviewQuery, useReviewStatusUpdateMutation,useDeleteReviewMutation } = reviewApi;
+export const { useGetAllReviewQuery, useSingleReviewQuery, useReviewStatusUpdateMutation, useDeleteReviewMutation, useReviewByInsuranceSlugQuery, usePostInsuranceMutation } = reviewApi;

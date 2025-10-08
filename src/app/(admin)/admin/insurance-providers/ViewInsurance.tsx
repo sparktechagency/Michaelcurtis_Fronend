@@ -206,9 +206,9 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
                         <div className=" mt-1 ">
                             <div className=" text-lg font-normal ">About</div>
                             <p className='text-lg font-thin' >
-                                {
-                                    insuranceProvider?.about
-                                }
+                                <p
+                                    dangerouslySetInnerHTML={{ __html: insuranceProvider?.about }}
+                                />
                             </p>
                         </div>
 

@@ -1,7 +1,9 @@
 "use client"
 import { useSinglePolicyDetailsQuery } from '@/app/api/website/policy/webPolicyApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import { InsuranceProvider } from '@/utility/types/admin/insurance-provider/providerType';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 import { FaStar } from 'react-icons/fa6';
 
@@ -13,7 +15,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
     console.log(data?.data?.top_providers)
 
 
-    const topInsurance = data?.data?.top_providers || []
+    const topInsurance: InsuranceProvider[] = data?.data?.top_providers || []
 
 
 
@@ -35,7 +37,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
                     {
                         topInsurance.map((item, i) => {
                             return (
-                                <div className='  rounded-[7px] shadow shadow-[#00000040] lg:p-6 p-3 w-full ' key={i} >
+                                <div className='  rounded-[7px] shadow shadow-[#00000040] lg:p-6 p-3 w-[30%] ' key={i} >
 
                                     <div className='  ' >
                                         <span>
@@ -44,7 +46,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
 
                                     </div>
                                     <div className=' mt-3  ' >
-                                        <h1 className=' text-black font-normal lg:text-[16px] text-xs ' >{item?.name}</h1>
+                                        <h1 className=' text-black font-normal lg:text-[16px] text-xs h-12  ' >{item?.name}</h1>
                                         <div className="flex items-center space-x-1 mt-2 ">
                                             <span className="font-bold text-black lg:text-[16px] text-xs ">{item?.avg_overall_rating}</span>
                                             {[1, 2, 3, 4, 5].map((star) => (
@@ -71,11 +73,11 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
                                         </div>
                                     </div>
 
-                                    <div>
+                                    <div className=' h-16 ' >
                                         <p className=' mt-4 lg:text-[16px] tex text-xs font-thin ' >
-                                            {
-                                                item?.about.slice(0, 30)
-                                            }
+                                            {item.about
+                                                .replace(/<[^>]+>/g, "")
+                                                .slice(0, 100)}
                                             ...
                                         </p>
                                     </div>
@@ -88,7 +90,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
 
                                         </span>
                                         <h1 className=' font-thin lg:text-[14px] text-xs text-black ' >
-                                            Available in 48 states
+                                            Available in {item?.states_count} states
                                         </h1>
                                     </div>
                                     <div className=' lg:mt-5 mt-2 h-6 ' >
@@ -101,7 +103,11 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
                                         }
                                     </div>
                                     <div className='  ' >
-                                        <button className=' cursor-pointer w-full bg-[#D09A40] border border-[#D09A40] py-1  rounded-[34px] lg:mt-9 mt-4 text-[#FFFFFF] lg:text-xl text-sm font-normal ' >View Profile</button>
+                                        <Link href={`/insurance-profile/${item?.slug}`}>
+                                            <button className=' cursor-pointer w-full bg-[#D09A40] border border-[#D09A40] py-1  rounded-[34px] lg:mt-9 mt-4 text-[#FFFFFF] lg:text-xl text-sm font-normal ' >
+                                                View Profile
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
 
