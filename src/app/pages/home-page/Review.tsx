@@ -1,66 +1,18 @@
 "use client"
+import { useHomePageAllReviewQuery } from '@/app/api/website/review/homeReview';
 import ReviewCard from '@/app/components/home/ReviewCard';
 import MaxWidth from '@/app/components/max-width/MaxWidth';
+import { ReviewResponseType } from '@/utility/types/website/review-type/reviewType';
 import React, { useState } from 'react';
 
-export interface ReviewInt {
-    id: number;
-    image: string;
-    name: string;
-    desiganition: string;
-    isVerified: boolean;
-    rating: number;
-    des: string;
-}
+
 
 const Review = () => {
-    const reviewData: ReviewInt[] = [
-        {
-            id: 1,
-            image: "/images/home/review/img-1.png",
-            name: "Sarah M.",
-            desiganition: "From San Diego, CA",
-            des: "The claims process was surprisingly smooth. I filed everything through their app and had a check within a week. Highly recommend for their digital experience.",
-            isVerified: true,
-            rating: 4.5
-        },
-        {
-            id: 2,
-            image: "/images/home/review/img-1.png",
-            name: "Sarah M.",
-            desiganition: "From San Diego, CA",
-            des: "The claims process was surprisingly smooth. I filed everything through their app and had a check within a week. Highly recommend for their digital experience.",
-            isVerified: true,
-            rating: 4.5
-        },
-        {
-            id: 3,
-            image: "/images/home/review/img-1.png",
-            name: "Sarah M.",
-            desiganition: "From San Diego, CA",
-            des: "The claims process was surprisingly smooth. I filed everything through their app and had a check within a week. Highly recommend for their digital experience.",
-            isVerified: true,
-            rating: 4.5
-        },
-        {
-            id: 4,
-            image: "/images/home/review/img-1.png",
-            name: "Sarah M.",
-            desiganition: "From San Diego, CA",
-            des: "The claims process was surprisingly smooth. I filed everything through their app and had a check within a week. Highly recommend for their digital experience.",
-            isVerified: true,
-            rating: 4.5
-        },
-        {
-            id: 5,
-            image: "/images/home/review/img-1.png",
-            name: "Sarah M.",
-            desiganition: "From San Diego, CA",
-            des: "The claims process was surprisingly smooth. I filed everything through their app and had a check within a week. Highly recommend for their digital experience.",
-            isVerified: true,
-            rating: 4.5
-        }
-    ];
+
+    const { data } = useHomePageAllReviewQuery({});
+
+    console.log("review is ", data?.data)
+    const reviewData: ReviewResponseType[] = data?.data || [];
 
     const [showAll, setShowAll] = useState(false);
 
