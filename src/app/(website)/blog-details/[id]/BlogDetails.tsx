@@ -1,33 +1,37 @@
+"use client"
+import { useWebSingleBlogQuery } from '@/app/api/website/blog/webBlogApi'
 import MaxWidth from '@/app/components/max-width/MaxWidth'
 import Image from 'next/image'
 import React from 'react'
 
-const BlogDetails = () => {
+const BlogDetails = ({ slug }: { slug: string }) => {
+    const { data } = useWebSingleBlogQuery(slug);
+    const blog = data?.data?.blog
     return (
         <>
             <div className=' lg:pt-13 pb-6  ' >
                 {/* image  */}
-                <Image src={"/images/blog/blog-details.svg"} width={1198} height={678} alt='' className=' block mx-auto ' />
+                <Image src={blog?.featured_image || "/images/blog/blog-details.svg"} width={1198} height={678} alt='' className=' block mx-auto ' />
                 <button className=' py-0.5 px-3 bg-[#C4F0C9] text-[#2D9434] rounded-[4px] block mx-auto lg:mt-8 mt-4 ' >Coverage</button>
                 <div className=' max-w-5xl mx-auto ' >
-                    <h1 className=' lg:mt-5 mt-2 lg:text-5xl text-2xl font-bold text-center  ' >5 Common Mistakes to Avoid When Buying Life Insurance</h1>
+                    <h1 className=' lg:mt-5 mt-2 lg:text-5xl text-2xl font-bold text-center  ' >{blog?.title}</h1>
                     <div className=' flex flex-row items-center gap-x-6 justify-center lg:mt-6 mt-3 ' >
                         <div className=' flex flex-row items-center gap-x-4 ' >
                             <div>
                                 <Image
-                                    src={"/images/blog/author-image.svg"}
+                                    src={blog?.user?.avatar || "/images/blog/author-image.svg"}
                                     alt={'blog.title'}
-                                    width={46}
-                                    height={46}
-                                    className=""
+                                    width={1000}
+                                    height={1000}
+                                    className=" w-12 h-12 rounded-full "
                                 />
                             </div>
                             <div>
-                                <p>JD Vance</p>
+                                <p>{blog?.user?.full_name}</p>
                             </div>
                         </div>
                         <div>
-                            <p>October 15,2025</p>
+                            <p> {new Date(blog?.updated_at).toLocaleDateString()} </p>
                         </div>
                     </div>
                     <div className=' flex items-center gap-x-7 justify-center lg:mt-8 mt-4 ' >
@@ -83,24 +87,9 @@ const BlogDetails = () => {
             </div>
             <MaxWidth>
                 <div className=' px-7 lg:px-14 lg:pt-12 pt-6 lg:pb-14 pb-7 bg-[#FFFFFF]  shadow shadow-[#00000040] ' >
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] ' >
-                        Life insurance is a critical financial tool for protecting your loved ones, but navigating the options can be tricky. A simple misstep can lead to inadequate coverage or overpaying for a policy you don&apos;t need. Here are five common pitfalls to watch out for.
-                    </p>
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] '  >
-                        1. Underestimating Your Coverage Needs
-                    </p>
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] '  >
-                        One of the most frequent mistakes is buying too little coverage. Many people simply guess a number or choose a policy based on the lowest premium. Instead, a proper calculation should account for income replacement, mortgage or rent payments, outstanding debts (like student loans or credit cards), and future expenses like children&apos;s education. A good rule of thumb is to aim for 10-15 times your annual income, but a more detailed needs analysis is always better.
-                    </p>
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] '  >
-                        2. Waiting Too Long to Buy
-                    </p>
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] '  >
-                        Procrastination is the enemy of affordable life insurance. Premiums are based largely on age and health. The younger and healthier you are when you buy a policy, the lower your rates will be for the entire term. Waiting until you&apos;re older or develop a health condition can make coverage significantly more expensive, or in some cases, disqualify you altogether.
-                    </p>
-                    <p className=' lg:text-2xl text-lg font-thin text-[#000000] '  >
-                        Key Insight: Lock in your rates when you are young and healthy. Every year you wait, the potential cost of coverage increases.
-                    </p>
+                    <p
+                        dangerouslySetInnerHTML={{ __html: blog?.content }}
+                    />
                 </div>
             </MaxWidth>
         </>

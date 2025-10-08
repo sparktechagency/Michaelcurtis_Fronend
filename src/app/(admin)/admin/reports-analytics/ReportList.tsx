@@ -1,5 +1,5 @@
 "use client";
-import { useLazyReportDownloadQuery, useRecentReportQuery } from "@/app/api/admin/reportApi";
+import { useRecentReportQuery } from "@/app/api/admin/reportApi";
 import React from "react";
 
 import axios from "axios"

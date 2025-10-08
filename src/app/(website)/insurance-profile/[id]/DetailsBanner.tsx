@@ -36,9 +36,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
     });
 
 
-    type Consype = {
-        cons: string[]
-    }
+
 
 
     const pros: string[] = data?.data?.pros || [];
