@@ -36,7 +36,7 @@ export interface User {
 
 export interface BlogApiResponseType {
     id: number;
-    slute: string;
+    slug: string;
     title: string;
     author_name: string;
     content: string;

@@ -14,11 +14,18 @@ export const webBlogApi = createApi({
     endpoints: (builder) => ({
         webAllBlog: builder.query({
             query: () => ({
-                url: `/user/blogs`,
+                url: `/user/blogs?include=user,policyCategories`,
+                method: "GET"
+            }),
+            providesTags: ["activity"]
+        }),
+        webSingleBlog: builder.query({
+            query: (slug) => ({
+                url: `/user/blogs/${slug}`,
                 method: "GET"
             })
         })
     }),
 });
 
-export const { useWebAllBlogQuery } = webBlogApi;
+export const { useWebAllBlogQuery, useWebSingleBlogQuery } = webBlogApi;
