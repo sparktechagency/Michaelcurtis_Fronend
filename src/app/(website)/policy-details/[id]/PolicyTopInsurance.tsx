@@ -33,11 +33,11 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
                     <h1 className=' font-normal lg:text-4xl text-lg text-black ' >Top Rated Providers for Auto Insurance</h1>
                     <p className=' lg:mt-3 mt-1.5 lg:text-xl text-sm font-thin ' >Based on community reviews for auto policies.</p>
                 </div>
-                <div className=' lg:mt-9 mt-4 flex flex-col lg:flex-row justify-between  lg:space-y-0 space-y-6 gap-x-6 ' >
+                <div className=' lg:mt-9 mt-4 grid md:grid-cols-3  grid-cols-1 lg:flex-row justify-between  lg:space-y-0 space-y-6 gap-x-6 ' >
                     {
                         topInsurance.map((item, i) => {
                             return (
-                                <div className='  rounded-[7px] shadow shadow-[#00000040] lg:p-6 p-3 w-[30%] ' key={i} >
+                                <div className='  rounded-[7px] shadow shadow-[#00000040] lg:p-6 p-3  ' key={i} >
 
                                     <div className='  ' >
                                         <span>

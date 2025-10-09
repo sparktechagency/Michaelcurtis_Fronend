@@ -47,12 +47,29 @@ export const webUserApi = createApi({
                 body: payload
             }),
             invalidatesTags: ["user"]
+        }),
+        userReview: builder.query({
+            query: () => ({
+                url: "/reviews/?include=user,provider&sort=-id",
+                method: "GET"
+            }),
+            providesTags: ["user"]
+        }),
+        userReviewDelete: builder.mutation({
+            query: (id) => ({
+                url: `/reviews/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["user"]
         })
+
     }),
 });
 
 export const {
     useUserProfileQuery,
     useUserProfileUpdateMutation,
-    useUserPasswordUpdateMutation
+    useUserPasswordUpdateMutation,
+    useUserReviewQuery,
+    useUserReviewDeleteMutation
 } = webUserApi;
