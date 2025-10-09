@@ -82,7 +82,7 @@ const BlogView: React.FC<PolicyViewProps> = ({
 
     const { data } = useSingleBlogQuery(blogSlug);
 
-    console.log(data?.data);
+
 
     const blogData: BlogApiResponseType = data?.data
 

@@ -1,8 +1,13 @@
+"use client"
+import { useUserProfileQuery } from '@/app/api/website/user/webUserApi'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 const PorfileCard = () => {
+    const { data } = useUserProfileQuery({});
+    console.log("user profile is", data?.data);
+    const userData = data?.data;
     return (
         <div>
             <div className=' max-w-6xl mx-auto pt-10 pb-28 ' >
@@ -12,20 +17,20 @@ const PorfileCard = () => {
                         <div className='bg-white shadow shadow-[#00000033] py-8 px-5 rounded-[6px]' >
                             <div className=' flex flex-row  items-center gap-x-9  ' >
                                 <div>
-                                    <Image src={"/images/insurance/user-img.svg"} width={61} height={61} alt="" className=" w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full " />
+                                    <Image src={userData?.avatar || "/images/insurance/user-img.svg"} width={61} height={61} alt=" w-16 h-16 rounded-full " className=" w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full " />
                                 </div>
                                 <div>
-                                    <h1 className=' lg:text-xl text-sm  font-normal text-[#000000] ' >John Doe</h1>
-                                    <p className=' lg:text-lg font-thin text-xs ' >Example@gmail.com</p>
+                                    <h1 className=' lg:text-xl text-sm  font-normal text-[#000000] ' >{userData?.full_name}</h1>
+                                    <p className=' lg:text-lg font-thin text-xs ' > {userData?.email} </p>
                                 </div>
                             </div>
                             <div className=' lg:mt-6 mt-3 flex justify-between items-center ' >
                                 <p className='lg:text-[16px] text-xs font-thin text-black ' >States :</p>
-                                <h1 className=' lg:text-[16px] text-xs font-normal text-black ' >California</h1>
+                                <h1 className=' lg:text-[16px] text-xs font-normal text-black ' >{userData?.address}</h1>
                             </div>
                             <div className=' lg:mt-6 mt-3 flex justify-between items-center ' >
                                 <p className='lg:text-[16px] text-xs font-thin text-black ' >Joined:</p>
-                                <h1 className=' lg:text-[16px] text-xs font-normal text-black ' >September 10, 2025</h1>
+                                <h1 className=' lg:text-[16px] text-xs font-normal text-black ' > {new Date(userData?.created_at).toLocaleDateString()} </h1>
                             </div>
                             <div className=' mt-7 ' >
                                 <Link href={"/profile-update"}>
