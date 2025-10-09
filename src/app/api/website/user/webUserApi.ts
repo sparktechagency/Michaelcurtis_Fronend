@@ -61,7 +61,19 @@ export const webUserApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["user"]
-        })
+        }),
+
+
+
+        addVoteOrRemove: builder.mutation({
+            query: ({ payload, id }) => ({
+                url: `/reviews/${id}/vote`,
+                method: "POST",
+                body: payload
+            }),
+            invalidatesTags: ["user"]
+        }),
+
 
     }),
 });
@@ -71,5 +83,7 @@ export const {
     useUserProfileUpdateMutation,
     useUserPasswordUpdateMutation,
     useUserReviewQuery,
-    useUserReviewDeleteMutation
+    useUserReviewDeleteMutation,
+    useAddVoteOrRemoveMutation
+
 } = webUserApi;

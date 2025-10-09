@@ -1,5 +1,5 @@
 import React from 'react'
-import SpecifyReviewFrom from './SpecifyReviewFrom'
+import SpecifyReviewFrom from './[slug]/SpecifyReviewFrom'
 
 const Page = () => {
     return (
