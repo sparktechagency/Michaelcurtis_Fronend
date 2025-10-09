@@ -17,8 +17,8 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
 
     const router = useRouter();
-    const handleReview = () => {
-        router.push("/specify-insurance-review")
+    const handleReview = (slug: string) => {
+        router.push(`/specify-insurance-review/${slug}`)
     }
 
     console.log("single  provider is ", data?.data)
@@ -102,7 +102,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
                         {/* review button  */}
                         <div>
-                            <Link href={"/specify-insurance-review"}>
+                            <Link href={`/specify-insurance-review/${data?.data?.slug}`}>
                                 <button className=' cursor-pointer lg:text-xl text-xs font-normal text-white border border-[#D09A40] bg-[#D09A40] py-2 px-5 rounded-[26px]  ' >Write a Review</button>
                             </Link>
                         </div>
@@ -339,7 +339,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
 
 
-                    <button onClick={handleReview} className="block mx-auto rounded-[8px] bg-[#D09A40] py-2 px-5 text-white font-medium hover:bg-[#b68434] transition lg:mt-4 mt-2 cursor-pointer " >
+                    <button onClick={() => { handleReview(data?.data?.slug) }} className="block mx-auto rounded-[8px] bg-[#D09A40] py-2 px-5 text-white font-medium hover:bg-[#b68434] transition lg:mt-4 mt-2 cursor-pointer " >
 
                         Write a Review
 
