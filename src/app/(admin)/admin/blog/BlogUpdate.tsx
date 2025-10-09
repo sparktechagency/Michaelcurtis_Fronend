@@ -84,7 +84,7 @@ const BlogUpdate: React.FC<PolicyViewProps> = ({
 
     const { data } = useSingleBlogQuery(blogSlug);
 
-    console.log(`policy_categories data is-------------`, data?.data?.policy_categories?.name);
+
 
     const { data: policyResponse } = useAllPolicyQuery({});
 

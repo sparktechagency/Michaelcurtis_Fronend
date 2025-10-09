@@ -1,5 +1,5 @@
 "use client";
-
+import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,8 +30,9 @@ export default function UserOtpVerfifyFrom() {
         try {
             const res = await otpVerify(payload).unwrap();
             if (res) {
-                console.log(res)
+                Cookies.set("user_token", res.data?.access_token, { expires: 100, secure: true, sameSite: "strict" });
                 setOtp("");
+                window.location.href = "/";
             }
         } catch (err) {
             const error = err as FetchBaseQueryError & { data?: { message?: string } };

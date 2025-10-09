@@ -1,5 +1,5 @@
 "use client";
-
+import Cookies from "js-cookie";
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import MaxWidth from "../max-width/MaxWidth";
@@ -31,20 +31,34 @@ const Navbar = () => {
   }, []);
 
   // Close profile dropdown when clicking outside
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       profileRef.current &&
+  //       !profileRef.current.contains(event.target as Node)
+  //     ) {
+  //       setProfileOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [profileRef]);
+
+
+  const [userToken, setUserToken] = useState<string>();
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
-        setProfileOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [profileRef]);
+    const userToken = Cookies.get("user_token");
+    setUserToken(userToken)
+  }, []);
+
+  console.log(userToken)
+
+
+
+
 
   return (
     <div className="sticky top-0 bg-white z-50 border-b-[2px] py-2  ">
@@ -88,16 +102,20 @@ const Navbar = () => {
           </div>
 
           {/* Login/Profile & Sign Up */}
-          <div className=" hidden md:block " >
-            <div className="flex flex-row gap-x-4  relative  " ref={profileRef}>
-              {isLoggedIn ? (
-                <div className="  " >
-                  <button
-                    className="  "
-                    onClick={() => setProfileOpen(!profileOpen)}
-                  >
-                    <Image src={"/images/insurance/user-img.svg"} width={61} height={61} alt="" className=" w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full
-                   " />
+          {/* Login/Profile & Sign Up */}
+          <div className="hidden md:block">
+            <div className="flex flex-row gap-x-4 relative" ref={profileRef}>
+              {userToken ? (
+                // ✅ Show Profile Dropdown when logged in
+                <div>
+                  <button onClick={() => setProfileOpen(!profileOpen)}>
+                    <Image
+                      src={"/images/insurance/user-img.svg"}
+                      width={61}
+                      height={61}
+                      alt="User Avatar"
+                      className="w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full"
+                    />
                   </button>
 
                   {/* Profile dropdown */}
@@ -105,23 +123,19 @@ const Navbar = () => {
                     <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
                       <Link
                         href="/profile"
-                        className="block px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal  "
+                        className="block px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal"
                         onClick={() => setProfileOpen(false)}
                       >
                         View Profile
                       </Link>
-                      {/* <Link
-                      href="/change-password"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      Change Password
-                    </Link> */}
+
                       <button
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal "
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal"
                         onClick={() => {
-                          setIsLoggedIn(false);
+                          Cookies.remove("user_token");
+                          setUserToken(undefined);
                           setProfileOpen(false);
+                          window.location.reload(); // optional: refresh after logout
                         }}
                       >
                         Logout
@@ -130,17 +144,15 @@ const Navbar = () => {
                   )}
                 </div>
               ) : (
+                // ✅ Show Login & Sign Up when no token
                 <>
-                  <Link href={"/auth/login"}>
-                    <button
-                      className="px-6 py-2 text-black border border-gray-400 rounded-full cursor-pointer "
-
-                    >
+                  <Link href="/auth/login">
+                    <button className="px-6 py-2 text-black border border-gray-400 rounded-full cursor-pointer">
                       Login
                     </button>
                   </Link>
                   <Link href="/auth/sign-up">
-                    <button className="px-6 py-2 text-white bg-[#D09A40] rounded-full cursor-pointer ">
+                    <button className="px-6 py-2 text-white bg-[#D09A40] rounded-full cursor-pointer">
                       Sign Up
                     </button>
                   </Link>
@@ -148,6 +160,8 @@ const Navbar = () => {
               )}
             </div>
           </div>
+
+
 
           {/* Mobile menu button */}
           <div className="md:hidden">

@@ -1,5 +1,5 @@
 "use client";
-
+import Cookies from "js-cookie";
 import { useState } from "react";
 import Image from "next/image";
 import MaxWidth from "@/app/components/max-width/MaxWidth";
@@ -30,7 +30,7 @@ export default function LoginForm() {
                 setPassword("");
                 setRememberMe(false)
                 toast.success(res?.message);
-                localStorage.setItem("user_token", res?.data?.access_token);
+                Cookies.set("user_token", res.data?.access_token, { expires: 100, secure: true, sameSite: "strict" });
                 window.location.href = "/"
             }
         } catch (err) {
