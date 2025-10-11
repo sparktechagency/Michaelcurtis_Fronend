@@ -142,7 +142,7 @@ const InsuranceBySlugReview = ({ slug }: { slug: string }) => {
                             </button>
 
                             <button
-                                onClick={() => handleRemoveVote(item.id)}
+                                onClick={() => handleRemoveVote(item.id, "downvote")}
                                 className='cursor-pointer flex flex-row items-center mt-6 border border-[#697079] px-2 py-1 gap-x-1 rounded-2xl'
                             >
                                 <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,19 +153,22 @@ const InsuranceBySlugReview = ({ slug }: { slug: string }) => {
                         </div>
                     </div>
                 </div>
-            ))}
+            ))
+            }
 
-            {visibleCount < reviews.length && (
-                <div className='mt-8'>
-                    <button
-                        onClick={handleLoadMore}
-                        className='py-2 px-8 rounded-[5px] bg-[#E9EAEB] block mx-auto font-bold cursor-pointer text-[#000000] text-[16px]'
-                    >
-                        Load More Reviews
-                    </button>
-                </div>
-            )}
-        </div>
+            {
+                visibleCount < reviews.length && (
+                    <div className='mt-8'>
+                        <button
+                            onClick={handleLoadMore}
+                            className='py-2 px-8 rounded-[5px] bg-[#E9EAEB] block mx-auto font-bold cursor-pointer text-[#000000] text-[16px]'
+                        >
+                            Load More Reviews
+                        </button>
+                    </div>
+                )
+            }
+        </div >
     );
 };
 

@@ -1,12 +1,20 @@
-import React from 'react'
-import SpecifyReviewFrom from './[slug]/SpecifyReviewFrom'
+import SpecifyReviewFrom from "./[slug]/SpecifyReviewFrom";
 
-const Page = () => {
-    return (
-        <div>
-            <SpecifyReviewFrom></SpecifyReviewFrom>
-        </div>
-    )
+
+interface PageProps {
+    params: {
+        slug: string;
+    };
 }
 
-export default Page
+const Page = ({ params }: PageProps) => {
+    const { slug } = params;
+
+    return (
+        <div>
+            <SpecifyReviewFrom slug={slug} />
+        </div>
+    );
+};
+
+export default Page;

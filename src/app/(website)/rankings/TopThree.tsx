@@ -1,27 +1,34 @@
+"use client"
+import { useAllInsuranceApiQuery } from '@/app/api/website/insurance/webInsuranceApi'
 import { Checkbox } from '@/components/ui/checkbox'
+import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType'
 import { ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 const TopThree = () => {
+
+
+
     return (
         <div>
             <div className="relative w-full mt-11 mb-40 flex justify-center">
-                <div className="relative w-full flex flex-col lg:flex-row items-center justify-center gap-x-8 gap-y-6">
+                <div className="relative w-full flex flex-col lg:flex-row items-center justify-center  gap-y-6">
 
                     {/* Left Card */}
-                    <div className="flex-1 lg:absolute lg:left-0 lg:top-20  lg:max-w-[35%]   ">
-                        <Card bg="#D8D6C8" />
+                    <div className=" lg:absolute lg:left-0 lg:top-20  lg:max-w-[30%]   ">
+                        <CardTwo bg="#D8D6C8" />
                     </div>
 
                     {/* Middle Card (always on top) */}
-                    <div className="flex-1 lg:relative z-10 lg:max-w-[30%]   ">
-                        <Card bg="#FAE755" />
+                    <div className="flex-1 lg:relative z-10 lg:max-w-[25%]   ">
+                        <Card bg="#D8D6C8" />
                     </div>
 
                     {/* Right Card */}
-                    <div className="flex-1 lg:absolute lg:right-0 lg:top-20 lg:max-w-[35%]   ">
-                        <Card bg="#FFBE56" />
+                    <div className=" lg:absolute lg:right-0 lg:top-20 lg:max-w-[35%]   ">
+                        <CardThree bg="#FFBE56" />
                     </div>
 
                 </div>
@@ -31,33 +38,19 @@ const TopThree = () => {
 }
 
 const Card = ({ bg }: { bg: string }) => {
+    const { data } = useAllInsuranceApiQuery([]);
+    const top1: TopInsuranceType = data?.data[0];
+    console.log(`top 1 is`, top1)
     return (
         <div>
             <div className=' flex justify-center ' >
-                <svg width="99" height="124" viewBox="0 0 99 124" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M26.9197 58.2154V48.8926H23.8613V58.2154H21.373V37.6828H23.8613V46.405H26.9197V37.6828H29.4084V58.2154H26.9197Z" fill="#003942" />
-                    <path d="M32.5183 58.2151V37.6825H38.6868V40.1702H35.0065V46.4046H38.2724V48.8924H35.0065V55.7274H38.6868V58.2151H32.5183Z" fill="#003942" />
-                    <path d="M43.6118 58.2151H41.1232V41.1998C41.1232 38.8549 42.1167 37.6824 44.1042 37.6824H45.9706C47.9571 37.6824 48.9511 38.8548 48.9511 41.1998V58.2151H46.4629V50.694H43.6118V58.2151H43.6118ZM46.4629 48.2063V41.3713C46.4629 40.5706 46.1 40.1703 45.3742 40.1703H44.7004C43.9747 40.1703 43.6118 40.5706 43.6118 41.3713V48.2063H46.4629Z" fill="#003942" />
-                    <path d="M57.8411 58.2151H51.9316V37.6825H54.4198V55.7274H57.8412L57.8411 58.2151Z" fill="#003942" />
-                    <path d="M62.7141 40.1702V58.2151H60.2259V40.1702H57.8412V37.6825H65.0988V40.1702H62.7141Z" fill="#003942" />
-                    <path d="M72.8481 58.2151V48.8924H69.7896V58.2151H67.3014V37.6825H69.7896V46.4047H72.8481V37.6825H75.3363V58.2151H72.8481Z" fill="#003942" />
-                    <path d="M37.2746 76.623V77.9389C37.2746 80.2648 36.2811 81.4275 34.2941 81.4275H32.6871C30.6996 81.4275 29.7061 80.2648 29.7061 77.9389V64.3836C29.7061 62.0582 30.6996 60.8949 32.6871 60.8949H34.2941C36.2811 60.8949 37.2746 62.0582 37.2746 64.3836V66.7003H34.7864V64.5837C34.7864 63.783 34.4147 63.3826 33.6717 63.3826H33.1794C32.5228 63.3826 32.1947 63.783 32.1947 64.5837V77.7387C32.1947 78.5394 32.5228 78.9398 33.1794 78.9398H33.8017C34.4578 78.9398 34.7863 78.5394 34.7863 77.7387V76.623H37.2746Z" fill="#003942" />
-                    <path d="M42.3548 81.4275H39.8666V64.4123C39.8666 62.0674 40.8601 60.895 42.8471 60.895H44.7135C46.7005 60.895 47.694 62.0674 47.694 64.4123V81.4275H45.2058V73.9065H42.3548V81.4275ZM45.2058 71.4188V64.5838C45.2058 63.783 44.8429 63.3827 44.1172 63.3827H43.4434C42.7177 63.3827 42.3548 63.783 42.3548 64.5838V71.4188H45.2058Z" fill="#003942" />
-                    <path d="M50.6746 60.895H55.5474C57.4481 60.895 58.3984 62.0674 58.3984 64.4123V69.4743C58.3984 71.2663 57.9061 72.4008 56.9214 72.8769L58.6579 81.4275H56.2992L54.6662 73.1344H53.1627V81.4275H50.6746V60.895ZM53.1627 70.7896H54.7957C55.5386 70.7896 55.9103 70.294 55.9103 69.3023V64.87C55.9103 63.8788 55.5386 63.3827 54.7957 63.3827H53.1627V70.7896Z" fill="#003942" />
-                    <path d="M61.2494 81.4275V60.895H67.4179V63.3827H63.7376V69.6171H67.0035V72.1048H63.7376V78.9398H67.4179V81.4275L61.2494 81.4275Z" fill="#003942" />
-                    <path d="M34.0319 35.5946L34.0206 33.3092L33.0159 35.1699H32.5245L31.5251 33.3709V35.5946H30.5037V31.283H31.4134L32.7869 33.7714L34.1271 31.283H35.0367L35.048 35.5946L34.0319 35.5946Z" fill="#003942" />
-                    <path d="M40.6421 34.652V35.5945H37.5046V31.2828H40.5695V32.2254H38.5987V32.952H40.3351V33.8636H38.5987V34.652H40.6421Z" fill="#003942" />
-                    <path d="M42.9312 31.2829H44.7789C45.207 31.2829 45.5866 31.3712 45.918 31.5475C46.249 31.7245 46.506 31.975 46.6884 32.299C46.8708 32.6237 46.9621 33.0035 46.9621 33.4385C46.9621 33.874 46.8708 34.2538 46.6884 34.5785C46.506 34.9025 46.249 35.1531 45.918 35.33C45.5866 35.5064 45.207 35.5946 44.7789 35.5946H42.9312V31.2829ZM44.7343 34.6212C45.0692 34.6212 45.3379 34.5168 45.5409 34.3073C45.7439 34.0979 45.8454 33.8085 45.8454 33.4384C45.8454 33.0689 45.7439 32.7795 45.5409 32.57C45.3379 32.3606 45.0692 32.2562 44.7343 32.2562H44.0364V34.6211H44.7343V34.6212Z" fill="#003942" />
-                    <path d="M49.2173 31.2829H50.3226V35.5945H49.2173V31.2829Z" fill="#003942" />
-                    <path d="M53.6308 35.3943C53.3051 35.2033 53.0492 34.9377 52.8634 34.5968C52.6771 34.256 52.5839 33.8697 52.5839 33.4385C52.5839 33.0078 52.6771 32.6216 52.8634 32.2807C53.0492 31.9399 53.3051 31.6742 53.6308 31.4832C53.9564 31.2922 54.3242 31.1964 54.7337 31.1964C55.0906 31.1964 55.4128 31.2662 55.6992 31.4058C55.9861 31.5459 56.2239 31.7472 56.4137 32.0097L55.7105 32.7119C55.4575 32.3754 55.1505 32.2066 54.7891 32.2066C54.5772 32.2066 54.3879 32.258 54.2227 32.3609C54.057 32.4636 53.9285 32.608 53.8372 32.7952C53.746 32.9818 53.7005 33.1967 53.7005 33.4386C53.7005 33.6809 53.7461 33.8957 53.8372 34.0824C53.9285 34.2696 54.057 34.4141 54.2227 34.5169C54.3879 34.6196 54.5772 34.6706 54.7891 34.6706C55.1505 34.6706 55.4575 34.5023 55.7105 34.1658L56.4137 34.868C56.2239 35.131 55.9861 35.3322 55.6992 35.4718C55.4128 35.6109 55.0906 35.6812 54.7337 35.6812C54.3241 35.681 53.9564 35.5853 53.6308 35.3943Z" fill="#003942" />
-                    <path d="M61.1316 34.7569H59.479L59.1721 35.5945H58.0442L59.7694 31.2828H60.8581L62.5886 35.5945H61.4386L61.1316 34.7569ZM60.8074 33.8578L60.3052 32.4776L59.8026 33.8578H60.8074Z" fill="#003942" />
-                    <path d="M64.5759 31.2829H65.6812V34.6277H67.5461V35.5946H64.5759V31.2829Z" fill="#003942" />
-                    <path d="M49.5023 0.550293C22.1616 0.550293 0 25.0016 0 55.1672C0 80.6575 15.833 102.073 37.2421 108.088C39.2316 113.339 42.8921 118.885 49.5023 123.112C56.1124 118.88 59.7683 113.339 61.7625 108.088C83.167 102.073 99 80.6575 99 55.1672C99 25.0016 76.8385 0.550293 49.5023 0.550293ZM49.5023 118.992C45.8464 116.313 43.0445 112.972 41.1335 109C40.5472 107.788 40.0441 106.52 39.624 105.195C39.3656 104.365 39.1347 103.515 38.9363 102.644C38.3869 100.204 38.1839 97.9736 38.1377 96.2064C38.53 96.2369 38.9455 96.2522 39.3932 96.2522C40.2841 96.2522 41.2489 96.1809 42.2551 96.0383C45.5649 95.5697 47.9421 94.4646 49.5023 93.4765C51.0579 94.4646 53.4353 95.5646 56.7495 96.0383C57.7558 96.1809 58.716 96.2522 59.6115 96.2522C60.0546 96.2522 60.4747 96.2369 60.867 96.2064C60.8162 97.9736 60.6178 100.209 60.0684 102.644C59.87 103.515 59.6391 104.365 59.3806 105.195C58.9606 106.52 58.4574 107.788 57.8712 109C55.9556 112.972 53.1582 116.313 49.5023 118.992ZM62.9858 104.156C64.6937 97.2351 63.8398 91.6532 63.8398 91.6532C63.8398 91.6532 62.8012 92.7532 59.6115 92.7532C58.9006 92.7532 58.0882 92.7023 57.1558 92.5699C51.7919 91.8059 49.5023 89.1831 49.5023 89.1831C49.5023 89.1831 47.2128 91.806 41.8489 92.5699C40.9165 92.7023 40.0995 92.7532 39.3932 92.7532C36.2035 92.7532 35.1649 91.6532 35.1649 91.6532C35.1649 91.6532 34.311 97.2351 36.0189 104.156C16.9823 97.775 3.09733 78.2281 3.09733 55.1672C3.09733 26.9318 23.911 3.96764 49.5023 3.96764C75.089 3.96764 95.9073 26.9318 95.9073 55.1672C95.9073 78.2231 82.0177 97.775 62.9858 104.156Z" fill="#003942" />
-                    <path d="M51.2046 98.2916H47.8843V104.16H42.5658V107.823H47.8843V113.691H51.2046V107.823H56.523V104.16H51.2046V98.2916Z" fill="#003942" />
-                </svg>
 
+                {/* logo  */}
+                {
+                    <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                }
             </div>
-            <div className="mt-6">
+            <div className="mt-6  ">
                 {/* Trophy Badge */}
                 <div className="flex justify-center">
                     <div className="w-12 h-11 rounded-[5px] shadow  flex justify-center items-center" style={{ backgroundColor: bg }}>
@@ -71,14 +64,25 @@ const Card = ({ bg }: { bg: string }) => {
                 <div className="bg-white rounded-lg shadow shadow-[#00000033]  px-4 pt-6 pb-9 text-center -mt-4">
                     {/* Title & Price */}
                     <div className="flex justify-between items-center mt-8">
-                        <h2 className="lg:text-xl text-[15px] text-black font-normal">Progressive</h2>
-                        <span className="text-green-600 font-bold text-lg">$450</span>
+                        <h2 className="lg:text-xl text-[15px] text-black font-normal">{top1?.name.slice(0, 10)}...</h2>
+                        <span className="text-green-600 font-bold text-lg">${top1?.price}</span>
                     </div>
 
                     {/* Rating */}
+                    {/* font-bold lg:text-2xl */}
                     <div className="flex items-center gap-x-2 mt-2">
-                        <span className=' text-[#4AF850] font-bold lg:text-2xl ' >
-                            A+
+                        <span
+
+                            className={`font-bold lg:text-2xl 
+                                    ${top1?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                    top1?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
+                                        top1?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
+                                            top1?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D
+                                                "text-[#DC2626 ]"                                    // Default for E or others
+                                }`}
+                        >
+                            {top1?.avg_grade}
+
                         </span>
                         <div className=' w-1.5 h-1.5 bg-black rounded-full ' />
                         <span>
@@ -87,23 +91,36 @@ const Card = ({ bg }: { bg: string }) => {
                             </svg>
 
                         </span>
-                        <span className="text-black text-xs lg:text-[16px] font-normal">4.9</span>
+                        <span className="text-black text-xs lg:text-[16px] font-normal">{top1?.avg_overall_rating}</span>
                     </div>
 
                     {/* Scores */}
+
                     <div className="flex justify-between gap-2 mt-5">
-                        {[
-                            { score: "4.8", label: "Claim" },
-                            { score: "4.9", label: "Service" },
-                            { score: "4.2", label: "Price" },
-                            { score: "4.2", label: "Cover" },
-                            { score: "4.2", label: "Trust" },
-                        ].map((item, idx) => (
-                            <div key={idx} className="flex flex-col items-center">
-                                <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{item.score}</span>
-                                <span className="font-thin lg:text-[16px] text-xs text-black mt-1">{item.label}</span>
-                            </div>
-                        ))}
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_claims}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Claim</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_service} </span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Service</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_pricing}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Price</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_coverage}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Cover</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_trust}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Trust</span>
+                        </div>
                     </div>
 
                     {/* Divider */}
@@ -126,5 +143,224 @@ const Card = ({ bg }: { bg: string }) => {
         </div>
     )
 }
+
+const CardTwo = ({ bg }: { bg: string }) => {
+    const { data } = useAllInsuranceApiQuery([]);
+    const top1: TopInsuranceType = data?.data[1];
+
+    return (
+        <div>
+            <div className=' flex justify-center  ' >
+
+                {
+                    <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                }
+            </div>
+            <div className="mt-6   ">
+                {/* Trophy Badge */}
+                <div className="flex justify-center">
+                    <div className="w-12 h-11 rounded-[5px] shadow  flex justify-center items-center" style={{ backgroundColor: bg }}>
+                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.58333 20.3003V18.1336H8.91667V14.7753C8.03194 14.5767 7.24219 14.2022 6.54742 13.6519C5.85264 13.1015 5.34239 12.4107 5.01667 11.5795C3.6625 11.417 2.52969 10.8258 1.61825 9.80604C0.706806 8.78627 0.250722 7.5899 0.25 6.21696V5.13363C0.25 4.53779 0.462333 4.0279 0.887 3.60396C1.31167 3.18002 1.82156 2.96768 2.41667 2.96696H4.58333V0.800293H15.4167V2.96696H17.5833C18.1792 2.96696 18.6894 3.17929 19.1141 3.60396C19.5388 4.02863 19.7507 4.53852 19.75 5.13363V6.21696C19.75 7.58918 19.2939 8.78554 18.3818 9.80604C17.4696 10.8265 16.3368 11.4177 14.9833 11.5795C14.6583 12.41 14.1484 13.1008 13.4537 13.6519C12.7589 14.2029 11.9688 14.5774 11.0833 14.7753V18.1336H15.4167V20.3003H4.58333ZM4.58333 9.25029V5.13363H2.41667V6.21696C2.41667 6.90307 2.61528 7.52165 3.0125 8.07271C3.40972 8.62377 3.93333 9.01629 4.58333 9.25029ZM15.4167 9.25029C16.0667 9.01557 16.5903 8.62268 16.9875 8.07163C17.3847 7.52057 17.5833 6.90235 17.5833 6.21696V5.13363H15.4167V9.25029Z" fill="#807F65" />
+                        </svg>
+
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow shadow-[#00000033]   pt-6 pb-9 text-center -mt-4 px-10 ">
+                    {/* Title & Price */}
+                    <div className="flex justify-between items-center mt-8">
+                        <h2 className="lg:text-xl text-[15px] text-black font-normal">{top1?.name.slice(0, 10)}...</h2>
+                        <span className="text-green-600 font-bold text-lg">${top1?.price}</span>
+                    </div>
+
+                    {/* Rating */}
+                    {/* font-bold lg:text-2xl */}
+                    <div className="flex items-center gap-x-2 mt-2">
+                        <span
+
+                            className={`font-bold lg:text-2xl 
+                                    ${top1?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                    top1?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
+                                        top1?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
+                                            top1?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D
+                                                "text-[#DC2626 ]"                                    // Default for E or others
+                                }`}
+                        >
+                            {top1?.avg_grade}
+
+                        </span>
+                        <div className=' w-1.5 h-1.5 bg-black rounded-full ' />
+                        <span>
+                            <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.99996 14.275L4.84996 16.775C4.66663 16.8917 4.47496 16.9417 4.27496 16.925C4.07496 16.9083 3.89996 16.8417 3.74996 16.725C3.59996 16.6083 3.4833 16.4627 3.39996 16.288C3.31663 16.1133 3.29996 15.9173 3.34996 15.7L4.44996 10.975L0.774963 7.80001C0.608296 7.65001 0.504296 7.47901 0.462963 7.28701C0.421629 7.09501 0.433963 6.90768 0.499963 6.72501C0.565963 6.54235 0.665963 6.39235 0.799963 6.27501C0.933963 6.15768 1.1173 6.08268 1.34996 6.05001L6.19996 5.62501L8.07496 1.17501C8.1583 0.975012 8.28763 0.825012 8.46296 0.725012C8.6383 0.625012 8.8173 0.575012 8.99996 0.575012C9.18263 0.575012 9.36163 0.625012 9.53696 0.725012C9.7123 0.825012 9.84163 0.975012 9.92496 1.17501L11.8 5.62501L16.65 6.05001C16.8833 6.08335 17.0666 6.15835 17.2 6.27501C17.3333 6.39168 17.4333 6.54168 17.5 6.72501C17.5666 6.90835 17.5793 7.09601 17.538 7.28801C17.4966 7.48001 17.3923 7.65068 17.225 7.80001L13.55 10.975L14.65 15.7C14.7 15.9167 14.6833 16.1127 14.6 16.288C14.5166 16.4633 14.4 16.609 14.25 16.725C14.1 16.841 13.925 16.9077 13.725 16.925C13.525 16.9423 13.3333 16.8923 13.15 16.775L8.99996 14.275Z" fill="#F6CF2F" />
+                            </svg>
+
+                        </span>
+                        <span className="text-black text-xs lg:text-[16px] font-normal">{top1?.avg_overall_rating}</span>
+                    </div>
+
+                    {/* Scores */}
+
+                    <div className="flex justify-between gap-2 mt-5">
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_claims}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Claim</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_service} </span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Service</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_pricing}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Price</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_coverage}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Cover</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_trust}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Trust</span>
+                        </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-gray-200 mt-8 lg:mt-16 mb-5"></div>
+
+                    {/* Footer */}
+                    <div className="flex justify-between items-center">
+                        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                            <Checkbox /> Compare
+                        </label>
+
+                        <Link href={"/profile-details"}>
+                            <button className="flex items-center gap-x-2 lg:text-[16px] cursor-pointer text-sm text-[#D09A40] font-normal hover:underline">
+                                View Details <ArrowRight className="w-4 h-4" />
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+const CardThree = ({ bg }: { bg: string }) => {
+    const { data } = useAllInsuranceApiQuery([]);
+    const top1: TopInsuranceType = data?.data[2];
+
+    return (
+        <div>
+            <div className=' flex justify-center  ' >
+
+                {
+                    <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                }
+            </div>
+            <div className="mt-6   ">
+                {/* Trophy Badge */}
+                <div className="flex justify-center">
+                    <div className="w-12 h-11 rounded-[5px] shadow  flex justify-center items-center" style={{ backgroundColor: bg }}>
+                        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.58333 20.3003V18.1336H8.91667V14.7753C8.03194 14.5767 7.24219 14.2022 6.54742 13.6519C5.85264 13.1015 5.34239 12.4107 5.01667 11.5795C3.6625 11.417 2.52969 10.8258 1.61825 9.80604C0.706806 8.78627 0.250722 7.5899 0.25 6.21696V5.13363C0.25 4.53779 0.462333 4.0279 0.887 3.60396C1.31167 3.18002 1.82156 2.96768 2.41667 2.96696H4.58333V0.800293H15.4167V2.96696H17.5833C18.1792 2.96696 18.6894 3.17929 19.1141 3.60396C19.5388 4.02863 19.7507 4.53852 19.75 5.13363V6.21696C19.75 7.58918 19.2939 8.78554 18.3818 9.80604C17.4696 10.8265 16.3368 11.4177 14.9833 11.5795C14.6583 12.41 14.1484 13.1008 13.4537 13.6519C12.7589 14.2029 11.9688 14.5774 11.0833 14.7753V18.1336H15.4167V20.3003H4.58333ZM4.58333 9.25029V5.13363H2.41667V6.21696C2.41667 6.90307 2.61528 7.52165 3.0125 8.07271C3.40972 8.62377 3.93333 9.01629 4.58333 9.25029ZM15.4167 9.25029C16.0667 9.01557 16.5903 8.62268 16.9875 8.07163C17.3847 7.52057 17.5833 6.90235 17.5833 6.21696V5.13363H15.4167V9.25029Z" fill="#807F65" />
+                        </svg>
+
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow shadow-[#00000033]   pt-6 pb-9 text-center -mt-4 px-10 ">
+                    {/* Title & Price */}
+                    <div className="flex justify-between items-center mt-8">
+                        <h2 className="lg:text-xl text-[15px] text-black font-normal">{top1?.name.slice(0, 10)}...</h2>
+                        <span className="text-green-600 font-bold text-lg">${top1?.price}</span>
+                    </div>
+
+                    {/* Rating */}
+                    {/* font-bold lg:text-2xl */}
+                    <div className="flex items-center gap-x-2 mt-2">
+                        <span
+
+                            className={`font-bold lg:text-2xl 
+                                    ${top1?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                    top1?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
+                                        top1?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
+                                            top1?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D
+                                                "text-[#DC2626 ]"                                    // Default for E or others
+                                }`}
+                        >
+                            {top1?.avg_grade}
+
+                        </span>
+                        <div className=' w-1.5 h-1.5 bg-black rounded-full ' />
+                        <span>
+                            <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.99996 14.275L4.84996 16.775C4.66663 16.8917 4.47496 16.9417 4.27496 16.925C4.07496 16.9083 3.89996 16.8417 3.74996 16.725C3.59996 16.6083 3.4833 16.4627 3.39996 16.288C3.31663 16.1133 3.29996 15.9173 3.34996 15.7L4.44996 10.975L0.774963 7.80001C0.608296 7.65001 0.504296 7.47901 0.462963 7.28701C0.421629 7.09501 0.433963 6.90768 0.499963 6.72501C0.565963 6.54235 0.665963 6.39235 0.799963 6.27501C0.933963 6.15768 1.1173 6.08268 1.34996 6.05001L6.19996 5.62501L8.07496 1.17501C8.1583 0.975012 8.28763 0.825012 8.46296 0.725012C8.6383 0.625012 8.8173 0.575012 8.99996 0.575012C9.18263 0.575012 9.36163 0.625012 9.53696 0.725012C9.7123 0.825012 9.84163 0.975012 9.92496 1.17501L11.8 5.62501L16.65 6.05001C16.8833 6.08335 17.0666 6.15835 17.2 6.27501C17.3333 6.39168 17.4333 6.54168 17.5 6.72501C17.5666 6.90835 17.5793 7.09601 17.538 7.28801C17.4966 7.48001 17.3923 7.65068 17.225 7.80001L13.55 10.975L14.65 15.7C14.7 15.9167 14.6833 16.1127 14.6 16.288C14.5166 16.4633 14.4 16.609 14.25 16.725C14.1 16.841 13.925 16.9077 13.725 16.925C13.525 16.9423 13.3333 16.8923 13.15 16.775L8.99996 14.275Z" fill="#F6CF2F" />
+                            </svg>
+
+                        </span>
+                        <span className="text-black text-xs lg:text-[16px] font-normal">{top1?.avg_overall_rating}</span>
+                    </div>
+
+                    {/* Scores */}
+
+                    <div className="flex justify-between gap-2 mt-5">
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_claims}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Claim</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_service} </span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Service</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_pricing}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Price</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_coverage}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Cover</span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                            <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_trust}</span>
+                            <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Trust</span>
+                        </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-gray-200 mt-8 lg:mt-16 mb-5"></div>
+
+                    {/* Footer */}
+                    <div className="flex justify-between items-center">
+                        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                            <Checkbox /> Compare
+                        </label>
+
+                        <Link href={"/profile-details"}>
+                            <button className="flex items-center gap-x-2 lg:text-[16px] cursor-pointer text-sm text-[#D09A40] font-normal hover:underline">
+                                View Details <ArrowRight className="w-4 h-4" />
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+
+
+
 
 export default TopThree
