@@ -8,12 +8,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import InsuranceBySlugReview from './InsuranceBySlugReview'
+import ProgressBar from '@ramonak/react-progress-bar'
 
 const DetailsBanner = ({ slug }: { slug: string }) => {
 
     const { data } = useSingleProviderQuery(slug);
 
-    console.log("single provider is", data?.data)
+
 
 
     const router = useRouter();
@@ -21,19 +22,8 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
         router.push(`/specify-insurance-review/${slug}`)
     }
 
-    console.log("single  provider is ", data?.data)
 
-    const ratings = Object.entries(data?.data?.avg_score || {}).map(([key, value]) => {
-        const label = key
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, (str) => str.toUpperCase());
 
-        let color = "bg-green-500";
-        if (value < 3) color = "bg-red-500";
-        else if (value < 4.5) color = "bg-yellow-500";
-
-        return { label, value: Number(value), color };
-    });
 
 
 
@@ -68,7 +58,18 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
                                 <h1 className=' lg:text-4xl text-lg font-normal text-black ' > {data?.data?.name} </h1>
                                 <div className=' flex flex-row items-center gap-x-4 ' >
                                     <div>
-                                        <h1 className=' text-[#4AF850] lg:text-4xl text-lg font-bold  ' >{data?.data?.avg_grade}</h1>
+
+                                        <h1
+                                            className={`lg:text-4xl text-lg font-bold  
+    ${data?.data?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                                    data?.data?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
+                                                        data?.data?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
+                                                            data?.data?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D
+                                                                "text-[#DC2626 ]"                                    // Default for E or others
+                                                }`}
+                                        >
+                                            {data?.data?.avg_grade}
+                                        </h1>
                                     </div>
                                     <div>
                                         <div className=' w-2 h-2 bg-black rounded-full ' >
@@ -125,29 +126,225 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
                     <div className=" w-full lg:w-[65%]   mb-10  pl-5 pr-8  pb-10 pt-5 shadow shadow-[#00000033] rounded-[10px]    ">
                         <h2 className="text-xl font-semibold mb-4">Overall Ratings</h2>
 
-                        <div className="space-y-4">
-                            {ratings.map((item, index) => (
-                                <div key={index} className="flex items-center justify-between">
-                                    {/* Label */}
-                                    <span className="w-28 text-[#000000] lg:text-xl font-thin text-sm ">{item.label}</span>
+                        <div className="space-y-20 mt-6 ">
 
-                                    {/* Progress Bar */}
-                                    <div className="flex-1 mx-4 my-4 lg:my-[34px] ">
-                                        <div className="w-full bg-gray-200 rounded-full h-2">
-                                            <div
-                                                className={`h-2 rounded-full ${item.color}`}
-                                                style={{ width: `${(item.value / 5) * 100}%` }}
-                                            ></div>
-                                        </div>
-                                    </div>
+                            {/* Claims */}
+                            <div className="flex items-center gap-x-5 justify-between  ">
 
-                                    {/* Value */}
-                                    <span className=" lg:text-xl text-sm font-normal text-black ">
-                                        A <span className="font-medium">{item.value.toFixed(1)}</span>
-                                    </span>
+                                {/* Label */}
+                                <h1 className="text-gray-700 font-medium w-16 text-xl ">Claims</h1>
+
+                                {/* Progress Bar */}
+                                <div className=" w-[70%] ">
+                                    <ProgressBar
+                                        completed={data?.data?.avg_claims * 20}
+                                        isLabelVisible={false}
+                                        height="10px"
+                                        bgColor={
+                                            data?.data?.avg_claims == 5 ? "#22C55E" :       // Green (A)
+                                                data?.data?.avg_claims == 4 ? "#3B82F6" :       // Blue (B)
+                                                    data?.data?.avg_claims == 3 ? "#EAB308" :       // Yellow (C)
+                                                        data?.data?.avg_claims == 2 ? "#F97316" :       // Orange (D)
+                                                            "#DC2626"                                 // Red (E)
+                                        }
+                                    />
                                 </div>
-                            ))}
+
+                                {/* Rating Text */}
+                                <div className=" text-right">
+                                    {
+                                        data?.data?.avg_claims == 5 ? (
+                                            <span className="text-[#22C55E] text-xl ">{data?.data?.avg_claims} A</span>
+                                        ) : data?.data?.avg_claims == 4 ? (
+                                            <span className="text-[#3B82F6] text-xl ">{data?.data?.avg_claims} B</span>
+                                        ) : data?.data?.avg_claims == 3 ? (
+                                            <span className="text-[#EAB308] text-xl ">{data?.data?.avg_claims} C</span>
+                                        ) : data?.data?.avg_claims == 2 ? (
+                                            <span className="text-[#F97316] text-xl ">{data?.data?.avg_claims} D</span>
+                                        ) : data?.data?.avg_claims == 1 ? (
+                                            <span className="text-[#DC2626] text-xl ">{data?.data?.avg_claims} E</span>
+                                        ) : (
+                                            <span>-</span>
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+
+                            {/* Service */}
+                            <div className="flex items-center gap-x-5 justify-between  ">
+
+                                {/* Label */}
+                                <h1 className="text-gray-700 font-medium w-16 text-xl  ">Service</h1>
+
+                                {/* Progress Bar */}
+                                <div className="w-[70%]">
+                                    <ProgressBar
+                                        completed={data?.data?.avg_service * 20}
+                                        isLabelVisible={false}
+                                        height="10px"
+                                        bgColor={
+                                            data?.data?.avg_service == 5 ? "#22C55E" :       // Green (A)
+                                                data?.data?.avg_service == 4 ? "#3B82F6" :       // Blue (B)
+                                                    data?.data?.avg_service == 3 ? "#EAB308" :       // Yellow (C)
+                                                        data?.data?.avg_service == 2 ? "#F97316" :       // Orange (D)
+                                                            "#DC2626"                                 // Red (E)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Rating Text */}
+                                <div className=" text-right">
+                                    {
+                                        data?.data?.avg_service == 5 ? (
+                                            <span className="text-[#22C55E] text-xl ">{data?.data?.avg_service} A</span>
+                                        ) : data?.data?.avg_service == 4 ? (
+                                            <span className="text-[#3B82F6] text-xl ">{data?.data?.avg_service} B</span>
+                                        ) : data?.data?.avg_service == 3 ? (
+                                            <span className="text-[#EAB308] text-xl ">{data?.data?.avg_service} C</span>
+                                        ) : data?.data?.avg_service == 2 ? (
+                                            <span className="text-[#F97316] text-xl ">{data?.data?.avg_service} D</span>
+                                        ) : data?.data?.avg_service == 1 ? (
+                                            <span className="text-[#DC2626] text-xl ">{data?.data?.avg_service} E</span>
+                                        ) : (
+                                            <span>-</span>
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+
+                            {/* Pricing */}
+                            <div className="flex items-center justify-between gap-x-5 ">
+
+                                {/* Label */}
+                                <h1 className="text-gray-700 font-medium w-16 text-xl ">Pricing</h1>
+
+                                {/* Progress Bar */}
+                                <div className="w-[70%]">
+                                    <ProgressBar
+                                        completed={data?.data?.avg_pricing * 20}
+                                        isLabelVisible={false}
+                                        height="10px"
+                                        bgColor={
+                                            data?.data?.avg_pricing == 5 ? "#22C55E" :       // Green (A)
+                                                data?.data?.avg_pricing == 4 ? "#3B82F6" :       // Blue (B)
+                                                    data?.data?.avg_pricing == 3 ? "#EAB308" :       // Yellow (C)
+                                                        data?.data?.avg_pricing == 2 ? "#F97316" :       // Orange (D)
+                                                            "#DC2626"                                 // Red (E)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Rating Text */}
+                                <div className=" text-right">
+                                    {
+                                        data?.data?.avg_pricing == 5 ? (
+                                            <span className="text-[#22C55E] text-xl  ">{data?.data?.avg_pricing} A</span>
+                                        ) : data?.data?.avg_pricing == 4 ? (
+                                            <span className="text-[#3B82F6]  text-xl ">{data?.data?.avg_pricing} B</span>
+                                        ) : data?.data?.avg_pricing == 3 ? (
+                                            <span className="text-[#EAB308] text-xl  ">{data?.data?.avg_pricing} C</span>
+                                        ) : data?.data?.avg_pricing == 2 ? (
+                                            <span className="text-[#F97316]  text-xl ">{data?.data?.avg_pricing} D</span>
+                                        ) : data?.data?.avg_pricing == 1 ? (
+                                            <span className="text-[#DC2626] text-xl  ">{data?.data?.avg_pricing} E</span>
+                                        ) : (
+                                            <span>-</span>
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+
+                            {/* Coverage */}
+                            <div className="flex items-center justify-between gap-x-5 ">
+
+                                {/* Label */}
+                                <h1 className="text-gray-700 font-medium w-16 text-xl  ">Coverage</h1>
+
+                                {/* Progress Bar */}
+                                <div className="w-[70%]">
+                                    <ProgressBar
+                                        completed={data?.data?.avg_coverage * 20}
+                                        isLabelVisible={false}
+                                        height="10px"
+                                        bgColor={
+                                            data?.data?.avg_coverage == 5 ? "#22C55E" :       // Green (A)
+                                                data?.data?.avg_coverage == 4 ? "#3B82F6" :       // Blue (B)
+                                                    data?.data?.avg_coverage == 3 ? "#EAB308" :       // Yellow (C)
+                                                        data?.data?.avg_coverage == 2 ? "#F97316" :       // Orange (D)
+                                                            "#DC2626"                                 // Red (E)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Rating Text */}
+                                <div className=" text-right">
+                                    {
+                                        data?.data?.avg_coverage == 5 ? (
+                                            <span className="text-[#22C55E] text-xl ">{data?.data?.avg_coverage} A</span>
+                                        ) : data?.data?.avg_coverage == 4 ? (
+                                            <span className="text-[#3B82F6] text-xl ">{data?.data?.avg_coverage} B</span>
+                                        ) : data?.data?.avg_coverage == 3 ? (
+                                            <span className="text-[#EAB308] text-xl ">{data?.data?.avg_coverage} C</span>
+                                        ) : data?.data?.avg_coverage == 2 ? (
+                                            <span className="text-[#F97316] text-xl ">{data?.data?.avg_coverage} D</span>
+                                        ) : data?.data?.avg_coverage == 1 ? (
+                                            <span className="text-[#DC2626] text-xl ">{data?.data?.avg_coverage} E</span>
+                                        ) : (
+                                            <span>-</span>
+                                        )
+                                    }
+                                </div>
+
+                            </div>
+
+                            {/* Trust */}
+                            <div className="flex items-center justify-between gap-x-5 ">
+
+                                {/* Label */}
+                                <h1 className="text-gray-700 font-medium w-16 text-xl  ">Trust</h1>
+
+                                {/* Progress Bar */}
+                                <div className="w-[70%]">
+                                    <ProgressBar
+                                        completed={data?.data?.avg_trust * 20}
+                                        isLabelVisible={false}
+                                        height="10px"
+                                        bgColor={
+                                            data?.data?.avg_trust == 5 ? "#22C55E" :       // Green (A)
+                                                data?.data?.avg_trust == 4 ? "#3B82F6" :       // Blue (B)
+                                                    data?.data?.avg_trust == 3 ? "#EAB308" :       // Yellow (C)
+                                                        data?.data?.avg_trust == 2 ? "#F97316" :       // Orange (D)
+                                                            "#DC2626"                                 // Red (E)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Rating Text */}
+                                <div className=" text-right">
+                                    {
+                                        data?.data?.avg_trust == 5 ? (
+                                            <span className="text-[#22C55E] text-xl ">{data?.data?.avg_trust} A</span>
+                                        ) : data?.data?.avg_trust == 4 ? (
+                                            <span className="text-[#3B82F6] text-xl ">{data?.data?.avg_trust} B</span>
+                                        ) : data?.data?.avg_trust == 3 ? (
+                                            <span className="text-[#EAB308] text-xl ">{data?.data?.avg_trust} C</span>
+                                        ) : data?.data?.avg_trust == 2 ? (
+                                            <span className="text-[#F97316 ] text-xl ">{data?.data?.avg_trust} D</span>
+                                        ) : data?.data?.avg_trust == 1 ? (
+                                            <span className="text-[#DC2626 ] text-xl ">{data?.data?.avg_trust} E</span>
+                                        ) : (
+                                            <span>-</span>
+                                        )
+                                    }
+                                </div>
+
+                            </div>
                         </div>
+
+
                     </div>
 
                     {/* right side  */}
