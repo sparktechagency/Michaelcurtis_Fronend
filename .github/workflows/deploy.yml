@@ -37,6 +37,6 @@ jobs:
           port: 21098  
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
-            docker compose pull coverage-frontend
-            docker compose up -d --force-recreate --no-deps coverage-frontend
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml pull coverage-frontend
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate --no-deps coverage-frontend
             docker image prune -f
