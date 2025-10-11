@@ -7,80 +7,31 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
+import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/providerType";
 
-// ----- TYPES (scores are individual fields) -----
-export type ScoreKey =
-    | "Claims"
-    | "Service"
-    | "Pricing"
-    | "Coverage"
-    | "Trust";
-
-export type Insurer = {
-    id: number;
-    name: string;
-    logoUrl: string;
-    priceUSD: number;
-    rating: number;
-    profileHref?: string;
-    grade: string;
-    claims: number;
-    service: number;
-    pricing: number;
-    coverage: number;
-    digitalTools: number;
-};
-
-const metricColors: Record<ScoreKey, string> = {
-    Claims: "bg-emerald-500",
-    Service: "bg-cyan-500",
-    Pricing: "bg-amber-500",
-    Coverage: "bg-fuchsia-500",
-    "Trust": "bg-orange-500",
-};
-
-function Meter({ value, colorClass }: { value: number; colorClass: string }) {
-    const pct = Math.max(0, Math.min(100, (value / 5) * 100));
-
-    return (
-        <div className="flex items-center gap-3 w-full">
-            {/* Background gray bar */}
-            <div className="relative h-2 w-full rounded-full bg-gray-300">
-                {/* Colored portion */}
-                <div
-                    className={`absolute left-0 top-0 h-2 rounded-full ${colorClass} transition-all duration-500`}
-                    style={{ width: `${pct}%` }}
-                />
-            </div>
-            <span className="text-muted-foreground text-sm tabular-nums">
-                {value.toFixed(1)}
-            </span>
-        </div>
-    );
-}
-
-
-export function InsuranceCard({ data }: { data: Insurer }) {
-    // build rows from individual fields
-    const rows: Array<{ label: ScoreKey; value: number }> = [
-        { label: "Claims", value: data.claims },
-        { label: "Service", value: data.service },
-        { label: "Pricing", value: data.pricing },
-        { label: "Coverage", value: data.coverage },
-        { label: "Trust", value: data.digitalTools },
-    ];
+import ProgressBar from "@ramonak/react-progress-bar";
+import Image from "next/image";
 
 
 
-    const [selected, setSelected] = React.useState<Insurer[]>([]);
+
+
+
+
+export function InsuranceCard({ data }: { data: TopInsuranceType }) {
+
+
+
+
+    const [selected, setSelected] = React.useState<TopInsuranceType[]>([]);
     const [openCompareModal, setOpenCompareModal] = React.useState(false);
 
     // ✅ Checkbox toggle handler
-    const handleCompareChange = (data: Insurer, checked: boolean) => {
+    const handleCompareChange = (data: TopInsuranceType, checked: boolean) => {
         const stored = localStorage.getItem("selectedInsurers");
-        const prevSelected: Insurer[] = stored ? JSON.parse(stored) : [];
+        const prevSelected: TopInsuranceType[] = stored ? JSON.parse(stored) : [];
 
-        let newSelected: Insurer[];
+        let newSelected: TopInsuranceType[];
 
         if (checked) {
             // ✅ Add if not exists
@@ -108,7 +59,7 @@ export function InsuranceCard({ data }: { data: Insurer }) {
         const stored = localStorage.getItem("selectedInsurers");
         if (stored) {
             try {
-                const parsed: Insurer[] = JSON.parse(stored);
+                const parsed: TopInsuranceType[] = JSON.parse(stored);
                 setSelected(parsed);
                 if (parsed.length > 0) setOpenCompareModal(true);
             } catch (error) {
@@ -132,60 +83,298 @@ export function InsuranceCard({ data }: { data: Insurer }) {
 
 
 
-
-
     return (
         <>
             <Card className="rounded-2xl border border-muted-foreground/10 shadow-sm bg-[#FAF5EC] backdrop-blur-sm">
                 <CardContent className="p-5">
                     {/* Header */}
                     <div className="flex items-start gap-4">
-                        <div className="border border-[#E9D1A7] rounded-[6px] flex justify-center items-center shadow-sm shrink-0 w-[68px] h-[71px]">
+                        <div className=" flex justify-center items-center shadow-sm shrink-0 ">
                             {/* Logo placeholder */}
                             <span>
+                                <Image src={data?.logo_url} width={2000} height={2000} alt={data?.name} className=" w-[68px] h-[71px] rounded-[6px] border border-[#E9D1A7]  " />
 
 
                             </span>
                         </div>
 
                         <div className="flex-1">
-                            <h3 className="text-lg font-medium text-[#000000] leading-none">{data.name}</h3>
+                            <h3 className="text-lg font-medium text-[#000000] leading-none">{data.name.slice(0, 15)}....</h3>
                             <div className="mt-2 flex items-center gap-3">
                                 <span className="text-lg font-medium text-[#529F22] leading-none">
-                                    ${data.priceUSD}
+                                    ${data.price}
                                 </span>
                                 <div className=" w-1.5 h-1.5 bg-black rounded-full  " ></div>
                                 <div>
                                     <h1
-                                        className={`text-lg font-bold ${data?.grade === "B+" ? "text-[#00B8DB]" :
-                                            data?.grade === "C+" ? "text-[#FE9A00]" :
-                                                data?.grade === "D+" ? "text-[#FF6900]" :
-                                                    "text-[#23C223]"
+                                        className={`text-lg font-bold 
+    ${data?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                                data?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
+                                                    data?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
+                                                        data?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D
+                                                            "text-[#DC2626 ]"                                    // Default for E or others
                                             }`}
                                     >
-                                        {data?.grade}
+                                        {data?.avg_grade}
                                     </h1>
                                 </div>
                                 <div className=" w-1.5 h-1.5 bg-black rounded-full  " ></div>
                                 <Badge className="gap-1 bg-[#D9AE66] rounded-md px-2 py-1 text-xs">
                                     <Star className="h-3 w-3 fill-[#FFF07E] text-[#FFF07E]" />
-                                    {data.rating.toFixed(1)}
+                                    {data?.avg_overall_rating}
                                 </Badge>
                             </div>
+                            <div>
+                            </div>
                         </div>
+
+                    </div>
+                    <div className="space-y-6 mt-6 ">
+
+                        {/* Claims */}
+                        <div className="flex items-center gap-x-5 justify-between  ">
+
+                            {/* Label */}
+                            <h1 className="text-gray-700 font-medium w-13 ">Claims</h1>
+
+                            {/* Progress Bar */}
+                            <div className=" w-[55%] ">
+                                <ProgressBar
+                                    completed={data?.avg_claims * 20}
+                                    isLabelVisible={false}
+                                    height="10px"
+                                    bgColor={
+                                        data?.avg_claims == 5 ? "#22C55E" :       // Green (A)
+                                            data?.avg_claims == 4 ? "#3B82F6" :       // Blue (B)
+                                                data?.avg_claims == 3 ? "#EAB308" :       // Yellow (C)
+                                                    data?.avg_claims == 2 ? "#F97316" :       // Orange (D)
+                                                        "#DC2626"                                 // Red (E)
+                                    }
+                                />
+                            </div>
+
+                            {/* Rating Text */}
+                            <div className=" text-right">
+                                {
+                                    data?.avg_claims == 5 ? (
+                                        <span className="text-[#22C55E]">{data?.avg_claims} (A)</span>
+                                    ) : data?.avg_claims == 4 ? (
+                                        <span className="text-[#3B82F6]">{data?.avg_claims} (B)</span>
+                                    ) : data?.avg_claims == 3 ? (
+                                        <span className="text-[#EAB308]">{data?.avg_claims} (C)</span>
+                                    ) : data?.avg_claims == 2 ? (
+                                        <span className="text-[#F97316 ]">{data?.avg_claims} (D)</span>
+                                    ) : data?.avg_claims == 1 ? (
+                                        <span className="text-[#DC2626 ]">{data?.avg_claims} (E)</span>
+                                    ) : (
+                                        <span>-</span>
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+
+
+                        {/* Service */}
+                        <div className="flex items-center gap-x-5 justify-between  ">
+
+                            {/* Label */}
+                            <h1 className="text-gray-700 font-medium w-13  ">Service</h1>
+
+                            {/* Progress Bar */}
+                            <div className="w-[55%]">
+                                <ProgressBar
+                                    completed={data?.avg_service * 20}
+                                    isLabelVisible={false}
+                                    height="10px"
+                                    bgColor={
+                                        data?.avg_service == 5 ? "#22C55E" :       // Green (A)
+                                            data?.avg_service == 4 ? "#3B82F6" :       // Blue (B)
+                                                data?.avg_service == 3 ? "#EAB308" :       // Yellow (C)
+                                                    data?.avg_service == 2 ? "#F97316" :       // Orange (D)
+                                                        "#DC2626"                                 // Red (E)
+                                    }
+                                />
+                            </div>
+
+                            {/* Rating Text */}
+                            <div className=" text-right">
+                                {
+                                    data?.avg_service == 5 ? (
+                                        <span className="text-[#22C55E]">{data?.avg_service} (A)</span>
+                                    ) : data?.avg_service == 4 ? (
+                                        <span className="text-[#3B82F6]">{data?.avg_service} (B)</span>
+                                    ) : data?.avg_service == 3 ? (
+                                        <span className="text-[#EAB308]">{data?.avg_service} (C)</span>
+                                    ) : data?.avg_service == 2 ? (
+                                        <span className="text-[#F97316 ]">{data?.avg_service} (D)</span>
+                                    ) : data?.avg_service == 1 ? (
+                                        <span className="text-[#DC2626 ]">{data?.avg_service} (E)</span>
+                                    ) : (
+                                        <span>-</span>
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        {/* Pricing */}
+                        <div className="flex items-center justify-between gap-x-5 ">
+
+                            {/* Label */}
+                            <h1 className="text-gray-700 font-medium w-13 ">Pricing</h1>
+
+                            {/* Progress Bar */}
+                            <div className="w-[55%]">
+                                <ProgressBar
+                                    completed={data?.avg_pricing * 20}
+                                    isLabelVisible={false}
+                                    height="10px"
+                                    bgColor={
+                                        data?.avg_pricing == 5 ? "#22C55E" :       // Green (A)
+                                            data?.avg_pricing == 4 ? "#3B82F6" :       // Blue (B)
+                                                data?.avg_pricing == 3 ? "#EAB308" :       // Yellow (C)
+                                                    data?.avg_pricing == 2 ? "#F97316" :       // Orange (D)
+                                                        "#DC2626"                                 // Red (E)
+                                    }
+                                />
+                            </div>
+
+                            {/* Rating Text */}
+                            <div className=" text-right">
+                                {
+                                    data?.avg_pricing == 5 ? (
+                                        <span className="text-[#22C55E]">{data?.avg_pricing} (A)</span>
+                                    ) : data?.avg_pricing == 4 ? (
+                                        <span className="text-[#3B82F6]">{data?.avg_pricing} (B)</span>
+                                    ) : data?.avg_pricing == 3 ? (
+                                        <span className="text-[#EAB308]">{data?.avg_pricing} (C)</span>
+                                    ) : data?.avg_pricing == 2 ? (
+                                        <span className="text-[#F97316 ]">{data?.avg_pricing} (D)</span>
+                                    ) : data?.avg_pricing == 1 ? (
+                                        <span className="text-[#DC2626 ]">{data?.avg_pricing} (E)</span>
+                                    ) : (
+                                        <span>-</span>
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+                        {/* Coverage */}
+
+                        <div className="flex items-center justify-between gap-x-5 ">
+
+                            {/* Label */}
+                            <h1 className="text-gray-700 font-medium w-13  ">Coverage</h1>
+
+                            {/* Progress Bar */}
+                            <div className="w-[55%]">
+                                <ProgressBar
+                                    completed={data?.avg_coverage * 20}
+                                    isLabelVisible={false}
+                                    height="10px"
+                                    bgColor={
+                                        data?.avg_coverage == 5 ? "#22C55E" :       // Green (A)
+                                            data?.avg_coverage == 4 ? "#3B82F6" :       // Blue (B)
+                                                data?.avg_coverage == 3 ? "#EAB308" :       // Yellow (C)
+                                                    data?.avg_coverage == 2 ? "#F97316" :       // Orange (D)
+                                                        "#DC2626"                                 // Red (E)
+                                    }
+                                />
+                            </div>
+
+                            {/* Rating Text */}
+                            <div className=" text-right">
+                                {
+                                    data?.avg_coverage == 5 ? (
+                                        <span className="text-[#22C55E]">{data?.avg_coverage} (A)</span>
+                                    ) : data?.avg_coverage == 4 ? (
+                                        <span className="text-[#3B82F6]">{data?.avg_coverage} (B)</span>
+                                    ) : data?.avg_coverage == 3 ? (
+                                        <span className="text-[#EAB308]">{data?.avg_coverage} (C)</span>
+                                    ) : data?.avg_coverage == 2 ? (
+                                        <span className="text-[#F97316 ]">{data?.avg_coverage} (D)</span>
+                                    ) : data?.avg_coverage == 1 ? (
+                                        <span className="text-[#DC2626 ]">{data?.avg_coverage} (E)</span>
+                                    ) : (
+                                        <span>-</span>
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+
+                        {/* Trust */}
+
+                        <div className="flex items-center justify-between gap-x-5 ">
+
+                            {/* Label */}
+                            <h1 className="text-gray-700 font-medium w-13  ">Trust</h1>
+
+                            {/* Progress Bar */}
+                            <div className="w-[55%]">
+                                <ProgressBar
+                                    completed={data?.avg_trust * 20}
+                                    isLabelVisible={false}
+                                    height="10px"
+                                    bgColor={
+                                        data?.avg_trust == 5 ? "#22C55E" :       // Green (A)
+                                            data?.avg_trust == 4 ? "#3B82F6" :       // Blue (B)
+                                                data?.avg_trust == 3 ? "#EAB308" :       // Yellow (C)
+                                                    data?.avg_trust == 2 ? "#F97316" :       // Orange (D)
+                                                        "#DC2626"                                 // Red (E)
+                                    }
+                                />
+                            </div>
+
+                            {/* Rating Text */}
+                            <div className=" text-right">
+                                {
+                                    data?.avg_trust == 5 ? (
+                                        <span className="text-[#22C55E]">{data?.avg_trust} (A)</span>
+                                    ) : data?.avg_trust == 4 ? (
+                                        <span className="text-[#3B82F6]">{data?.avg_trust} (B)</span>
+                                    ) : data?.avg_trust == 3 ? (
+                                        <span className="text-[#EAB308]">{data?.avg_trust} (C)</span>
+                                    ) : data?.avg_trust == 2 ? (
+                                        <span className="text-[#F97316 ]">{data?.avg_trust} (D)</span>
+                                    ) : data?.avg_trust == 1 ? (
+                                        <span className="text-[#DC2626 ]">{data?.avg_trust} (E)</span>
+                                    ) : (
+                                        <span>-</span>
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+
+
+
                     </div>
 
-                    {/* Metrics */}
-                    <div className="mt-5 gap-y-3">
-                        {rows.map((r) => (
-                            <React.Fragment key={r.label}>
-                                <div className="flex flex-row">
-                                    <div className="text-muted-foreground w-[200px]">{r.label}</div>
-                                    <Meter value={r.value} colorClass={metricColors[r.label]} />
-                                </div>
-                            </React.Fragment>
-                        ))}
-                    </div>
+
+
+
+
+
+
+
 
                     {/* Footer */}
                     <div className="mt-6 flex items-center justify-between">
@@ -207,7 +396,7 @@ export function InsuranceCard({ data }: { data: Insurer }) {
                             className="text-amber-600 hover:text-amber-700 hover:bg-amber-50"
                             asChild
                         >
-                            <Link href={`/insurance-profile/${data?.id}`}>
+                            <Link href={`/insurance-profile/${data?.slug}`}>
                                 View Profile <ArrowRight className="ml-1 h-4 w-4" />
                             </Link>
                         </Button>

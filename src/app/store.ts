@@ -16,6 +16,7 @@ import { webContentApi } from "./api/website/content/webContentApi";
 import { homeReview } from "./api/website/review/homeReview";
 import { userApi } from "./api/admin/userApi";
 import { webUserApi } from "./api/website/user/webUserApi";
+import { webInsuranceApi } from "./api/website/insurance/webInsuranceApi";
 
 
 export const store = configureStore({
@@ -36,11 +37,12 @@ export const store = configureStore({
         [webPolicyApi.reducerPath]: webPolicyApi.reducer,
         [webContentApi.reducerPath]: webContentApi.reducer,
         [homeReview.reducerPath]: homeReview.reducer,
-        [webUserApi.reducerPath]: webUserApi.reducer
+        [webUserApi.reducerPath]: webUserApi.reducer,
+        [webInsuranceApi.reducerPath]: webInsuranceApi.reducer
 
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware, notificationApi?.middleware, contactApi.middleware, adminApi.middleware, reportApi.middleware, webBlogApi.middleware, webPolicyApi.middleware, webContentApi.middleware, homeReview.middleware, webUserApi.middleware),
+        getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, policyApi.middleware, blogApi.middleware, faqApi.middleware, contentApi.middleware, insuranceApi.middleware, reviewApi.middleware, notificationApi?.middleware, contactApi.middleware, adminApi.middleware, reportApi.middleware, webBlogApi.middleware, webPolicyApi.middleware, webContentApi.middleware, homeReview.middleware, webUserApi.middleware, webInsuranceApi.middleware),
 });
 
 // types

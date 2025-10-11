@@ -74,3 +74,34 @@ export interface InsuranceNameType {
     created_at: string;
     updated_at: string
 }
+
+export interface TopInsuranceType {
+    id: number;
+    name: string;
+    slug: string;
+    logo_url: string;
+    pros: string[];
+    cons: string[];
+    price: string;
+    is_sponsored: boolean;
+    status: string;
+    about: string;
+    reviews_count: number;
+    avg_overall_rating: string;
+    avg_grade: string;
+    formatted_overall_avg_score: string;
+    avg_score: {
+        trust: number;
+        claims: number;
+        pricing: number;
+        service: number;
+        coverage: number;
+    };
+    created_at: string;
+    updated_at: string;
+    avg_trust: number,
+    avg_claims: number,
+    avg_pricing: number,
+    avg_service: number,
+    avg_coverage: number,
+}

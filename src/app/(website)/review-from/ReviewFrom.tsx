@@ -2,6 +2,7 @@
 import { useAllStateQuery, useInsuranceNameQuery } from '@/app/api/admin/insuranceApi';
 import { usePostInsuranceMutation } from '@/app/api/website/review/reviewApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import SkeletonLoader from '@/app/components/skeleton/SkeletonLoader';
 import { updateAlert } from '@/helper/updertAlert';
 import { InsuranceNameType, StateType } from '@/utility/types/admin/insurance-provider/providerType';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -118,7 +119,7 @@ const ReviewFrom = () => {
     // insurance name 
 
 
-    const { data } = useInsuranceNameQuery([]);
+    const { data, isLoading } = useInsuranceNameQuery([]);
 
 
     const insuranceName: InsuranceNameType[] = data?.data || [];
@@ -154,6 +155,14 @@ const ReviewFrom = () => {
 
     }
 
+
+    if (isLoading) {
+        return (
+            <div>
+                <SkeletonLoader />
+            </div>
+        )
+    }
 
 
 
