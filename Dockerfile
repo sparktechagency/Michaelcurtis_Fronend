@@ -9,6 +9,12 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Set the environment variable for the API base URL
+# This should be passed during the build process from github secrets variables
+ARG NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+
 RUN npm run build
 
 # Stage 3: Final Production Image (Runner)
