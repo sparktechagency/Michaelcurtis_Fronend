@@ -104,4 +104,5 @@ export interface TopInsuranceType {
     avg_pricing: number,
     avg_service: number,
     avg_coverage: number,
+    states_count: number;
 }
