@@ -129,6 +129,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                         </div>
 
                     </div>
+
                     <div className="space-y-6 mt-6 ">
 
                         {/* Claims */}
@@ -174,9 +175,6 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
                         </div>
 
-
-
-
                         {/* Service */}
                         <div className="flex items-center gap-x-5 justify-between  ">
 
@@ -219,10 +217,6 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                             </div>
 
                         </div>
-
-
-
-
 
                         {/* Pricing */}
                         <div className="flex items-center justify-between gap-x-5 ">
@@ -267,9 +261,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
                         </div>
 
-
                         {/* Coverage */}
-
                         <div className="flex items-center justify-between gap-x-5 ">
 
                             {/* Label */}
@@ -312,10 +304,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
                         </div>
 
-
-
                         {/* Trust */}
-
                         <div className="flex items-center justify-between gap-x-5 ">
 
                             {/* Label */}
@@ -357,15 +346,6 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                             </div>
 
                         </div>
-
-
-
-
-
-
-
-
-
                     </div>
 
 
