@@ -2,6 +2,7 @@
 import { useAllStateQuery, useSingleProviderQuery } from '@/app/api/admin/insuranceApi';
 import { usePostInsuranceMutation } from '@/app/api/website/review/reviewApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import SkeletonLoader from '@/app/components/skeleton/SkeletonLoader';
 import { updateAlert } from '@/helper/updertAlert';
 import { InsuranceNameType, StateType } from '@/utility/types/admin/insurance-provider/providerType';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
@@ -12,7 +13,7 @@ import { toast } from 'sonner';
 const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
     console.log(slug)
     const providerSlug = slug;
-    const { data } = useSingleProviderQuery(providerSlug);
+    const { data, isLoading } = useSingleProviderQuery(providerSlug);
     console.log("single provideris", data?.data?.name)
 
 
@@ -158,6 +159,14 @@ const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
 
     }
 
+    if (isLoading) {
+        return (
+            <div>
+                <SkeletonLoader></SkeletonLoader>
+            </div>
+        )
+    }
+
 
 
 
@@ -165,7 +174,7 @@ const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
     return (
         <div>
             <MaxWidth>
-                <div className=' py-16 ' >
+                <div className=' py-16   ' >
                     <h1 className=' text-[#000000] lg:text-6xl text-3xl text-center ' >Write a Review</h1>
                     <p className=' text-center mt-3 font-thin lg:text-xl text-sm text-[#000000] ' >Share your experience to help the community make better decisions.</p>
                     <div className=' lg:mt-8 mt-4 ' >

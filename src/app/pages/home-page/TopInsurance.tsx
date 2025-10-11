@@ -2,73 +2,21 @@
 
 import React from "react";
 import MaxWidth from "@/app/components/max-width/MaxWidth";
-import { InsuranceCard, Insurer } from "@/app/components/home/InsuranceCard";
+import { InsuranceCard, } from "@/app/components/home/InsuranceCard";
 import Link from "next/link";
+import { useAllInsuranceApiQuery } from "@/app/api/website/insurance/webInsuranceApi";
+import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/providerType";
 
 const TopInsurance = () => {
-    const insurers: Insurer[] = [
-        {
-            id: 1,
-            name: "Liberty Mutual",
-            logoUrl: "/logos/insurance.png",
-            priceUSD: 450,
-            rating: 4.8,
-            profileHref: "#",
-            claims: 4.5,
-            service: 4.5,
-            pricing: 4.5,
-            coverage: 4.5,
-            digitalTools: 4.5,
-            grade: "A+"
-
-        },
-        {
-            id: 2,
-            name: "GEICO",
-            logoUrl: "/logos/insurance.png",
-            priceUSD: 420,
-            rating: 4.6,
-            profileHref: "#",
-            claims: 4.2,
-            service: 4.4,
-            pricing: 4.7,
-            coverage: 4.3,
-            digitalTools: 4.6,
-            grade: "B+"
-        },
-        {
-            id: 3,
-            name: "State Farm",
-            logoUrl: "/logos/insurance.png",
-            priceUSD: 470,
-            rating: 4.7,
-            profileHref: "#",
-            claims: 4.6,
-            service: 4.7,
-            pricing: 4.4,
-            coverage: 4.6,
-            digitalTools: 4.3,
-            grade: "C+"
-        },
-        {
-            id: 4,
-            name: "State Farm",
-            logoUrl: "/logos/insurance.png",
-            priceUSD: 470,
-            rating: 4.7,
-            profileHref: "#",
-            claims: 4.6,
-            service: 4.7,
-            pricing: 4.4,
-            coverage: 4.6,
-            digitalTools: 4.3,
-            grade: "D+"
-        },
 
 
 
+    const { data } = useAllInsuranceApiQuery([]);
 
-    ];
+    console.log("top insurance iss", data?.data);
+
+
+    const insurers: TopInsuranceType[] = data?.data || [];
 
 
 
