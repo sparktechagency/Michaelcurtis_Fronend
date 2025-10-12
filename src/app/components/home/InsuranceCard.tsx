@@ -11,6 +11,8 @@ import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/provi
 
 import ProgressBar from "@ramonak/react-progress-bar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 
@@ -76,6 +78,41 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
 
 
+
+    const [ids, setIds] = React.useState<number[]>([]);
+    const router = useRouter();
+
+    // Function to read selected insurers from localStorage
+    const updateIds = () => {
+        const data = localStorage.getItem("selectedInsurers");
+        if (data) {
+            const insurers = JSON.parse(data);
+
+            setIds(insurers);
+        } else {
+            setIds([]);
+        }
+    };
+
+    React.useEffect(() => {
+        // Initial load
+        updateIds();
+
+        // Listen to storage changes from other tabs
+        window.addEventListener("storage", updateIds);
+        return () => window.removeEventListener("storage", updateIds);
+    }, []);
+
+
+    console.log(ids)
+
+    const handleOpenCompare = () => {
+        if (ids.length >= 2) {
+            router.push("/InsuranceTable");
+        } else {
+            toast.error("Please select at least 2 insurers to compare.");
+        }
+    };
 
 
 
@@ -403,9 +440,13 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                                 </span>
                             </div>
                             <div className="  space-x-6 " >
-                                <Link href={"/InsuranceTable"}>
-                                    <button className=" text-white bg-[#D09A40] border border-[#D09A40] px-5 py-2 rounded-[26px] cursor-pointer lg:text-xl text-sm " >  Compare Now</button>
-                                </Link>
+
+
+
+                                <button onClick={handleOpenCompare} className=" text-white bg-[#D09A40] border border-[#D09A40] px-5 py-2 rounded-[26px] cursor-pointer lg:text-xl text-sm " >  Compare Now</button>
+
+
+
                                 <button
                                     onClick={closeModal}
                                     className="text-white  border border-[#D09A40] px-5 py-2 rounded-[26px] cursor-pointer lg:text-xl text-sm"
