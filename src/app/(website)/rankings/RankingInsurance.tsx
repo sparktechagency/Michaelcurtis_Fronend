@@ -17,16 +17,16 @@ import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/provi
 import { useRankingInsuranceSearchQuery } from '@/app/api/website/insurance/webInsuranceApi';
 import { useAllStateQuery } from '@/app/api/admin/insuranceApi';
 import { AllPolicyApiResponse } from '@/utility/types/admin/policy/policyType';
-import { useAllPolicyQuery } from '@/app/api/admin/policyApi';
 import Image from 'next/image';
 import InsuranceSkeleton from '@/app/components/skeleton/InsuranceSkeleton';
+import { useWebAllPolicyQuery } from '@/app/api/website/policy/webPolicyApi';
 
 
 
 const RankingInsurance = () => {
     // auto 
 
-    const [selected, setSelected] = useState<string | undefined>();
+    const [selected, setSelected] = useState<string | undefined>("");
     const [open, setOpen] = useState(false);
 
 
@@ -53,7 +53,7 @@ const RankingInsurance = () => {
 
 
     // state 
-    const [selectedState, setSelectedState] = useState<string>("All States");
+    const [selectedState, setSelectedState] = useState<string>("");
     const [openState, setOpenState] = useState(false);
 
 
@@ -87,7 +87,7 @@ const RankingInsurance = () => {
 
     // rating 
 
-    const [score, setScore] = useState(0);
+    const [score, setScore] = useState("");
 
 
 
@@ -179,10 +179,12 @@ const RankingInsurance = () => {
     // all policy 
 
 
-    const { data } = useAllPolicyQuery({});
+    const { data } = useWebAllPolicyQuery({});
 
     const policyPolicy: AllPolicyApiResponse[] = data?.data || [];
 
+
+    console.log("policyPolicy data is", policyPolicy);
 
     // all state 
 
@@ -194,7 +196,7 @@ const RankingInsurance = () => {
 
 
 
-    const { data: insurance, isLoading, error } = useRankingInsuranceSearchQuery({ score, selectedPrice, selectedState, selected });
+    const { data: insurance, isLoading } = useRankingInsuranceSearchQuery({ score, selectedPrice, selectedState, selected });
 
 
     const insuranceData: TopInsuranceType[] = insurance?.data || [];
@@ -207,8 +209,8 @@ const RankingInsurance = () => {
     const handleClear = () => {
 
         // setSelectedPolicies([""])
-        // setSelected("")
-        setScore(0);
+        setSelected("");
+        setScore("");
         setSelectedPrice(0)
         setSelectedState("");
     }
@@ -216,15 +218,17 @@ const RankingInsurance = () => {
 
 
 
-
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4; // Show 4 cards per page
+    const itemsPerPage = 4;
 
-    // Pagination logic
+    // Skip first 3 items
+    const slicedData = insuranceData.slice(0);
+
     const lastIndex = currentPage * itemsPerPage;
     const firstIndex = lastIndex - itemsPerPage;
-    const currentItems = insuranceData.slice(firstIndex, lastIndex);
-    const totalPages = Math.ceil(insuranceData.length / itemsPerPage);
+
+    const currentItems = slicedData.slice(firstIndex, lastIndex);
+    const totalPages = Math.ceil(slicedData.length / itemsPerPage);
 
 
 
@@ -247,7 +251,7 @@ const RankingInsurance = () => {
                 <div className=' max-w-7xl mx-auto lg:px-4 ' >
                     <div className=' flex flex-wrap gap-y-7 px-3 gap-x-8  ' >
                         {/* policy  */}
-                        <div ref={autoDropdownRef} className="relative w-92">
+                        <div ref={autoDropdownRef} className="relative w-92 z-40 ">
                             {/* Dropdown button */}
                             <button
                                 onClick={() => setOpen(!open)}
@@ -282,7 +286,7 @@ const RankingInsurance = () => {
 
                         {/* state  */}
 
-                        <div ref={stateDropdownRef} className="relative w-40 z-50 ">
+                        <div ref={stateDropdownRef} className="relative w-40 z-40 ">
                             {/* Dropdown button */}
                             <button
                                 onClick={() => setOpenState(!openState)}
@@ -329,7 +333,7 @@ const RankingInsurance = () => {
                                 min="1"
                                 max="5"
                                 value={score}
-                                onChange={(e) => setScore(Number(e.target.value))}
+                                onChange={(e) => setScore((e.target.value))}
                                 className="w-32 h-2 rounded-lg appearance-none cursor-pointer bg-gray-200 accent-yellow-600"
                             />
                         </div>
@@ -338,7 +342,7 @@ const RankingInsurance = () => {
                         {/* price  */}
 
 
-                        <div ref={dropdownRef} className="relative z-50 w-36">
+                        <div ref={dropdownRef} className="relative z-40 w-36">
                             {/* Dropdown button */}
                             <button
                                 onClick={() => setOpenPrice(!openPrice)}
@@ -497,35 +501,36 @@ const RankingInsurance = () => {
 
 
                     {/* Pagination Controls */}
-                    <div className="flex justify-center items-center gap-3 mt-7 lg:mt-16">
-                        <button
-                            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                            onClick={() => setCurrentPage((prev) => prev - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            Prev
-                        </button>
-
-                        {[...Array(totalPages)].map((_, index) => (
+                    {insuranceData.length > itemsPerPage && (
+                        <div className="flex justify-center items-center gap-3 mt-7 lg:mt-16">
                             <button
-                                key={index}
-                                className={`px-3 py-1 rounded ${currentPage === index + 1 ? "bg-[#D09A40] text-white" : "bg-gray-200 hover:bg-gray-300"
-                                    }`}
-                                onClick={() => setCurrentPage(index + 1)}
+                                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                                onClick={() => setCurrentPage((prev) => prev - 1)}
+                                disabled={currentPage === 1}
                             >
-                                {index + 1}
+                                Prev
                             </button>
-                        ))}
 
-                        <button
-                            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                            onClick={() => setCurrentPage((prev) => prev + 1)}
-                            disabled={currentPage === totalPages}
-                        >
-                            Next
-                        </button>
-                    </div>
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index}
+                                    className={`px-3 py-1 rounded ${currentPage === index + 1 ? "bg-[#D09A40] text-white" : "bg-gray-200 hover:bg-gray-300"
+                                        }`}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
 
+                            <button
+                                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                                onClick={() => setCurrentPage((prev) => prev + 1)}
+                                disabled={currentPage === totalPages}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
 
 
 

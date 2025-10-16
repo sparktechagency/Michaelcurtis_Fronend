@@ -32,7 +32,7 @@ const MoreBlog = () => {
                                     alt={'blog.title'}
                                     width={412}
                                     height={227}
-                                    className=" w-full "
+                                    className=" w-full h-[300px] "
                                 />
                                 <div className="px-6 pb-8 pt-6 ">
                                     <button className=' py-0.5 px-3 bg-[#C4F0C9] text-[#2D9434] rounded-[4px] ' >{blog?.policy_categories?.name}</button>

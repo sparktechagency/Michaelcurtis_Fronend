@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { deleteAlert } from "@/helper/deleteAlert";
 import { updateAlert } from "@/helper/updertAlert";
+import ProviderUpdate from "./ProviderUpdate";
 
 
 
@@ -168,6 +169,15 @@ const Provider = () => {
     };
 
 
+    const [updateModal, setUpdateModal] = useState<boolean>(false);
+
+
+    const handleInsuranceUpdate = (slug: string) => {
+        setUpdateModal(true);
+        setProviderSlug(slug)
+    }
+
+
 
 
 
@@ -263,7 +273,7 @@ const Provider = () => {
                                                 <path d="M8.00012 1.30835C8.06569 1.30838 8.13972 1.3251 8.22864 1.37573C8.26692 1.39757 8.30107 1.42751 8.3302 1.47632L8.35852 1.53296L10.0773 5.61206L10.2013 5.90698L10.5206 5.9353L14.9415 6.32202C15.0835 6.34288 15.1442 6.38208 15.1671 6.4021C15.2152 6.44424 15.2585 6.50403 15.2921 6.59644C15.3188 6.66982 15.3238 6.74016 15.3068 6.81909C15.2958 6.86986 15.2664 6.93074 15.1847 7.00366L11.8234 9.90894L11.5802 10.1179L11.6534 10.4304L12.6613 14.7605V14.7615C12.6842 14.861 12.671 14.9159 12.6534 14.9529C12.612 15.04 12.5573 15.1069 12.4874 15.1609C12.4354 15.2011 12.3733 15.2275 12.2853 15.2351C12.2287 15.24 12.1682 15.2295 12.09 15.1794L12.0841 15.1755L12.0782 15.1726L8.27356 12.8806L8.00012 12.7156L7.72571 12.8806L3.922 15.1716L3.91028 15.1794C3.83185 15.2292 3.77073 15.2399 3.71301 15.2351C3.62636 15.2279 3.56527 15.2019 3.51379 15.1619C3.44275 15.1066 3.38731 15.0389 3.34583 14.9519C3.32891 14.9164 3.31534 14.8622 3.33801 14.7625L4.3468 10.4304L4.41907 10.1179L4.1759 9.90894L0.807739 6.9978C0.731934 6.92731 0.704257 6.86808 0.693481 6.81812C0.676318 6.73839 0.681936 6.66807 0.70813 6.59546C0.740877 6.50483 0.78401 6.44517 0.83313 6.4021C0.856721 6.38144 0.916945 6.34227 1.05676 6.32202L5.47961 5.9353L5.79895 5.90698L5.92297 5.61206L7.64172 1.53296L7.67004 1.47632C7.69914 1.42763 7.73241 1.39754 7.77063 1.37573C7.85981 1.32487 7.93441 1.30835 8.00012 1.30835Z" fill="#FEE453" stroke="#BD8C3A" strokeWidth="1.0623" />
                                             </svg>
                                             </span>
-                                            <p>{provider.avg_overall_rating}</p>
+                                            <p>{provider.formatted_overall_avg_score}</p>
                                         </div>
 
                                     </td>
@@ -347,6 +357,17 @@ const Provider = () => {
 
                                         </button>
                                         <button
+                                            onClick={() => { handleInsuranceUpdate(provider?.slug) }}
+                                            className=" border border-[#989DA3] rounded-[6px] px-2 py-1 cursor-pointer "
+                                        >
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7.533 9.15016C7.36388 9.31929 7.22976 9.5201 7.13831 9.74111C7.04685 9.96211 6.99985 10.199 7 10.4382V13.0002H9.578C10.061 13.0002 10.525 12.8082 10.867 12.4662L18.467 4.86216C18.6365 4.6931 18.7709 4.49227 18.8627 4.27117C18.9544 4.05006 19.0016 3.81304 19.0016 3.57366C19.0016 3.33428 18.9544 3.09725 18.8627 2.87615C18.7709 2.65505 18.6365 2.45422 18.467 2.28516L17.716 1.53416C17.5469 1.36454 17.346 1.22995 17.1248 1.13812C16.9036 1.04629 16.6665 0.999023 16.427 0.999023C16.1875 0.999023 15.9504 1.04629 15.7292 1.13812C15.508 1.22995 15.3071 1.36454 15.138 1.53416L7.533 9.15016Z" stroke="#697079" stroke-linecap="round" strokeLinejoin="round" />
+                                                <path d="M19 10C19 14.243 19 16.364 17.682 17.682C16.364 19 14.242 19 10 19C5.758 19 3.636 19 2.318 17.682C1 16.364 1 14.242 1 10C1 5.758 1 3.636 2.318 2.318C3.636 1 5.758 1 10 1" stroke="#697079" stroke-linecap="round" strokeLinejoin="round" />
+                                            </svg>
+
+
+                                        </button>
+                                        <button
                                             onClick={() => { handleDeleteInsurance(provider?.slug) }}
                                             className="border border-[#E04F4F] rounded-[6px] px-3 py-1 cursor-pointer"
                                         >
@@ -380,6 +401,12 @@ const Provider = () => {
                 {addModal && (
                     <CreateProvider setAddModal={setAddModal} addModal={addModal} ></CreateProvider>
                 )}
+                {/* update modal  */}
+                {
+                    updateModal && (
+                        <ProviderUpdate updateModal={updateModal} setUpdateModal={setUpdateModal} providerSlug={providerSlug} />
+                    )
+                }
             </div>
 
 

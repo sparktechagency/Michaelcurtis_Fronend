@@ -3,20 +3,20 @@ import { useAdminActivityQuery, useRecentActivityQuery } from '@/app/api/admin/a
 import ReviewChart from '@/app/pages/admin/ReviewChart'
 import WeekChart from '@/app/pages/admin/WeekChart'
 import { RecentHistoryType } from '@/utility/types/admin/admin/adminType'
-import React from 'react'
-// import Cookies from "js-cookie";
+import React, { useEffect } from 'react'
+import Cookies from "js-cookie";
 
 
 const Page: React.FC = () => {
   // Data for the chart
   // Define data type
 
-  // useEffect(() => {
-  //   const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
-  //   if (!adminToken) {
-  //     window.location.href = "/admin/login";
-  //   }
-  // }, []);
+  useEffect(() => {
+    const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
+    if (!adminToken) {
+      window.location.href = "/admin/login";
+    }
+  }, []);
 
   const { data } = useAdminActivityQuery({});
 
@@ -24,7 +24,6 @@ const Page: React.FC = () => {
   const { data: recentData } = useRecentActivityQuery([]);
 
 
-  console.log(recentData?.data);
 
   const recentHistory: RecentHistoryType[] = recentData?.data || []
 

@@ -9,12 +9,20 @@ import {
     useTermsContentCreateMutation,
 } from "@/app/api/admin/contentApi";
 
+import Cookies from "js-cookie";
+
 // Define type for the form state
 type TermsFormState = {
     about: string;
 };
 
 const TermUploadForm: React.FC = () => {
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
+        if (!adminToken) {
+            window.location.href = "/admin/login";
+        }
+    }, []);
     const [formData, setFormData] = useState<TermsFormState>({
         about: "",
     });

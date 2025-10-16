@@ -1,7 +1,7 @@
 "use client"
 import { useAllStateQuery } from '@/app/api/admin/insuranceApi';
-import { useAllPolicyQuery } from '@/app/api/admin/policyApi';
 import { useSearchInsuranceQuery } from '@/app/api/website/insurance/webInsuranceApi';
+import { useWebAllPolicyQuery } from '@/app/api/website/policy/webPolicyApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
 import { Checkbox } from '@/components/ui/checkbox';
 import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType';
@@ -21,45 +21,24 @@ type StateType = {
 const ProviderBanner = () => {
     const [query, setQuery] = useState("");
 
-    console.log(query, "search query is")
 
-    const [selectedState, setSelectedState] = useState("");
 
-    console.log("selectedState is ", selectedState)
 
-    // const { data: browseVocalData } = useBrowseCoverVocalApiQuery({
-    //     filter: {
-    //         gender: filter.gender,
-    //         language: filter.language,
-    //         latest: filter.latest,
-    //         bpm: filter.bpm,
-    //         key: filter.key,
-    //         genre: filter.genre,
-    //         license: filter.license,
-    //         type: filter.type,
-    //     },
-    //     globalSearch,
-    // });
+
+
+
 
 
 
     // state 
 
+    const [selectedState, setSelectedState] = useState("");
+
     const [openState, setOpenState] = useState(false);
 
 
 
-    const [selectedPolicies, setSelectedPolicies] = useState<string[]>([]);
 
-    const handleSelectPolicy = (policyName: string) => {
-        if (selectedPolicies.includes(policyName)) {
-            // Remove from selected
-            setSelectedPolicies(selectedPolicies.filter((p) => p !== policyName));
-        } else {
-            // Add to selected
-            setSelectedPolicies([...selectedPolicies, policyName]);
-        }
-    };
 
 
 
@@ -85,25 +64,33 @@ const ProviderBanner = () => {
 
 
 
+    // policy 
+
+
+    const [selectedPolicies, setSelectedPolicies] = useState<string[]>([]);
+
+    const handleSelectPolicy = (policyName: string) => {
+        if (selectedPolicies.includes(policyName)) {
+            // Remove from selected
+            setSelectedPolicies(selectedPolicies.filter((p) => p !== policyName));
+        } else {
+            // Add to selected
+            setSelectedPolicies([...selectedPolicies, policyName]);
+        }
+    };
+
+
+
     // rating 
 
 
-    const [score, setScore] = useState(0);
+
 
 
 
     // price 
 
     const priceList: number[] = [50, 100, 200, 500, 1000, 1100, 1200];
-
-
-
-
-
-
-
-
-
 
     const [selectedPrice, setSelectedPrice] = useState<number>(0);
     const [openPrice, setOpenPrice] = useState(false);
@@ -115,7 +102,7 @@ const ProviderBanner = () => {
 
 
 
-
+    const [score, setScore] = useState<number | string>("");
 
 
 
@@ -139,11 +126,10 @@ const ProviderBanner = () => {
 
 
 
-    const fullStars = Math.floor(4.5);
-    const halfStars = 4.5 % 1 >= 0.5 ? 1 : 0;
-    const emptyStars = 5 - fullStars - halfStars;
 
 
+
+    // compare 
 
 
 
@@ -205,7 +191,7 @@ const ProviderBanner = () => {
     // all policy 
 
 
-    const { data } = useAllPolicyQuery({});
+    const { data } = useWebAllPolicyQuery({});
 
     const policyPolicy: AllPolicyApiResponse[] = data?.data || [];
 
@@ -220,7 +206,8 @@ const ProviderBanner = () => {
 
 
 
-    const { data: insurance, isLoading, error } = useSearchInsuranceQuery({ query, selectedPolicies, score, selectedPrice, selectedState });
+    const { data: insurance } = useSearchInsuranceQuery({ query, selectedPrice, selectedPolicies, score, selectedState });
+    // const { data: insurance } = useWebAllInsuranceQuery([]);
 
 
     const allInsuranceData: TopInsuranceType[] = insurance?.data || [];
@@ -233,7 +220,7 @@ const ProviderBanner = () => {
     const handleClear = () => {
         setQuery("");
         setSelectedPolicies([""])
-        setScore(0);
+        setScore("");
         setSelectedPrice(0)
         setSelectedState("");
     }
@@ -281,7 +268,7 @@ const ProviderBanner = () => {
                         {/* Policy Type */}
 
                         {/* policy */}
-                        <div>
+                        <div className=' h-52 overflow-y-scroll  ' >
                             <h1 className='mt-5 font-normal lg:text-lg text-black'>Policy Type</h1>
 
                             {policyPolicy.map((type, index) => (
@@ -291,8 +278,8 @@ const ProviderBanner = () => {
                                             type="checkbox"
                                             className="w-5 h-5 rounded-2xl cursor-pointer"
                                             style={{ accentColor: '#D09A40' }}
-                                            onChange={() => handleSelectPolicy(type.name)}
-                                            checked={selectedPolicies.includes(type.name)}
+                                            onChange={() => handleSelectPolicy(type.slug)}
+                                            checked={selectedPolicies.includes(type.slug)}
                                         />
                                         {type.name}
                                     </label>
@@ -310,7 +297,7 @@ const ProviderBanner = () => {
                                     onClick={() => setOpenState(!openState)}
                                     className="w-full flex justify-between cursor-pointer items-center px-4 py-3 border border-[#697079] rounded-[4px] bg-white shadow-sm text-gray-700 hover:border-gray-400 focus:outline-none"
                                 >
-                                    <span className="capitalize">{selectedState}</span>
+                                    <span className="capitalize">{selectedState ? selectedState : "Select State"}</span>
                                     <ChevronDown
                                         className={`h-5 w-5 cursor-pointer text-gray-500 transition-transform duration-200 ${openState ? "rotate-180" : "rotate-0"
                                             }`}
@@ -524,7 +511,9 @@ const ProviderBanner = () => {
                                                     </div>
 
                                                     <div>
-                                                        <button className=' cursor-pointer bg-[#D09A40] border border-[#D09A40] py-1 w-full rounded-[34px] lg:mt-12 mt-4 text-[#FFFFFF] lg:text-xl text-sm font-normal ' >View Profile</button>
+                                                        <Link href={`/insurance-profile/${item?.slug}`}>
+                                                            <button className=' cursor-pointer bg-[#D09A40] border border-[#D09A40] py-1 w-full rounded-[34px] lg:mt-12 mt-4 text-[#FFFFFF] lg:text-xl text-sm font-normal ' >View Profile</button>
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </div>

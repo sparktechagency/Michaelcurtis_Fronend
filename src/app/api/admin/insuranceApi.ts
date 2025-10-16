@@ -89,6 +89,15 @@ export const insuranceApi = createApi({
                 url: `/providers?filter[status]=active`,
                 method: "GET"
             })
+        }),
+
+        insuranceUpdate: builder.mutation({
+            query: ({ slug, formData }) => ({
+                url: `/providers/${slug}`,
+                method: "PuT",
+                body: formData
+            }),
+            invalidatesTags: ["insurance"]
         })
 
 
@@ -97,4 +106,4 @@ export const insuranceApi = createApi({
     }),
 });
 
-export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery, useAddInsuranceSponserMutation, useRemoveInsuranceMutation, useInsuranceNameQuery } = insuranceApi;
+export const { useCreateInsuranceMutation, useAllProviderQuery, useAllStateQuery, useDeleteProviderMutation, useSingleProviderQuery, useAddInsuranceSponserMutation, useRemoveInsuranceMutation, useInsuranceNameQuery, useInsuranceUpdateMutation } = insuranceApi;

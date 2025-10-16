@@ -27,3 +27,17 @@ export interface Notification {
     updated_at: string;
     sender: Sender;
 }
+
+
+
+
+export interface DashobardNotificationType {
+    id: string;
+    is_read: boolean;
+    created_at_human: string;
+    created_at: string;
+    type: string;
+    title: string;
+    message: string
+
+}

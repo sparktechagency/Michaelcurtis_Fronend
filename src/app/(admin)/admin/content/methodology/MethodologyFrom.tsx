@@ -4,6 +4,8 @@ import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { Button } from "primereact/button";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
+
+import Cookies from "js-cookie";
 import {
     useGetMetholodgyContentQuery,
     useMetholodgyContentCreateMutation,
@@ -15,6 +17,12 @@ type MethodologyFormState = {
 };
 
 const MethodologyForm: React.FC = () => {
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
+        if (!adminToken) {
+            window.location.href = "/admin/login";
+        }
+    }, []);
     const [formData, setFormData] = useState<MethodologyFormState>({
         about: "",
     });

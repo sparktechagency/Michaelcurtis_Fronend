@@ -55,7 +55,8 @@ export const reviewApi = createApi({
             query: (id) => ({
                 url: `/reviews/${id}`,
                 method: "DELETE"
-            })
+            }),
+            invalidatesTags: ["review"]
         }),
         reviewByInsuranceSlug: builder.query({
             query: (slug) => ({
@@ -69,7 +70,8 @@ export const reviewApi = createApi({
                 url: `/reviews/`,
                 method: "POST",
                 body: payload
-            })
+            }),
+            invalidatesTags: ["review"]
         })
 
 

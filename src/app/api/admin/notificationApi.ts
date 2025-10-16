@@ -47,7 +47,37 @@ export const notificationApi = createApi({
                 url: `/admin/notifications/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags : ["notification"]
+            invalidatesTags: ["notification"]
+        }),
+
+        dashboardNotification: builder.query({
+            query: () => ({
+                url: `/notifications`,
+                method: "GET",
+            }),
+            providesTags: ["notification"]
+        }),
+
+        allNotificationRead: builder.mutation({
+            query: () => ({
+                url: `/notifications/mark-all-as-read`,
+                method: "POST"
+            }),
+            invalidatesTags: ["notification"]
+        }),
+        unreadNotification: builder.query({
+            query: () => ({
+                url: "/notifications/stats",
+                method: "GET"
+            }),
+            providesTags: ["notification"]
+        }),
+        singleNotificationRead: builder.mutation({
+            query: (id) => ({
+                url: `/notifications/${id}/mark-as-read`,
+                method: "PUT"
+            }),
+            invalidatesTags: ["notification"]
         })
 
 
@@ -56,4 +86,4 @@ export const notificationApi = createApi({
     }),
 });
 
-export const { useSendNotificationMutation, useAllNotificationQuery,useDeleteNotificationMutation } = notificationApi;
+export const { useSendNotificationMutation, useAllNotificationQuery, useDeleteNotificationMutation, useDashboardNotificationQuery, useAllNotificationReadMutation, useUnreadNotificationQuery, useSingleNotificationReadMutation } = notificationApi;

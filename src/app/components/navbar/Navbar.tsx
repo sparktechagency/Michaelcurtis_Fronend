@@ -6,6 +6,8 @@ import MaxWidth from "../max-width/MaxWidth";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -55,6 +57,24 @@ const Navbar = () => {
   }, []);
 
   console.log(userToken)
+
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of the admin panel!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Logout",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toast.success("Logout successfully")
+        Cookies.remove("user_token"); // 🔥 Remove Token
+        window.location.href = "/auth/login";
+      }
+    });
+  };
 
 
 
@@ -131,12 +151,7 @@ const Navbar = () => {
 
                       <button
                         className="w-full text-left px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal"
-                        onClick={() => {
-                          Cookies.remove("user_token");
-                          setUserToken(undefined);
-                          setProfileOpen(false);
-                          window.location.reload(); // optional: refresh after logout
-                        }}
+                        onClick={handleLogout}
                       >
                         Logout
                       </button>
@@ -226,10 +241,7 @@ const Navbar = () => {
 
                     <button
                       className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-normal"
-                      onClick={() => {
-                        setIsLoggedIn(false);
-                        setProfileOpen(false);
-                      }}
+                      onClick={handleLogout}
                     >
                       Logout
                     </button>

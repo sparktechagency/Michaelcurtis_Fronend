@@ -145,7 +145,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
 
     const [policies, setPolicies] = useState<number[]>([]);
 
-    console.log(`policy is `, policies)
+
 
     const [createInsurance, { isLoading }] = useCreateInsuranceMutation();
 
@@ -199,8 +199,6 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
             toast.error(message);
 
         }
-
-
     };
 
 
@@ -295,7 +293,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                                         width={100}
                                         height={100}
                                         alt="Logo Preview"
-                                        className="object-contain border rounded-md w-24 h-24"
+                                        className="object-contain border rounded-md w-16 h-12        "
                                     />
                                 </div>
                             )}

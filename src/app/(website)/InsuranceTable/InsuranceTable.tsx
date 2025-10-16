@@ -1,6 +1,7 @@
 // components/InsuranceTable.tsx
 "use client"
 import { useCompareProvidersQuery } from '@/app/api/website/insurance/webInsuranceApi';
+import BeautifulTableSkeleton from '@/app/components/loading/TableSkeleton';
 import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType';
 import ProgressBar from '@ramonak/react-progress-bar';
 import Image from 'next/image';
@@ -20,7 +21,7 @@ const InsuranceTable = () => {
         }
     }, []);
 
-    const { data, isLoading, isError } = useCompareProvidersQuery(ids, {
+    const { data, isLoading} = useCompareProvidersQuery(ids, {
         skip: ids.length === 0, // Avoid sending request before IDs are available
     });
 
@@ -31,6 +32,13 @@ const InsuranceTable = () => {
 
 
 
+    if (isLoading) {
+        return (
+            <div>
+                <BeautifulTableSkeleton></BeautifulTableSkeleton>
+            </div>
+        )
+    }
 
 
 
@@ -49,7 +57,7 @@ const InsuranceTable = () => {
                                         <div className="flex flex-col items-center gap-2">
                                             {/* Logo */}
                                             <span className="h-[135px] flex items-center justify-center  w-full">
-                                                <Image src={item?.logo_url} width={ 127} height={133 } alt={item?.name} className='' />
+                                                <Image src={item?.logo_url} width={127} height={133} alt={item?.name} className='' />
                                             </span>
 
                                             {/* Insurance Name */}
