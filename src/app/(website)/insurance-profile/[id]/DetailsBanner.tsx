@@ -447,11 +447,11 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
                                 <p className=' mt-1 font-thin text-lg ' >Compare rate and save up to ${data?.data?.price} on your insurance</p>
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <button className=' mt-5 shadow shadow-[#00000040] border border-[#D09A40] bg-[#D09A40] w-full py-3 rounded-[26px] cursor-pointer text-[#FFFFFF] font-normal lg:text-xl text-sm  ' >
                                     Compare with Others
                                 </button>
-                            </div>
+                            </div> */}
 
                         </div>
 

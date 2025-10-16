@@ -25,21 +25,50 @@ export default function LoginForm() {
         e.preventDefault();
         try {
             const res = await loginOtp(payload).unwrap();
+
+            // ✅ Safely get role in lowercase
+            const role = res?.data?.user?.roles?.[0]?.name?.toLowerCase();
+            console.log("User Role from API:", role);
+
+            // ✅ Role Based Redirect
+            if (role === "admin") {
+                Cookies.set("admin_token", res.data?.access_token, {
+                    expires: 100,
+                    secure: true,
+                    sameSite: "strict",
+                });
+                window.location.href = "/admin";
+                Cookies.remove("user_token");
+            }
+            else if (role === "user") {
+                Cookies.set("user_token", res.data?.access_token, {
+                    expires: 100,
+                    secure: true,
+                    sameSite: "strict",
+                });
+                window.location.href = "/";
+                Cookies.remove("admin_token");
+            }
+            else {
+                toast.error("Invalid role. Please contact support.");
+            }
+
+            // ✅ Reset form & show success
             if (res) {
                 setEmail("");
                 setPassword("");
-                setRememberMe(false)
+                setRememberMe(false);
                 toast.success(res?.message);
-                Cookies.set("user_token", res.data?.access_token, { expires: 100, secure: true, sameSite: "strict" });
-                window.location.href = "/"
             }
+
         } catch (err) {
+            // ❌ Error Handling
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";
             toast.error(message);
         }
-    }
+    };
 
 
     return (

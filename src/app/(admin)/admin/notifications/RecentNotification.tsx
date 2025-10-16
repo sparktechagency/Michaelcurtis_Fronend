@@ -39,12 +39,7 @@ export default function RecentNotification() {
     return (
         <div className="">
             <div className=" bg-[#FAF5EC] shadow shadow-[#00000033] rounded-[12px] pb-12 pt-8 px-5 mt-7 ">
-                <h2 className=" text-xl font-medium text-[#000000] ">
-                    Recent Notifications
-                </h2>
-                <h1 className=" mt-2.5 font-normal text-[16px]  " >
-                    Recently sent notifications and their status
-                </h1>
+
 
                 <div className=" mt-5 space-y-4 " >
                     {

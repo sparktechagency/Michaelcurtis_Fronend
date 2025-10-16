@@ -22,16 +22,18 @@ const PolicyCategory = () => {
                                 return (
                                     <div className='' key={i} >
                                         {/* logo 1  */}
-                                        <div className="w-[99px] h-[80px] shadow shadow-[#00000033] rounded-[8px] flex justify-center ">
-                                            <span>
-                                                <Image src={item?.logo_url} width={2000} height={2000} className=' w-12 h-8 mt-3 ' alt={item?.name} />
-                                                <p className=' text-[#697079] lg:text-[16px] text-center font-normal ' >
-                                                    {
-                                                        item?.name
-                                                    }
-                                                </p>
+                                        <div className="w-44 h-32 shadow shadow-[#00000033] rounded-[8px] flex flex-col justify-center items-center px-2 ">
+                                            <span className='h-12   ' >
+
+                                                <Image src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-10 h-8 ' />
+
 
                                             </span>
+                                            <p className=' text-[#697079] lg:text-[16px] text-center font-normal h-12 ' >
+                                                {
+                                                    item?.name
+                                                }
+                                            </p>
                                         </div>
                                     </div>
                                 )

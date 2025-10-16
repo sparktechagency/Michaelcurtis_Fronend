@@ -7,7 +7,14 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
 import { useAboutContentCreateMutation, useGetAboutContentQuery } from "@/app/api/admin/contentApi";
 
+import Cookies from "js-cookie";
 const AboutForm: React.FC = () => {
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
+        if (!adminToken) {
+            window.location.href = "/admin/login";
+        }
+    }, []);
     const [about, setAbout] = useState("");
 
     const [aboutContentCreate, { isLoading }] = useAboutContentCreateMutation();

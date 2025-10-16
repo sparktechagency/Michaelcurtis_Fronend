@@ -84,7 +84,9 @@ const BlogView: React.FC<PolicyViewProps> = ({
 
 
 
-    const blogData: BlogApiResponseType = data?.data
+    const blogData: BlogApiResponseType = data?.data;
+
+    console.log("blog data is", blogData);
 
 
 
@@ -140,14 +142,13 @@ const BlogView: React.FC<PolicyViewProps> = ({
                                             alt={'blog.title'}
                                             width={46}
                                             height={46}
-                                            className=""
+                                            className=" rounded-full "
                                         />
                                     </div>
                                     <div>
                                         <p>
                                             {
-                                                blogData?.user?.full_name
-                                            }
+                                                blogData?.author_name}
                                         </p>
                                     </div>
                                 </div>

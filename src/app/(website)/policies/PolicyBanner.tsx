@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useWebAllPolicyQuery } from "@/app/api/website/policy/webPolicyApi";
 import MaxWidth from "@/app/components/max-width/MaxWidth";

@@ -14,25 +14,28 @@ export const webInsuranceApi = createApi({
         // ✅ All active providers
         allInsuranceApi: builder.query({
             query: () => ({
-                url: `/providers?filter[status]=active`,
+                url: `/providers?include=policyCategories,states,statesCount&filter[status]=active`,
                 method: "GET",
             }),
+            providesTags: ["insurance"]
         }),
 
         // ✅ Search Providers with filters
         searchInsurance: builder.query({
-            query: ({ query, selectedPolicies, score, selectedPrice, selectedState }) => ({
-                url: `/providers?include=policyCategories,states,statesCount&filter[name]=${query}&filter[policyCategories.slug]=${selectedPolicies}&filter[avg_overall_rating]=${score}&filter[price]=${selectedPrice}&filter[states.name]=${selectedState}`,
+            query: ({ query, selectedPrice, selectedPolicies, score, selectedState }) => ({
+                url: `/providers?include=policyCategories,states,statesCount&filter[status]=active&filter[name]=${query}&filter[price]=${selectedPrice}&filter[policyCategories.slug]=${selectedPolicies}&filter[avg_overall_rating]=${score}&filter[states.name]=${selectedState}`,
                 method: "GET",
             }),
+            providesTags: ["insurance"]
         }),
 
         // ✅ Ranking Search
         rankingInsuranceSearch: builder.query({
             query: ({ score, selectedPrice, selectedState, selected }) => ({
-                url: `/providers?include=policyCategories,states,statesCount&filter[policyCategories.slug]=${selected}&filter[avg_overall_rating]=${score}&filter[price]=${selectedPrice}&filter[states.name]=${selectedState}`,
+                url: `/providers?include=policyCategories,states,statesCount&filter[status]=active&filter[policyCategories.slug]=${selected}&filter[avg_overall_rating]=${score}&filter[price]=${selectedPrice}&filter[states.name]=${selectedState}`,
                 method: "GET",
             }),
+            providesTags: ["insurance"]
         }),
 
         // ✅ Compare Providers by ID list
@@ -48,7 +51,21 @@ export const webInsuranceApi = createApi({
                     method: "GET",
                 };
             },
+            providesTags: ["insurance"]
         }),
+
+        webAllInsurance: builder.query({
+            query: () => ({
+                url: "/providers?include=policyCategories,states,statesCount&filter[status]=active",
+                method: "GET"
+            })
+        }),
+        webSearchApi: builder.query({
+            query: (name) => ({
+                url: `/search?search=${name}`,
+                method: "GET"
+            })
+        })
     }),
 });
 
@@ -58,4 +75,5 @@ export const {
     useSearchInsuranceQuery,
     useRankingInsuranceSearchQuery,
     useCompareProvidersQuery,
+    useWebSearchApiQuery
 } = webInsuranceApi;

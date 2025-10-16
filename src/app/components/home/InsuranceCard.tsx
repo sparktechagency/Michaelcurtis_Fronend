@@ -12,7 +12,6 @@ import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/provi
 import ProgressBar from "@ramonak/react-progress-bar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 
 
@@ -107,11 +106,9 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
     console.log(ids)
 
     const handleOpenCompare = () => {
-        if (ids.length >= 2) {
-            router.push("/InsuranceTable");
-        } else {
-            toast.error("Please select at least 2 insurers to compare.");
-        }
+
+        router.push("/InsuranceTable");
+
     };
 
 
@@ -145,7 +142,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                                 <div>
                                     <h1
                                         className={`text-lg font-bold 
-    ${data?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
+                                            ${data?.avg_grade === "A" ? "text-[#22C55E]" :    // Green for A
                                                 data?.avg_grade === "B" ? "text-[#3B82F6]" :      // Blue for B
                                                     data?.avg_grade === "C" ? "text-[#EAB308 " :      // Yellow/Orange for C
                                                         data?.avg_grade === "D" ? "text-[#F97316]" :      // Dark Orange for D

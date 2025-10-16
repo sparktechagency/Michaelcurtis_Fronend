@@ -17,7 +17,6 @@ export const adminApi = createApi({
             } else if (userToken) {
                 headers.set("Authorization", `Bearer ${userToken}`);
             }
-
             return headers;
         },
     }),
