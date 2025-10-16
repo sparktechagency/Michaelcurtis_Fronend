@@ -30,7 +30,7 @@ export default function UserOtpVerfifyFrom() {
         try {
             const res = await otpVerify(payload).unwrap();
             if (res) {
-                Cookies.set("user_token", res.data?.access_token, { expires: 100, secure: true, sameSite: "strict" });
+                Cookies.set("user_token", res.data?.access_token, { expires: 100, secure: "false", sameSite: "lax" });
                 setOtp("");
                 window.location.href = "/";
             }
