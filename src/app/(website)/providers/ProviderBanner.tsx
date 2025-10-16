@@ -3,6 +3,7 @@ import { useAllStateQuery } from '@/app/api/admin/insuranceApi';
 import { useSearchInsuranceQuery } from '@/app/api/website/insurance/webInsuranceApi';
 import { useWebAllPolicyQuery } from '@/app/api/website/policy/webPolicyApi';
 import MaxWidth from '@/app/components/max-width/MaxWidth'
+import ProviderSkeleton from '@/app/components/skeleton/ProviderSkeleton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType';
 import { AllPolicyApiResponse } from '@/utility/types/admin/policy/policyType';
@@ -206,7 +207,7 @@ const ProviderBanner = () => {
 
 
 
-    const { data: insurance } = useSearchInsuranceQuery({ query, selectedPrice, selectedPolicies, score, selectedState });
+    const { data: insurance, isLoading } = useSearchInsuranceQuery({ query, selectedPrice, selectedPolicies, score, selectedState });
     // const { data: insurance } = useWebAllInsuranceQuery([]);
 
 
@@ -226,6 +227,13 @@ const ProviderBanner = () => {
     }
 
 
+    if (isLoading) {
+        return (
+            <div>
+                <ProviderSkeleton />
+            </div>
+        )
+    }
 
 
 

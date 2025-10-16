@@ -65,7 +65,7 @@ const AdminNavbar = () => {
             if (result.isConfirmed) {
                 toast.success("Logout successfully")
                 Cookies.remove("admin_token"); // 🔥 Remove Token
-                window.location.href = "/login";
+                window.location.href = "/";
             }
         });
     };
