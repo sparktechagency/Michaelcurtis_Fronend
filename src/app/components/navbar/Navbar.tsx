@@ -150,7 +150,7 @@ const Navbar = () => {
                       </Link>
 
                       <button
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal"
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 lg:text-xl text-sm font-normal cursor-pointer "
                         onClick={handleLogout}
                       >
                         Logout

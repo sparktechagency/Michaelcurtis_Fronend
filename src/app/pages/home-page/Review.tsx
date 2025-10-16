@@ -2,6 +2,7 @@
 import { useHomePageAllReviewQuery } from '@/app/api/website/review/homeReview';
 import ReviewCard from '@/app/components/home/ReviewCard';
 import MaxWidth from '@/app/components/max-width/MaxWidth';
+import ReviewSkeleton from '@/app/components/skeleton/ReviewSkeleton';
 import { ReviewResponseType } from '@/utility/types/website/review-type/reviewType';
 import React, { useState } from 'react';
 
@@ -9,9 +10,9 @@ import React, { useState } from 'react';
 
 const Review = () => {
 
-    const { data } = useHomePageAllReviewQuery({});
+    const { data, isLoading } = useHomePageAllReviewQuery({});
 
-    console.log("review is ", data?.data)
+
     const reviewData: ReviewResponseType[] = data?.data || [];
 
     const [showAll, setShowAll] = useState(false);
@@ -19,6 +20,14 @@ const Review = () => {
     const toggleShow = () => {
         setShowAll(!showAll);
     };
+
+    if (isLoading) {
+        return (
+            <div>
+                <ReviewSkeleton></ReviewSkeleton>
+            </div>
+        )
+    }
 
     return (
         <div className=' lg:pb-[57px] pb-7  ' >

@@ -18,8 +18,8 @@ import { useRankingInsuranceSearchQuery } from '@/app/api/website/insurance/webI
 import { useAllStateQuery } from '@/app/api/admin/insuranceApi';
 import { AllPolicyApiResponse } from '@/utility/types/admin/policy/policyType';
 import Image from 'next/image';
-import InsuranceSkeleton from '@/app/components/skeleton/InsuranceSkeleton';
 import { useWebAllPolicyQuery } from '@/app/api/website/policy/webPolicyApi';
+import RankingSkeleton from '@/app/components/skeleton/RankingSkeleton';
 
 
 
@@ -235,7 +235,7 @@ const RankingInsurance = () => {
     if (isLoading) {
         return (
             <div>
-                <InsuranceSkeleton />
+                <RankingSkeleton />
             </div>
         )
     }

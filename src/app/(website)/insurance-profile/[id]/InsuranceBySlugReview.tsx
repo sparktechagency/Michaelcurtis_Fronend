@@ -42,6 +42,9 @@ const InsuranceBySlugReview = ({ slug }: { slug: string }) => {
                 toast.success(res?.message);
             }
         } catch (err) {
+            if (err) {
+                return window.location.href = "/auth/login";
+            }
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message = error.data?.message || "Something went wrong ❌";
             toast.error(message);
@@ -85,6 +88,9 @@ const InsuranceBySlugReview = ({ slug }: { slug: string }) => {
             }
         } catch (err) {
             // Rollback UI if API fails
+            if (err) {
+                return window.location.href = "/auth/login";
+            }
             setReviews(prev =>
                 prev.map(review => {
                     if (review.id === id) {

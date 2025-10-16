@@ -28,14 +28,14 @@ export default function LoginForm() {
 
             // ✅ Safely get role in lowercase
             const role = res?.data?.user?.roles?.[0]?.name?.toLowerCase();
-            console.log("User Role from API:", role);
+            console.log(res)
 
             // ✅ Role Based Redirect
             if (role === "admin") {
                 Cookies.set("admin_token", res.data?.access_token, {
                     expires: 100,
-                    secure: true,
-                    sameSite: "strict",
+                    secure: false,
+                    sameSite: "lax",
                 });
                 window.location.href = "/admin";
                 Cookies.remove("user_token");
@@ -43,8 +43,8 @@ export default function LoginForm() {
             else if (role === "user") {
                 Cookies.set("user_token", res.data?.access_token, {
                     expires: 100,
-                    secure: true,
-                    sameSite: "strict",
+                    secure: false,
+                    sameSite: "lax",
                 });
                 window.location.href = "/";
                 Cookies.remove("admin_token");
