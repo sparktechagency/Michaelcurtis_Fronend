@@ -28,7 +28,7 @@ export const reviewApi = createApi({
 
         getAllReview: builder.query({
             query: () => ({
-                url: `/reviews/?include=user,provider&sort=-id&filter[status]=approved`,
+                url: `/reviews/?include=user,provider&sort=-id`,
                 method: "GET"
             }),
             providesTags: ["review"]

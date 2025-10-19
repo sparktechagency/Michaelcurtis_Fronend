@@ -2,6 +2,7 @@
 
 import { useAllStateQuery, useInsuranceUpdateMutation, useSingleProviderQuery } from "@/app/api/admin/insuranceApi";
 import { useAllPolicyQuery } from "@/app/api/admin/policyApi";
+import { updateAlert } from "@/helper/updertAlert";
 import { InsuranceProvider, Policy, State } from "@/utility/types/admin/insurance-provider/providerType";
 import { AllPolicyApiResponse } from "@/utility/types/admin/policy/policyType";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -228,11 +229,14 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
         });
 
         try {
-            const res = await insuranceUpdate({ slug, formData }).unwrap();
-            if (res) {
-                setShowModal(false);
-                setTimeout(() => setUpdateModal(false), 500);
-                toast.success(res?.message)
+            const res = await updateAlert();
+            if (res?.isConfirmed) {
+                const res = await insuranceUpdate({ slug, formData }).unwrap();
+                if (res) {
+                    setShowModal(false);
+                    setTimeout(() => setUpdateModal(false), 500);
+                    toast.success(res?.message)
+                }
             }
 
         } catch (err) {

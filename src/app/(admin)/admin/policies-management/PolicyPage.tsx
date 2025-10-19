@@ -187,7 +187,7 @@ export default function ProvidersTable() {
                                     <tr key={p.id}>
                                         <td className="px-4 py-2 text-lg text-[#000000] font-normal pb-4 flex items-center gap-x-4">
                                             <Image src={p.logo_url} width={1000} height={1000} alt="" className=" w-20 h-8 object-cover  " />
-                                            <p>{p.slug}</p>
+                                            <p>{p.name}</p>
                                         </td>
                                         <td className="px-4 py-2 text-[#000000] text-lg font-thin">
                                             {p.description
