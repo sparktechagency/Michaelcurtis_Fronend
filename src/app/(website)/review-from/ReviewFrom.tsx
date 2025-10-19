@@ -144,9 +144,9 @@ const ReviewFrom = () => {
             }
 
         } catch (err) {
-            if (err) {
-                return window.location.href = "/auth/login";
-            }
+            // if (err) {
+            //     return window.location.href = "/auth/login";
+            // }
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";

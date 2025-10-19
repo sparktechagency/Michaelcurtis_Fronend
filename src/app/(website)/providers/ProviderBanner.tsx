@@ -247,7 +247,7 @@ const ProviderBanner = () => {
             <MaxWidth>
                 <div className=' flex flex-col md:flex-row gap-x-6 my-10  lg:space-y-0 space-y-6 mb-20 ' >
                     {/* left side  */}
-                    <div className=' md:max-w-[20%]  flex-1 p-6 shadow shadow-[#00000033] w-full h-auto  ' >
+                    <div className=' md:max-w-[20%]  flex-1 p-6 shadow shadow-[#00000033] w-full h-[80vh] ' >
                         <div className=' flex justify-between ' >
                             <h1 className=' lg:text-2xl text-sm font-normal ' >Filters</h1>
                             <p onClick={handleClear} className='lg:text-2xl  cursor-pointer font-normal text-[#D09A40] lg:text-[16px] text-xs ' >Clear all</p>
@@ -276,23 +276,25 @@ const ProviderBanner = () => {
                         {/* Policy Type */}
 
                         {/* policy */}
-                        <div className=' h-52 overflow-y-scroll  ' >
+                        <div className='   ' >
                             <h1 className='mt-5 font-normal lg:text-lg text-black'>Policy Type</h1>
 
-                            {policyPolicy.map((type, index) => (
-                                <div key={index} className='flex items-center gap-x-3 mt-4'>
-                                    <label className="text-[#697079] font-normal cursor-pointer flex items-center gap-x-2">
-                                        <input
-                                            type="checkbox"
-                                            className="w-5 h-5 rounded-2xl cursor-pointer"
-                                            style={{ accentColor: '#D09A40' }}
-                                            onChange={() => handleSelectPolicy(type.slug)}
-                                            checked={selectedPolicies.includes(type.slug)}
-                                        />
-                                        {type.name}
-                                    </label>
-                                </div>
-                            ))}
+                            <div className='h-52 overflow-y-scroll' >
+                                {policyPolicy.map((type, index) => (
+                                    <div key={index} className='flex items-center gap-x-3  mt-4'>
+                                        <label className="text-[#697079] font-normal cursor-pointer flex items-center gap-x-2">
+                                            <input
+                                                type="checkbox"
+                                                className="w-5 h-5 rounded-2xl cursor-pointer"
+                                                style={{ accentColor: '#D09A40' }}
+                                                onChange={() => handleSelectPolicy(type.slug)}
+                                                checked={selectedPolicies.includes(type.slug)}
+                                            />
+                                            {type.name}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
 
@@ -471,23 +473,23 @@ const ProviderBanner = () => {
                                                     </div>
                                                     <div className=' flex flex-row gap-x-5 mt-3 ' >
                                                         <div className="flex flex-col space-y-1  ">
-                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_claims}</span>
+                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_claims ? item?.avg_claims : "0"}</span>
                                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Claim</span>
                                                         </div>
                                                         <div className="flex flex-col space-y-1  ">
-                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_service}</span>
+                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_service ? item?.avg_service : "0"}</span>
                                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Service</span>
                                                         </div>
                                                         <div className="flex flex-col space-y-1  ">
-                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_pricing}</span>
+                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_pricing ? item?.avg_pricing : "0"}</span>
                                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Price</span>
                                                         </div>
                                                         <div className="flex flex-col space-y-1  ">
-                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_coverage}</span>
+                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_coverage ? item?.avg_coverage : "0"}</span>
                                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Cover</span>
                                                         </div>
                                                         <div className="flex flex-col space-y-1  ">
-                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_trust}</span>
+                                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item?.avg_trust ? item?.avg_trust : "0"}</span>
                                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Trust</span>
                                                         </div>
                                                     </div>
