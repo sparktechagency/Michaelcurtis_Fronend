@@ -29,7 +29,7 @@ const MoreBlog = () => {
                             >
                                 <Image
                                     src={blog?.featured_image}
-                                    alt={'blog.title'}
+                                    alt={blog.title}
                                     width={412}
                                     height={227}
                                     className=" w-full h-[300px] "

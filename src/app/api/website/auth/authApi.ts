@@ -128,10 +128,20 @@ export const authApi = createApi({
                 body: payload
             }),
             invalidatesTags: ["Profile"]
+        }),
+
+        userProfile: builder.query({
+            query: () => ({
+                url: "/profile/me?",
+                method: "GET"
+            }),
+            providesTags: ["Profile"]
         })
+
+
 
 
     }),
 });
 
-export const { useRegistrationApiMutation, useOtpVerifyMutation, useResendOtpMutation, useLoginOtpMutation, useEmailVerifyMutation, useForgetOtpVerifyMutation, useNewPasswordSetApiMutation, useForgetResendOtpMutation, useAdminProfileQuery, useProfileUpdateMutation, usePasswordUpdateMutation } = authApi;
+export const { useRegistrationApiMutation, useOtpVerifyMutation, useResendOtpMutation, useLoginOtpMutation, useEmailVerifyMutation, useForgetOtpVerifyMutation, useNewPasswordSetApiMutation, useForgetResendOtpMutation, useAdminProfileQuery, useProfileUpdateMutation, usePasswordUpdateMutation, useUserProfileQuery } = authApi;
