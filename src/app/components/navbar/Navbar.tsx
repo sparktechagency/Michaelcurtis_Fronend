@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
+import { useUserProfileQuery } from "@/app/api/website/auth/authApi";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -31,6 +32,12 @@ const Navbar = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+
+  const { data } = useUserProfileQuery({});
+
+
+
 
   // Close profile dropdown when clicking outside
   // useEffect(() => {
@@ -75,6 +82,9 @@ const Navbar = () => {
       }
     });
   };
+
+
+
 
 
 
@@ -130,7 +140,7 @@ const Navbar = () => {
                 <div>
                   <button onClick={() => setProfileOpen(!profileOpen)}>
                     <Image
-                      src={"/images/insurance/user-img.svg"}
+                      src={data?.data?.avatar}
                       width={61}
                       height={61}
                       alt="User Avatar"

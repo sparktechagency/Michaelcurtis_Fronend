@@ -34,7 +34,7 @@ export default function LoginForm() {
             if (role === "admin") {
                 Cookies.set("admin_token", res.data?.access_token, {
                     expires: 100,
-                    secure: false,
+                    secure: true,
                     sameSite: "lax",
                 });
                 window.location.href = "/admin";
@@ -43,7 +43,7 @@ export default function LoginForm() {
             else if (role === "user") {
                 Cookies.set("user_token", res.data?.access_token, {
                     expires: 100,
-                    secure: false,
+                    secure: true,
                     sameSite: "lax",
                 });
                 window.location.href = "/";

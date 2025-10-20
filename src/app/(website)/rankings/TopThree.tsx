@@ -138,50 +138,50 @@ const Card = ({ bg }: { bg: string }) => {
     const { data } = useAllInsuranceApiQuery([]);
     const top1: TopInsuranceType = data?.data[0];
 
-    const [selected, setSelected] = React.useState<TopInsuranceType[]>([]);
-    const [openCompareModal, setOpenCompareModal] = React.useState(false);
+    // const [selected, setSelected] = React.useState<TopInsuranceType[]>([]);
+    // const [openCompareModal, setOpenCompareModal] = React.useState(false);
 
-    // ✅ Checkbox toggle handler
-    const handleCompareChange = (data: TopInsuranceType, checked: boolean) => {
-        const stored = localStorage.getItem("selectedInsurers");
-        const prevSelected: TopInsuranceType[] = stored ? JSON.parse(stored) : [];
+    // // ✅ Checkbox toggle handler
+    // const handleCompareChange = (data: TopInsuranceType, checked: boolean) => {
+    //     const stored = localStorage.getItem("selectedInsurers");
+    //     const prevSelected: TopInsuranceType[] = stored ? JSON.parse(stored) : [];
 
-        let newSelected: TopInsuranceType[];
+    //     let newSelected: TopInsuranceType[];
 
-        if (checked) {
-            // ✅ Add if not exists
-            if (!prevSelected.some(i => i.id === data.id)) {
-                newSelected = [...prevSelected, data];
-            } else {
-                newSelected = prevSelected;
-            }
-        } else {
-            // ✅ Remove if unchecked
-            newSelected = prevSelected.filter(i => i.id !== data.id);
-        }
+    //     if (checked) {
+    //         // ✅ Add if not exists
+    //         if (!prevSelected.some(i => i.id === data.id)) {
+    //             newSelected = [...prevSelected, data];
+    //         } else {
+    //             newSelected = prevSelected;
+    //         }
+    //     } else {
+    //         // ✅ Remove if unchecked
+    //         newSelected = prevSelected.filter(i => i.id !== data.id);
+    //     }
 
-        // Update state + LocalStorage
-        setSelected(newSelected);
-        localStorage.setItem("selectedInsurers", JSON.stringify(newSelected));
+    //     // Update state + LocalStorage
+    //     setSelected(newSelected);
+    //     localStorage.setItem("selectedInsurers", JSON.stringify(newSelected));
 
-        // Modal open condition
-        if (newSelected.length > 0 && !openCompareModal) {
-            setOpenCompareModal(true);
-        }
-    };
+    //     // Modal open condition
+    //     if (newSelected.length > 0 && !openCompareModal) {
+    //         setOpenCompareModal(true);
+    //     }
+    // };
 
-    React.useEffect(() => {
-        const stored = localStorage.getItem("selectedInsurers");
-        if (stored) {
-            try {
-                const parsed: TopInsuranceType[] = JSON.parse(stored);
-                setSelected(parsed);
-                if (parsed.length > 0) setOpenCompareModal(true);
-            } catch (error) {
-                console.error("Failed to parse localStorage:", error);
-            }
-        }
-    }, []);
+    // React.useEffect(() => {
+    //     const stored = localStorage.getItem("selectedInsurers");
+    //     if (stored) {
+    //         try {
+    //             const parsed: TopInsuranceType[] = JSON.parse(stored);
+    //             setSelected(parsed);
+    //             if (parsed.length > 0) setOpenCompareModal(true);
+    //         } catch (error) {
+    //             console.error("Failed to parse localStorage:", error);
+    //         }
+    //     }
+    // }, []);
 
 
 
@@ -245,27 +245,27 @@ const Card = ({ bg }: { bg: string }) => {
 
                                 <div className="flex justify-between gap-2 mt-5">
                                     <div className="flex flex-col items-center">
-                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_claims}</span>
+                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_claims ? top1?.avg_claims : "0"}</span>
                                         <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Claim</span>
                                     </div>
 
                                     <div className="flex flex-col items-center">
-                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_service} </span>
+                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_service ? top1?.avg_service : "0"} </span>
                                         <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Service</span>
                                     </div>
 
                                     <div className="flex flex-col items-center">
-                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_pricing}</span>
+                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_pricing ? top1?.avg_pricing : "0"}</span>
                                         <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Price</span>
                                     </div>
 
                                     <div className="flex flex-col items-center">
-                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_coverage}</span>
+                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_coverage ? top1?.avg_coverage : "0"}</span>
                                         <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Cover</span>
                                     </div>
 
                                     <div className="flex flex-col items-center">
-                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_trust}</span>
+                                        <span className="bg-[#E9EAEB] rounded-md px-4 py-2.5 font-normal">{top1?.avg_trust ? top1?.avg_trust : "0"}</span>
                                         <span className="font-thin lg:text-[16px] text-xs text-black mt-1">Trust</span>
                                     </div>
                                 </div>
@@ -275,7 +275,7 @@ const Card = ({ bg }: { bg: string }) => {
 
                                 {/* Footer */}
                                 <div className="flex justify-between items-center">
-                                    <label className="flex items-center gap-2 text-sm">
+                                    {/* <label className="flex items-center gap-2 text-sm">
                                         <Checkbox
                                             id={`compare-${data.id}`}
                                             checked={selected.some(i => i.id === data.id)}
@@ -284,7 +284,7 @@ const Card = ({ bg }: { bg: string }) => {
                                         <span className="cursor-pointer text-[16px] text-[#697079]">
                                             Compare
                                         </span>
-                                    </label>
+                                    </label> */}
 
                                     <Link href={`/insurance-profile/${top1?.slug}`}>
                                         <button className="flex items-center gap-x-2 lg:text-[16px] cursor-pointer text-sm text-[#D09A40] font-normal hover:underline">
@@ -304,52 +304,52 @@ const Card = ({ bg }: { bg: string }) => {
 const CardTwo = ({ bg }: { bg: string }) => {
     const { data } = useAllInsuranceApiQuery([]);
     const top1: TopInsuranceType = data?.data[1];
-    const [selected, setSelected] = React.useState<TopInsuranceType[]>([]);
-    const [openCompareModal, setOpenCompareModal] = React.useState(false);
+    // const [selected, setSelected] = React.useState<TopInsuranceType[]>([]);
+    // const [openCompareModal, setOpenCompareModal] = React.useState(false);
 
     // ✅ Checkbox toggle handler
-    const handleCompareChange = (data: TopInsuranceType, checked: boolean) => {
-        const stored = localStorage.getItem("selectedInsurers");
-        const prevSelected: TopInsuranceType[] = stored ? JSON.parse(stored) : [];
+    // const handleCompareChange = (data: TopInsuranceType, checked: boolean) => {
+    //     const stored = localStorage.getItem("selectedInsurers");
+    //     const prevSelected: TopInsuranceType[] = stored ? JSON.parse(stored) : [];
 
-        let newSelected: TopInsuranceType[];
+    //     let newSelected: TopInsuranceType[];
 
-        if (checked) {
-            // ✅ Add if not exists
-            if (!prevSelected.some(i => i.id === data.id)) {
-                newSelected = [...prevSelected, data];
-            } else {
-                newSelected = prevSelected;
-            }
-        } else {
-            // ✅ Remove if unchecked
-            newSelected = prevSelected.filter(i => i.id !== data.id);
-        }
+    //     if (checked) {
+    //         // ✅ Add if not exists
+    //         if (!prevSelected.some(i => i.id === data.id)) {
+    //             newSelected = [...prevSelected, data];
+    //         } else {
+    //             newSelected = prevSelected;
+    //         }
+    //     } else {
+    //         // ✅ Remove if unchecked
+    //         newSelected = prevSelected.filter(i => i.id !== data.id);
+    //     }
 
-        // Update state + LocalStorage
-        setSelected(newSelected);
-        localStorage.setItem("selectedInsurers", JSON.stringify(newSelected));
+    //     // Update state + LocalStorage
+    //     setSelected(newSelected);
+    //     localStorage.setItem("selectedInsurers", JSON.stringify(newSelected));
 
-        // Modal open condition
-        if (newSelected.length > 0 && !openCompareModal) {
-            setOpenCompareModal(true);
-        }
-    };
+    //     // Modal open condition
+    //     if (newSelected.length > 0 && !openCompareModal) {
+    //         setOpenCompareModal(true);
+    //     }
+    // };
 
-    React.useEffect(() => {
-        const stored = localStorage.getItem("selectedInsurers");
-        if (stored) {
-            try {
-                const parsed: TopInsuranceType[] = JSON.parse(stored);
-                setSelected(parsed);
-                if (parsed.length > 0) setOpenCompareModal(true);
-            } catch (error) {
-                console.error("Failed to parse localStorage:", error);
-            }
-        }
-    }, []);
+    // React.useEffect(() => {
+    //     const stored = localStorage.getItem("selectedInsurers");
+    //     if (stored) {
+    //         try {
+    //             const parsed: TopInsuranceType[] = JSON.parse(stored);
+    //             setSelected(parsed);
+    //             if (parsed.length > 0) setOpenCompareModal(true);
+    //         } catch (error) {
+    //             console.error("Failed to parse localStorage:", error);
+    //         }
+    //     }
+    // }, []);
 
-   
+
 
     return (
         <>
@@ -440,7 +440,7 @@ const CardTwo = ({ bg }: { bg: string }) => {
 
                                 {/* Footer */}
                                 <div className="flex justify-between items-center">
-                                    <label className="flex items-center gap-2 text-sm">
+                                    {/* <label className="flex items-center gap-2 text-sm">
                                         <Checkbox
                                             id={`compare-${data.id}`}
                                             checked={selected.some(i => i.id === data.id)}
@@ -449,7 +449,7 @@ const CardTwo = ({ bg }: { bg: string }) => {
                                         <span className="cursor-pointer text-[16px] text-[#697079]">
                                             Compare
                                         </span>
-                                    </label>
+                                    </label> */}
 
                                     <Link href={`/insurance-profile/${top1?.slug}`}>
                                         <button className="flex items-center gap-x-2 lg:text-[16px] cursor-pointer text-sm text-[#D09A40] font-normal hover:underline">
@@ -560,9 +560,9 @@ const CardThree = ({ bg }: { bg: string }) => {
 
                                 {/* Footer */}
                                 <div className="flex justify-between items-center">
-                                    <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                                    {/* <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                                         <Checkbox /> Compare
-                                    </label>
+                                    </label> */}
 
                                     <Link href={`/insurance-profile/${top1?.slug}`}>
                                         <button className="flex items-center gap-x-2 lg:text-[16px] cursor-pointer text-sm text-[#D09A40] font-normal hover:underline">

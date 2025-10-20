@@ -71,7 +71,7 @@ export default function Footer() {
                                 <Link href="#"><FaLinkedin /></Link>
                             </div>
                             <p className="text-sm sm:text-base text-gray-900">
-                                © 2023 CoverageGrader. All rights reserved.
+                                © {new Date().getFullYear()} CoverageGrader. All rights reserved.
                             </p>
                         </div>
 

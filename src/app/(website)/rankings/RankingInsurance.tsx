@@ -445,23 +445,23 @@ const RankingInsurance = () => {
                                     <div className=' flex items-center lg:gap-x-4  ' >
 
                                         <div className="flex flex-col space-y-1 ml-4 lg:ml-12 ">
-                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_claims}</span>
+                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_claims ? item.avg_claims : "0"}</span>
                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Claim</span>
                                         </div>
                                         <div className="flex flex-col space-y-1 ml-4 lg:ml-8 ">
-                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_service}</span>
+                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_service ? item.avg_service : "0"}</span>
                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Service</span>
                                         </div>
                                         <div className="flex flex-col space-y-1 ml-4 lg:ml-8 ">
-                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.price}</span>
+                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.price ? item.price : "0"}</span>
                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Price</span>
                                         </div>
                                         <div className="flex flex-col space-y-1 ml-4 lg:ml-8">
-                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl">{item.avg_coverage}</span>
+                                            <span className="px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl">{item.avg_coverage ? item.avg_coverage : "0"}</span>
                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Cover</span>
                                         </div>
                                         <div className="flex flex-col space-y-1 ml-4 lg:ml-8">
-                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_trust}</span>
+                                            <span className=" px-5 py-2 bg-[#E9EAEB] rounded-[9px] font-normal text-sm lg:text-xl ">{item.avg_trust ? item.avg_trust : "0"}</span>
                                             <span className="text-center lg:text-xl text-sm font-thin text-black ">Trust</span>
                                         </div>
                                     </div>
@@ -469,7 +469,7 @@ const RankingInsurance = () => {
 
                                     <div className=' flex items-center justify-center  ' >
                                         <div>
-                                            <p className=" text-[#529F22] font-bold lg:text-2xl text-[15px] ml-8 ">{item.avg_pricing}</p>
+                                            <p className=" text-[#529F22] font-bold lg:text-2xl text-[15px] ml-8 ">{item.avg_pricing ? item.avg_pricing : "0"}</p>
                                         </div>
                                         <div className=' ml-5 ' >
                                             <Link href={`/insurance-profile/${item?.slug}`}>

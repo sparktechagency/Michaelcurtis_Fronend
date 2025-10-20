@@ -94,7 +94,7 @@ export const insuranceApi = createApi({
         insuranceUpdate: builder.mutation({
             query: ({ slug, formData }) => ({
                 url: `/providers/${slug}`,
-                method: "PuT",
+                method: "POST",
                 body: formData
             }),
             invalidatesTags: ["insurance"]

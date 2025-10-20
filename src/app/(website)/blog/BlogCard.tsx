@@ -17,7 +17,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
                 {/* right side  */}
                 <div className=' w-full  lg:max-w-[60%] flex-1 lg:p-0 p-3  ' >
                     <button className=' bg-[#E4C4F0] py-1 px-3 rounded-[3px] text-[#942D8D] ' >{firstBlog?.policy_categories?.name} </button>
-                    <h1 className=' lg:mt-6 mt-3 lg:text-[33px] text-lg font-normal text-black ' > {firstBlog?.title} </h1>
+                    <h1 className=' lg:mt-6 mt-3 lg:text-[33px] text-lg font-normal text-black ' > {firstBlog?.author_name} </h1>
                     <p className=' lg:mt-5 mt-3 lg:text-xl text-xs font-thin ' >
                         <span>
                             {firstBlog?.content
@@ -69,7 +69,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
                     >
                         <Image
                             src={blog?.featured_image}
-                            alt={'blog.title'}
+                            alt={blog.title}
                             width={412}
                             height={227}
                             className=" w-full h-[250px]"

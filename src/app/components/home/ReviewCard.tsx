@@ -9,13 +9,13 @@ const ReviewCard = ({ data }: { data: ReviewResponseType }) => {
         <div className='w-full max-w-[480px] border border-[#697079] p-5 rounded-[10px]'>
             <div className='flex items-center gap-x-5'>
                 {/* Image */}
-                <div>
+                <div className=' ' >
                     <Image
                         src={data.user?.avatar}
                         width={60}
                         height={60}
                         alt={data?.user?.first_name}
-                        className='rounded-full object-cover'
+                        className='rounded-full object-cover w-12 h-12  '
                     />
                 </div>
 
