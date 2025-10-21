@@ -171,6 +171,7 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
             setName(insuranceProvider.name || "");
             setAbout(insuranceProvider.about || "");
             setPrice(insuranceProvider.price || "");
+            setTitle(insuranceProvider.title || "");
 
             // Arrays
             setPros(insuranceProvider.pros || [""]);
@@ -224,9 +225,9 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
             formData.append(`policies[${index}]`, id.toString());
         });
 
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
+        formData.append("_method","PUT")
+
+        
 
         try {
             const res = await updateAlert();
