@@ -4,7 +4,7 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useAdminProfileQuery } from "@/app/api/website/auth/authApi";
-import { useDashboardNotificationQuery, useUnreadNotificationQuery } from "@/app/api/admin/notificationApi";
+import { useUnreadNotificationQuery } from "@/app/api/admin/notificationApi";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
 

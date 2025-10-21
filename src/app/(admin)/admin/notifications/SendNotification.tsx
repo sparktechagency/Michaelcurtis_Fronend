@@ -79,7 +79,7 @@ export default function SendNotification() {
                             </button>
                             {dropdownOpen && (
                                 <ul className="absolute left-0 right-0 mt-2 bg-white  rounded-md shadow-lg z-10 w-[12%] ">
-                                    {["all", "Doctors", "Patients", "Admins"].map((option) => (
+                                    {["all", "admin", "user"].map((option) => (
                                         <li
                                             key={option}
                                             onClick={() => {

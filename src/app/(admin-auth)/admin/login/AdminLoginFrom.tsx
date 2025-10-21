@@ -89,11 +89,12 @@ export default function AdminLoginFrom() {
                                         <input
                                             type="email"
                                             id="email"
-                                            required
+
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             className="w-full px-4 py-4 border-1 border-[#989DA3] focus:outline-none focus:ring-0   rounded-[10px] "
                                             // placeholder="Enter your email"
+                                            required
                                             style={{
                                                 boxShadow: "0 4px 10px rgba(248, 242, 229, 0.8)", // custom shadow color
                                             }}
@@ -110,9 +111,10 @@ export default function AdminLoginFrom() {
                                                 type={showPassword ? "text" : "password"}
                                                 id="password"
                                                 value={password}
-                                                required
+
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 className="w-full px-4 py-4 border-1 border-[#989DA3] focus:outline-none focus:ring-0   rounded-[10px]   "
+                                                required
                                             // placeholder="********"
                                             />
                                             <button

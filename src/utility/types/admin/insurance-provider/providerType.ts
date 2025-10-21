@@ -21,6 +21,7 @@ export interface State {
 
 // ✅ Main Provider Type
 export interface InsuranceProvider {
+    title: string;
     id: number;
     name: string;
     slug: string;
