@@ -36,7 +36,7 @@ export const insuranceApi = createApi({
         }),
         allProvider: builder.query({
             query: () => ({
-                url: `/providers?include=policyCategories,states,statesCount`,
+                url: `/providers?include=policyCategories,states,statesCount&sort=-created_at`,
                 method: "GET"
             }),
             providesTags: ["insurance"]
