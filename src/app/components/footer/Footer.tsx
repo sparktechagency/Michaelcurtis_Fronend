@@ -6,11 +6,18 @@ import { FaFacebook, FaInstagram, FaXTwitter, FaLinkedin } from "react-icons/fa6
 import MaxWidth from "../max-width/MaxWidth";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useGetSocialMediaLinkQuery } from "@/app/api/admin/socialLinkApi";
 
 export default function Footer() {
     const pathname = usePathname();
 
-    console.log("pathname is ", pathname)
+    const { data, isLoading, isError } = useGetSocialMediaLinkQuery({});
+
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Failed to load links</p>;
+
+    const links = data?.data || {};
+
 
     return (
         <div className="  shadow shadow-[#FAF5EC] pb-10  " >
@@ -64,11 +71,47 @@ export default function Footer() {
                         {/* Connect */}
                         <div className="flex-1 min-w-[180px]">
                             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Connect</h3>
-                            <div className="flex space-x-4 text-xl text-gray-600 mb-4">
-                                <Link href="#"><FaFacebook /></Link>
-                                <Link href="#"><FaInstagram /></Link>
-                                <Link href="#"><FaXTwitter /></Link>
-                                <Link href="#"><FaLinkedin /></Link>
+                            <div className="flex items-center gap-4 text-2xl text-gray-600">
+                                {links.facebook && (
+                                    <Link
+                                        href={links.facebook}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-blue-600"
+                                    >
+                                        <FaFacebook />
+                                    </Link>
+                                )}
+                                {links.instagram && (
+                                    <Link
+                                        href={links.instagram}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-pink-500"
+                                    >
+                                        <FaInstagram />
+                                    </Link>
+                                )}
+                                {links.twitter && (
+                                    <Link
+                                        href={links.twitter}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-black"
+                                    >
+                                        <FaXTwitter />
+                                    </Link>
+                                )}
+                                {links.linkedin && (
+                                    <Link
+                                        href={links.linkedin}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-blue-700"
+                                    >
+                                        <FaLinkedin />
+                                    </Link>
+                                )}
                             </div>
                             <p className="text-sm sm:text-base text-gray-900">
                                 © {new Date().getFullYear()} CoverageGrader. All rights reserved.
