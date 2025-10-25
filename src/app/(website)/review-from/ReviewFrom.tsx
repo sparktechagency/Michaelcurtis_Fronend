@@ -98,7 +98,7 @@ const ReviewFrom = () => {
         },
     };
 
-    console.log(payload)
+ 
 
 
     const reviewCancel = () => {
@@ -124,7 +124,7 @@ const ReviewFrom = () => {
 
     const insuranceName: InsuranceNameType[] = data?.data || [];
 
-    console.log(insuranceName)
+
 
 
 
@@ -172,7 +172,7 @@ const ReviewFrom = () => {
 
 
     return (
-        <div>
+        <div className='border-b border-[#989DA3]' >
             <MaxWidth>
                 <div className=' py-16 ' >
                     <h1 className=' text-[#000000] lg:text-6xl text-3xl text-center ' >Write a Review</h1>

@@ -6,7 +6,7 @@ const Page: React.FC = () => {
   useEffect(() => {
     const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
     if (!adminToken) {
-      window.location.href = "/admin/login";
+      window.location.href = "/auth/login";
     }
   }, []);
   return (

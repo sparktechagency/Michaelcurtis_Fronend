@@ -209,7 +209,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Notification List */}
-                    <div className="max-h-[250px] overflow-y-auto space-y-6 my-4 px-4  ">
+                    <div className="max-h-[550px] overflow-y-auto space-y-6 my-4 px-4  ">
                       {currentNotifications.length > 0 ? (
                         currentNotifications.map((item, i) => (
                           <div
