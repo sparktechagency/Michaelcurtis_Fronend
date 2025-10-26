@@ -176,6 +176,7 @@ export default function Sidebar() {
                                 // { name: "Methodology", href: "/admin/content/methodology" },
                                 // { name: "About", href: "/admin/content/about" },
                                 { name: "Contact Info", href: "/admin/content/contact-info" },
+                                { name: "Meta Data", href: "/admin/content/meta-data" },
                             ].map((sub, idx) => {
                                 const isSubActive = pathname === sub.href;
                                 return (
