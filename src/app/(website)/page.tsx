@@ -1,18 +1,50 @@
-import React from 'react'
-import HomePage from '../pages/home-page/HomePage'
+import HomePage from '../pages/home-page/HomePage';
 import { Metadata } from 'next';
-// ✅ Metadata must be exported outside the component
-export const metadata: Metadata = {
-    title: "CoverageGrader.com | Honest Insurance Reviews & Ratings.",
-    description: "For the description: Compare real insurance company reviews. See how providers score on claims, coverage, pricing, service, and trust all graded by real customers.",
-};
 
-const Page: React.FC = () => {
-    return (
-        <div>
-            <HomePage></HomePage>
-        </div>
-    )
+const url = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+// ✅ This special function runs **on the server** before rendering
+export async function generateMetadata(): Promise<Metadata> {
+    if (!url) {
+        console.error("NEXT_PUBLIC_API_BASE_URL is not defined");
+
+    }
+
+    try {
+        const response = await fetch(`${url}meta-datas/home`, {
+
+            next: { revalidate: 3600 }, // every 1 hour
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+
+
+        return {
+            title: data?.data?.title || "",
+            description:
+                data?.data?.description ||
+                "",
+        };
+    } catch (error) {
+        console.error("Error fetching metadata:", error);
+        return {
+            title: "",
+            description: "      ",
+        };
+    }
 }
 
-export default Page
+const Page = () => {
+    return (
+        <div>
+            <HomePage />
+        </div>
+    );
+};
+
+export default Page;
