@@ -13,7 +13,6 @@ const TopInsurance = () => {
 
     const { data } = useAllInsuranceApiQuery([]);
 
-    console.log("top insurance iss", data?.data);
 
 
     const insurers: TopInsuranceType[] = data?.data || [];
