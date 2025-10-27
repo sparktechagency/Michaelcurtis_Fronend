@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 
 const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-// ✅ This special function runs **on the server** before rendering
+
 export async function generateMetadata(): Promise<Metadata> {
     if (!url) {
         console.error("NEXT_PUBLIC_API_BASE_URL is not defined");
@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     try {
         const response = await fetch(`${url}meta-datas/home`, {
 
-            next: { revalidate: 3600 }, // every 1 hour
+            next: { revalidate: 3600 }, 
         });
 
         if (!response.ok) {
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
                 "",
         };
     } catch (error) {
-        console.error("Error fetching metadata:", error);
+        
         return {
             title: "",
             description: "      ",
