@@ -1,79 +1,58 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { Button } from "primereact/button";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 import {
     useGetPrivacyContentQuery,
     usePrivacyContentCreateMutation,
 } from "@/app/api/admin/contentApi";
-
-import Cookies from "js-cookie";
-
-// Define type for the form state
-type PrivacyFormState = {
-    about: string;
-};
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const PrivacyForm: React.FC = () => {
+    const [editorContent, setEditorContent] = useState<string | null>(null);
 
-    useEffect(() => {
-        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
-        if (!adminToken) {
-            window.location.href = "/admin/login";
-        }
-    }, []);
-
-    const [formData, setFormData] = useState<PrivacyFormState>({
-        about: "",
-    });
-
-    // Mutations & Queries
-    const [privacyContentCreate, { isLoading }] =
-        usePrivacyContentCreateMutation();
+    const [privacyContentCreate, { isLoading }] = usePrivacyContentCreateMutation();
     const { data } = useGetPrivacyContentQuery({});
 
-    // Handle Editor change
+    // Redirect if not logged in
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token");
+        if (!adminToken) window.location.href = "/admin/login";
+    }, []);
+
+    // Load initial content once
+    useEffect(() => {
+        if (data?.data?.content !== undefined) {
+            setEditorContent(data.data.content);
+        }
+    }, [data]);
+
     const handleEditorChange = (e: EditorTextChangeEvent) => {
-        setFormData({ ...formData, about: e.htmlValue || "" });
+        setEditorContent(e.htmlValue || "");
     };
 
-    // Handle form submission
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!formData.about.trim()) {
+        if (!editorContent?.trim()) {
             toast.error("Privacy policy cannot be empty ❌");
             return;
         }
 
         try {
-            const payload = {
-                type: "privacy",
-                content: formData.about,
-            };
-
+            const payload = { type: "privacy", content: editorContent };
             const res = await privacyContentCreate(payload).unwrap();
-
-            if (res) {
-                toast.success(res?.message || "Privacy policy saved ✅");
-            }
+            toast.success(res?.message || "Privacy policy saved ✅");
         } catch (err) {
-            const error = err as FetchBaseQueryError & {
-                data?: { message?: string };
-            };
-            const message =
-                (error.data?.message as string) || "Something went wrong ❌";
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message = error.data?.message || "Something went wrong ❌";
             toast.error(message);
         }
     };
 
-    // Load existing content
-    useEffect(() => {
-        if (data?.data?.content) {
-            setFormData({ about: data.data.content });
-        }
-    }, [data]);
+    // ✅ Only render editor after content is loaded
+    if (editorContent === null) return <p>Loading editor...</p>;
 
     return (
         <div className="pb-10 pt-3.5 px-5 border border-[#B0B0B0] rounded-[14px]">
@@ -81,15 +60,13 @@ const PrivacyForm: React.FC = () => {
             <p className="mt-3.5">Admin can edit disclaimer</p>
 
             <form onSubmit={handleSubmit} className="mx-auto mt-6 space-y-6">
-                {/* PrimeReact Editor */}
                 <Editor
-                    value={formData.about}
+                    value={editorContent} // now fully controlled
                     onTextChange={handleEditorChange}
                     style={{ height: "400px" }}
                     placeholder="Write your privacy policy..."
                 />
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-4 mt-16">
                     <Button
                         type="submit"

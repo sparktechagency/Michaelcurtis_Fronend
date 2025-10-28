@@ -1,77 +1,60 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { Button } from "primereact/button";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Cookies from "js-cookie";
 import { toast } from "sonner";
 import {
     useGetTermsContentQuery,
     useTermsContentCreateMutation,
 } from "@/app/api/admin/contentApi";
-
-import Cookies from "js-cookie";
-
-// Define type for the form state
-type TermsFormState = {
-    about: string;
-};
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const TermUploadForm: React.FC = () => {
-    useEffect(() => {
-        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
-        if (!adminToken) {
-            window.location.href = "/admin/login";
-        }
-    }, []);
-    const [formData, setFormData] = useState<TermsFormState>({
-        about: "",
-    });
+    const [editorContent, setEditorContent] = useState<string | null>(null);
 
-    // API hooks
-    const [termsContentCreate, { isLoading }] =
-        useTermsContentCreateMutation();
+    const [termsContentCreate, { isLoading }] = useTermsContentCreateMutation();
     const { data } = useGetTermsContentQuery({});
 
-    // Handle Editor change
+    // Redirect if not logged in
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token");
+        if (!adminToken) window.location.href = "/auth/login";
+    }, []);
+
+    // Load initial content from API
+    useEffect(() => {
+        if (data?.data?.content !== undefined) {
+            setEditorContent(data.data.content);
+        }
+    }, [data]);
+
     const handleEditorChange = (e: EditorTextChangeEvent) => {
-        setFormData({ ...formData, about: e.htmlValue || "" });
+        setEditorContent(e.htmlValue || "");
     };
 
-    // Handle form submission
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!formData.about.trim()) {
+
+        if (!editorContent?.trim()) {
             toast.error("Terms & Conditions cannot be empty ❌");
             return;
         }
 
         try {
-            const payload = {
-                type: "terms",
-                content: formData.about,
-            };
-
+            const payload = { type: "terms", content: editorContent };
             const res = await termsContentCreate(payload).unwrap();
-
-            if (res) {
-                toast.success(res?.message || "Terms & Conditions saved ✅");
-            }
+            toast.success(res?.message || "Terms & Conditions saved ✅");
         } catch (err) {
-            const error = err as FetchBaseQueryError & {
-                data?: { message?: string };
-            };
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";
             toast.error(message);
         }
     };
 
-    // Load existing content into editor
-    useEffect(() => {
-        if (data?.data?.content) {
-            setFormData({ about: data.data.content });
-        }
-    }, [data]);
+    // Only render editor after content is loaded
+    if (editorContent === null) return <p>Loading editor...</p>;
 
     return (
         <div className="pb-10 pt-3.5 px-5 border border-[#B0B0B0] rounded-[14px]">
@@ -79,15 +62,13 @@ const TermUploadForm: React.FC = () => {
             <p className="mt-3.5">Admin can edit disclaimer</p>
 
             <form onSubmit={handleSubmit} className="mx-auto mt-6 space-y-6">
-                {/* PrimeReact Editor */}
                 <Editor
-                    value={formData.about}
+                    value={editorContent} // controlled component now
                     onTextChange={handleEditorChange}
                     style={{ height: "400px" }}
                     placeholder="Write your Terms & Conditions..."
                 />
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-4 mt-16">
                     <Button
                         type="submit"
