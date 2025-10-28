@@ -1,73 +1,59 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { Button } from "primereact/button";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { toast } from "sonner";
-
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 import {
     useGetMetholodgyContentQuery,
     useMetholodgyContentCreateMutation,
 } from "@/app/api/admin/contentApi";
-
-// Define type for the form state
-type MethodologyFormState = {
-    about: string;
-};
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const MethodologyForm: React.FC = () => {
+    const [editorContent, setEditorContent] = useState<string | null>(null);
+
+    const [metholodgyContentCreate, { isLoading }] = useMetholodgyContentCreateMutation();
+    const { data } = useGetMetholodgyContentQuery({});
+
+    // Redirect if not logged in
     useEffect(() => {
-        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
-        if (!adminToken) {
-            window.location.href = "/admin/login";
-        }
+        const adminToken = Cookies.get("admin_token");
+        if (!adminToken) window.location.href = "/admin/login";
     }, []);
-    const [formData, setFormData] = useState<MethodologyFormState>({
-        about: "",
-    });
 
-    const [metholodgyContentCreate, { isLoading }] =
-        useMetholodgyContentCreateMutation();
+    // Load existing content once
+    useEffect(() => {
+        if (data?.data?.content !== undefined) {
+            setEditorContent(data.data.content);
+        }
+    }, [data]);
 
-    // Handle Editor change
     const handleEditorChange = (e: EditorTextChangeEvent) => {
-        setFormData({ ...formData, about: e.htmlValue || "" });
+        setEditorContent(e.htmlValue || "");
     };
 
-    // Handle form submission
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (!editorContent?.trim()) {
+            toast.error("Methodology content cannot be empty ❌");
+            return;
+        }
+
         try {
-            const payload = {
-                type: "metholodgy",
-                content: formData.about,
-            };
-
+            const payload = { type: "metholodgy", content: editorContent };
             const res = await metholodgyContentCreate(payload).unwrap();
-
-            if (res) {
-                toast.success(res?.message || "Saved successfully ✅");
-            }
+            toast.success(res?.message || "Saved successfully ✅");
         } catch (err) {
-            const error = err as FetchBaseQueryError & {
-                data?: { message?: string };
-            };
-            const message =
-                (error.data?.message as string) || "Something went wrong ❌";
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message = error.data?.message || "Something went wrong ❌";
             toast.error(message);
         }
     };
 
-    // Fetch existing content
-    const { data } = useGetMetholodgyContentQuery({});
-
-    useEffect(() => {
-        if (data?.data?.content) {
-            setFormData({ about: data.data.content });
-        }
-    }, [data]);
+    // Only render editor after content is loaded
+    if (editorContent === null) return <p>Loading editor...</p>;
 
     return (
         <div className="pb-10 pt-3.5 px-5 border border-[#B0B0B0] rounded-[14px]">
@@ -75,21 +61,20 @@ const MethodologyForm: React.FC = () => {
             <p className="mt-3.5">Admin can edit disclaimer</p>
 
             <form onSubmit={handleSubmit} className="mx-auto mt-6 space-y-6">
-                {/* PrimeReact Editor */}
                 <Editor
-                    value={formData.about}
+                    value={editorContent} // controlled editor
                     onTextChange={handleEditorChange}
                     style={{ height: "400px" }}
                     placeholder="Write about methodology..."
                 />
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-4 mt-16">
                     <Button
                         type="submit"
                         label={isLoading ? "Loading..." : "Save"}
                         icon="pi pi-check"
                         className="w-full border border-[#D1D1D1] bg-[#D09A40] py-3 font-bold text-sm text-white rounded-[8px]"
+                        disabled={isLoading}
                     />
                 </div>
             </form>

@@ -6,54 +6,49 @@ import { Button } from "primereact/button";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
 import { useAboutContentCreateMutation, useGetAboutContentQuery } from "@/app/api/admin/contentApi";
-
 import Cookies from "js-cookie";
+
 const AboutForm: React.FC = () => {
-    useEffect(() => {
-        const adminToken = Cookies.get("admin_token"); // ✅ check inside useEffect
-        if (!adminToken) {
-            window.location.href = "/admin/login";
-        }
-    }, []);
-    const [about, setAbout] = useState("");
-
+    const [about, setAbout] = useState<string | null>(null);
     const [aboutContentCreate, { isLoading }] = useAboutContentCreateMutation();
+    const { data } = useGetAboutContentQuery({});
 
+    // Redirect if not logged in
+    useEffect(() => {
+        const adminToken = Cookies.get("admin_token");
+        if (!adminToken) window.location.href = "/admin/login";
+    }, []);
 
-    const formData = new FormData();
+    // Load content once
+    useEffect(() => {
+        if (data?.data?.content !== undefined) {
+            setAbout(data.data.content);
+        }
+    }, [data]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        formData.append("type", "about");
-        formData.append("content", about);
+        if (!about?.trim()) {
+            toast.error("Content cannot be empty ❌");
+            return;
+        }
 
         try {
+            const formData = new FormData();
+            formData.append("type", "about");
+            formData.append("content", about);
 
             const res = await aboutContentCreate(formData).unwrap();
-
-            if (res) {
-                toast.success(res?.message)
-            }
-
+            toast.success(res?.message || "Saved successfully ✅");
         } catch (err) {
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
-            const message =
-                (error.data?.message as string) || "Something went wrong ❌";
+            const message = error.data?.message || "Something went wrong ❌";
             toast.error(message);
         }
-
     };
 
-
-
-    const { data } = useGetAboutContentQuery({});
-
-    useEffect(() => {
-        if (data) {
-            setAbout(data?.data?.content)
-        }
-    }, [data])
-
+    // Only render editor after content is loaded
+    if (about === null) return <p>Loading editor...</p>;
 
     return (
         <div className="pb-10 pt-3.5 px-5 border border-[#B0B0B0] rounded-[14px] max-w-4xl mx-auto">
@@ -61,21 +56,20 @@ const AboutForm: React.FC = () => {
             <p className="mt-3.5 text-gray-600">Admin can edit disclaimer</p>
 
             <form onSubmit={handleSubmit} className="mx-auto mt-6 space-y-6">
-                {/* PrimeReact Editor */}
                 <Editor
-                    value={about}
+                    value={about} // controlled editor
                     onTextChange={(e) => setAbout(e.htmlValue || "")}
                     style={{ height: "400px" }}
                     placeholder="Write about yourself..."
                 />
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-4 mt-16">
                     <Button
                         type="submit"
                         label={isLoading ? "Loading..." : "Save"}
                         icon="pi pi-check"
                         className="p-button-primary w-full border border-[#D1D1D1] bg-[#D09A40] py-3 font-bold text-sm text-white rounded-[8px]"
+                        disabled={isLoading}
                     />
                 </div>
             </form>
