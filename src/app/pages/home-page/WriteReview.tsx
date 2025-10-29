@@ -3,8 +3,9 @@ import Link from 'next/link'
 import React from 'react'
 
 const WriteReview = () => {
+    // border-b border-[#989DA3] 
     return (
-        <div className='border-b border-[#989DA3] ' >
+        <div className='' >
             <div className=' bg-[#D09A40] mb-10  ' >
                 <MaxWidth>
                     <div className=' text-center py-7 lg:py-14 ' >
