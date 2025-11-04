@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 
     try {
-        const response = await fetch(`${url}meta-datas/ranking`, {
+        const response = await fetch(`${url}meta-datas/about`, {
 
-            next: { revalidate: 3600 }, // every 1 hour
+            next: { revalidate: 10 }, // every 10 seconds
         });
 
         if (!response.ok) {
@@ -38,6 +38,9 @@ export async function generateMetadata(): Promise<Metadata> {
         };
     }
 }
+
+
+
 const Page: React.FC = () => {
 
     return (
