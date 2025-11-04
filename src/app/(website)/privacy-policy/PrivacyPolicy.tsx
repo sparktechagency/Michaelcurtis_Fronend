@@ -9,7 +9,6 @@ const PrivacyPolicy = () => {
 
 
     const { data } = useContentApiQuery({ pageName: "privacy" });
-    console.log(data?.data?.content);
 
     return (
         <>

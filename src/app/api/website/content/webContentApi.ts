@@ -9,7 +9,7 @@ export const webContentApi = createApi({
         baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     }),
 
-    tagTypes: ["activity"],
+    tagTypes: ["content"],
 
     endpoints: (builder) => ({
         contentApi: builder.query({
@@ -17,12 +17,14 @@ export const webContentApi = createApi({
                 url: `/user/pages/${pageName}`,
                 method: "GET"
             }),
+            providesTags: ["content"]
         }),
         webFaqApi: builder.query({
             query: () => ({
                 url: "/user/faqs",
                 method: "GET",
             }),
+            providesTags: ["content"]
         }),
 
     }),

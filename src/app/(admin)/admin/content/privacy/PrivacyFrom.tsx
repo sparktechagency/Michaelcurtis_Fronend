@@ -19,7 +19,7 @@ const PrivacyForm: React.FC = () => {
     // Redirect if not logged in
     useEffect(() => {
         const adminToken = Cookies.get("admin_token");
-        if (!adminToken) window.location.href = "/admin/login";
+        if (!adminToken) window.location.href = "/auth/login";
     }, []);
 
     // Load initial content once
