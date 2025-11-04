@@ -397,8 +397,8 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                             placeholder="Write about yourself..."
                         />
                         <div className="flex justify-between mt-1 text-xs text-gray-500">
-                            <span>{about.length}/1000</span>
-                            <span>{about.length > 0 ? `${1000 - about.length}` : '1000'} characters left</span>
+                            <span>{about.length}/3000</span>
+                            <span>{about.length > 0 ? `${3000 - about.length}` : '3000'} characters left</span>
                         </div>
                     </div>
 

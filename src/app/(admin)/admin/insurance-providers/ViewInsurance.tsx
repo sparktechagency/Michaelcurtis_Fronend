@@ -85,7 +85,9 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
 
     console.log(data?.data)
 
-    const insuranceProvider: InsuranceProvider = data?.data
+    const insuranceProvider: InsuranceProvider = data?.data;
+
+    console.log("insuranceProvider", insuranceProvider)
 
 
     const [deleteProvider] = useDeleteProviderMutation();
@@ -249,7 +251,7 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
 
 
                     {/* Community Reviews Section */}
-                    <div className=" bg-[#FAF5EC] shadow shadow-[#00000033] rounded-[10px] px-8 pt-4 pb-9  ">
+                    {/* <div className=" bg-[#FAF5EC] shadow shadow-[#00000033] rounded-[10px] px-8 pt-4 pb-9  ">
                         <h3 className="lg:text-[27] text-lg text-black font-normal ">Community Reviews</h3>
                         <div className="flex items-center justify-between bg-[#E9D1A7] mt-4 rounded-[9px] py-2 px-4 ">
                             <div>
@@ -265,7 +267,7 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Action Buttons */}
                     <div className="flex justify-end space-x-4 mt-8 ">

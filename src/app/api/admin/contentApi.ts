@@ -87,7 +87,7 @@ export const contentApi = createApi({
         }),
 
 
-        // privacy 
+        // term condiction
 
 
 
@@ -102,7 +102,7 @@ export const contentApi = createApi({
 
         getTermsContent: builder.query({
             query: () => ({
-                url: `/admin/pages/privacy`,
+                url: `/admin/pages/terms`,
                 method: "GET"
             }),
             providesTags: ["content"]
