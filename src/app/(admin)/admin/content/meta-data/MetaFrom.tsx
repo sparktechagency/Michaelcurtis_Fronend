@@ -494,7 +494,7 @@ const MetaForm = () => {
 
     const [contactTitle, setContactTitle] = useState<string>();
     const [contactDes, setContactDes] = useState<string>();
-    const contact = useMetaDataByPageNameQuery("privacy");
+    const contact = useMetaDataByPageNameQuery("contact");
 
     const handleSubmitContactPage = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
