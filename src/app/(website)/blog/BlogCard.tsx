@@ -12,7 +12,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
 
                 {/* left side  */}
                 <div className=' w-full  lg:max-w-[40%] flex-1  ' >
-                    <Image src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name}  className=' w-[1500px]  h-[336px]  ' />
+                    <Image unoptimized src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name}  className=' w-[1500px]  h-[336px]  ' />
                 </div>
                 {/* right side  */}
                 <div className=' w-full  lg:max-w-[60%] flex-1 lg:p-0 p-3  ' >
@@ -29,7 +29,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
 
                         <div className=' flex flex-row items-center gap-x-4 ' >
                             <div>
-                                <Image src={firstBlog?.user?.avatar || "/images/blog/author-image.svg"} width={60} height={57} alt='' className='   w-10 h-10 rounded-full  ' />
+                                <Image unoptimized src={firstBlog?.user?.avatar || "/images/blog/author-image.svg"} width={60} height={57} alt='' className='   w-10 h-10 rounded-full  ' />
                             </div>
                             <div>
                                 <h1 className=' lg:text-lg font-normal text-xl text-black  ' >{firstBlog?.user?.full_name}</h1>

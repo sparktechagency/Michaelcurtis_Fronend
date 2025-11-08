@@ -96,6 +96,7 @@ export default function UserProfile() {
                                 src={preview || formData.avatar}
                                 alt="Preview"
                                 className="w-full h-full object-cover"
+                                unoptimized
                             />
                             <input
                                 type="file"
