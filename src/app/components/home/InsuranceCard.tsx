@@ -107,7 +107,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
     const handleOpenCompare = () => {
 
-        router.push("/InsuranceTable");
+        redirect("/InsuranceTable");
 
     };
 
