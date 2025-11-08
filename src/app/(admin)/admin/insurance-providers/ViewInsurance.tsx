@@ -159,6 +159,7 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
                             height={113}
                             src={insuranceProvider?.logo_url}
                             alt="insurance logo"
+                            unoptimized
                             className="  rounded-[9px] w-[108px] h-[113px] border border-[#E9D1A7]  "
                         />
 

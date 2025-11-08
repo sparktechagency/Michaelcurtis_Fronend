@@ -256,6 +256,7 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
                                     alt="Preview"
                                     width={50}
                                     height={50}
+                                    unoptimized
                                     className="mt-2 w-48 h-48 object-cover rounded"
                                 />
                             )}

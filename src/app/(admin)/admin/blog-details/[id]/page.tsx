@@ -20,6 +20,7 @@ const Page: React.FC = () => {
                                     width={46}
                                     height={46}
                                     className=""
+                                    unoptimized
                                 />
                             </div>
                             <div>

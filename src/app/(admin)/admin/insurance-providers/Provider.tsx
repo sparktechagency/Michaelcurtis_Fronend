@@ -260,7 +260,7 @@ const Provider = () => {
                                 <tr key={index} className="border-b border-[#989DA3] ">
                                     <td className="px-6 py-3">
                                         <div className=" flex flex-row items-center gap-x-2  " >
-                                            <Image src={provider?.logo_url} width={2000} height={2000} alt="" className=" w-10 h-10 rounded-full " />
+                                            <Image  unoptimized src={provider?.logo_url} width={2000} height={2000} alt="" className=" w-10 h-10 rounded-full " />
                                             <p className=" text-[#000000] font-thin text-[16px] " >
                                                 {provider.name}
                                             </p>

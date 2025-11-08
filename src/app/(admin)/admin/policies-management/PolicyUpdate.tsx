@@ -241,6 +241,7 @@ const PolicyUpdate: React.FC<PolicyViewProps> = ({
                                         src={preview}
                                         width={100}
                                         height={100}
+                                        unoptimized
                                         alt="Logo Preview"
                                         className="object-contain border rounded-md w-24 h-24"
                                     />

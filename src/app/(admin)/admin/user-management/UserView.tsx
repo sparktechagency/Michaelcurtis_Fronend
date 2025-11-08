@@ -158,7 +158,8 @@ const UserView: React.FC<PolicyViewProps> = ({
                                 src={singleUser?.avatar}
                                 width={64}
                                 height={64}
-                                alt=""
+                                alt={"user"}
+                                unoptimized
                                 className="rounded-full  w-16 h-16 p-1 "
                             />
                         </div>
