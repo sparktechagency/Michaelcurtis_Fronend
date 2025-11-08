@@ -575,6 +575,101 @@ const MetaForm = () => {
 
 
 
+    const [loginTitle, setLoginTitle] = useState<string>();
+    const [loginDes, setLoginDes] = useState<string>();
+    const login = useMetaDataByPageNameQuery("login");
+
+    const handleSubmitLoginPage = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const payload = {
+            page_name: "login",
+            title: loginTitle,
+            description: loginDes
+        }
+        try {
+            const res = await updateAlert();
+            if (res.isConfirmed) {
+                const res = await createMetaData(payload).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+        } catch (err) {
+            // ❌ Error Handling
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
+    useEffect(() => {
+        if (login) {
+            setLoginTitle(login?.data?.data?.title);
+            setLoginDes(login?.data?.data?.description);
+        }
+    }, [login])
+
+
+
+
+    // sign up page 
+
+
+    const [signUpTitle, setSignUpTitle] = useState<string>();
+    const [signUpDes, setSignUpDes] = useState<string>();
+    const singUp = useMetaDataByPageNameQuery("signUp");
+
+    const handleSubmitSignUpPage = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const payload = {
+            page_name: "signUp",
+            title: signUpTitle,
+            description: signUpDes
+        }
+        try {
+            const res = await updateAlert();
+            if (res.isConfirmed) {
+                const res = await createMetaData(payload).unwrap();
+                if (res) {
+                    toast.success(res?.message)
+                }
+            }
+        } catch (err) {
+            // ❌ Error Handling
+            const error = err as FetchBaseQueryError & { data?: { message?: string } };
+            const message =
+                (error.data?.message as string) || "Something went wrong ❌";
+            toast.error(message);
+        }
+    };
+
+    useEffect(() => {
+        if (singUp) {
+            setSignUpTitle(singUp?.data?.data?.title);
+            setSignUpDes(singUp?.data?.data?.description);
+        }
+    }, [singUp])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1311,6 +1406,138 @@ const MetaForm = () => {
                         </form>
                     </div>
                 </div>
+
+
+
+
+                {/* Login Page  */}
+                <div className=' w-full ' >
+
+                    <h1 className=' mb-6 text-3xl font-semibold  ' >Login Page</h1>
+                    <div className="max-w-2xl  p-6 bg-white rounded-lg shadow-md">
+
+                        <form onSubmit={handleSubmitLoginPage} >
+                            {/* Title */}
+                            <div className="mb-6">
+                                <label htmlFor="title" className="block text-lg font-medium text-gray-700">
+                                    Title
+                                </label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="loginTitle"
+                                    value={loginTitle}
+                                    onChange={(e) => { setLoginTitle(e.target.value) }}
+                                    placeholder="Enter title"
+                                    className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:outline-none  focus:ring-0"
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-6">
+                                <label htmlFor="description" className="block text-lg font-medium text-gray-700">
+                                    Description
+                                </label>
+                                <textarea
+                                    id="description"
+                                    name="faqDes"
+                                    value={loginDes}
+                                    onChange={(e) => { setLoginDes(e.target.value) }} cols={30}
+                                    rows={10}
+                                    placeholder="Enter description"
+                                    className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:outline-none  focus:ring-0"
+                                ></textarea>
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 bg-[#D09A40] text-white rounded-md cursor-pointer focus:outline-none  focus:ring-0"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div className=' flex justify-between mt-6 ' >
+
+                {/* Registration page  */}
+                <div className=' w-full ' >
+
+                    <h1 className=' mb-6 text-3xl font-semibold  ' >SignUp Page</h1>
+                    <div className="max-w-2xl  p-6 bg-white rounded-lg shadow-md">
+
+                        <form onSubmit={handleSubmitSignUpPage} >
+                            {/* Title */}
+                            <div className="mb-6">
+                                <label htmlFor="title" className="block text-lg font-medium text-gray-700">
+                                    Title
+                                </label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="signUpTitle"
+                                    value={signUpTitle}
+                                    onChange={(e) => { setSignUpTitle(e.target.value) }}
+                                    placeholder="Enter title"
+                                    className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:outline-none  focus:ring-0"
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-6">
+                                <label htmlFor="description" className="block text-lg font-medium text-gray-700">
+                                    Description
+                                </label>
+                                <textarea
+                                    id="description"
+                                    name="signUpDes"
+                                    value={signUpDes}
+                                    onChange={(e) => { setSignUpDes(e.target.value) }} cols={30}
+                                    rows={10}
+                                    placeholder="Enter description"
+                                    className="w-full mt-2 p-3 border border-gray-300 rounded-md focus:outline-none  focus:ring-0"
+                                ></textarea>
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 bg-[#D09A40] text-white rounded-md cursor-pointer focus:outline-none  focus:ring-0"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
 
 
 

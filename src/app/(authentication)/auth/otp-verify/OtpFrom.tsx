@@ -128,6 +128,7 @@ export default function OtpFrom() {
                                         type="number"
                                         id="number"
                                         value={number}
+                                        required
                                         onChange={(e) => {
                                             // Allow only digits
                                             const value = e.target.value.replace(/[^0-9]/g, "");
