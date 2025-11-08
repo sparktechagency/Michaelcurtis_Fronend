@@ -3,6 +3,9 @@
 import { useContentApiQuery } from '@/app/api/website/content/webContentApi';
 import React from 'react'
 
+// comments 
+// about page 
+
 const AboutBanner = () => {
 
     const { data } = useContentApiQuery({ pageName: "about" });
