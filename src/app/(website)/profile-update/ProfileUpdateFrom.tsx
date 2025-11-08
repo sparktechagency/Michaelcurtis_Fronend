@@ -80,6 +80,7 @@ export default function ProfileUpdateForm() {
                             alt="Profile"
                             width={128}
                             height={128}
+                            unoptimized
                             className="w-32 h-32 rounded-full object-cover border border-black"
                         />
                         <label
@@ -93,6 +94,7 @@ export default function ProfileUpdateForm() {
                             type="file"
                             accept="image/*"
                             className="hidden"
+                            
                             onChange={handleImageChange}
                         />
                     </div>

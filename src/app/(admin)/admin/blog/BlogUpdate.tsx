@@ -273,6 +273,7 @@ const BlogUpdate: React.FC<PolicyViewProps> = ({
                                     alt="Preview"
                                     width={1000}
                                     height={1000}
+                                    unoptimized
                                     className="mt-2 w-48 h-48 object-cover rounded"
                                 />
                             )}

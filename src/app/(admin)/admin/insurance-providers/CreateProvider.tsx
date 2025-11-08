@@ -293,6 +293,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                                         width={100}
                                         height={100}
                                         alt="Logo Preview"
+                                        unoptimized
                                         className="object-contain border rounded-md w-16 h-12        "
                                     />
                                 </div>

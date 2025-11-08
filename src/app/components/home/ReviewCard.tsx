@@ -15,6 +15,7 @@ const ReviewCard = ({ data }: { data: ReviewResponseType }) => {
                         width={60}
                         height={60}
                         alt={data?.user?.first_name}
+                        unoptimized
                         className='rounded-full object-cover w-12 h-12  '
                     />
                 </div>

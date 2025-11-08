@@ -214,6 +214,7 @@ export default function UserList() {
                                             alt={user.full_name}
                                             width={40}
                                             height={40}
+                                            unoptimized
                                             className="rounded-full w-12 h-12 "
                                         />
                                         <span className=" font-normal text-sm " >{user.full_name}</span>
