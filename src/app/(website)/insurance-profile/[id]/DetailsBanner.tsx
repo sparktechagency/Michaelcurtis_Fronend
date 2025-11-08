@@ -47,7 +47,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
                         <div className=' flex items-center gap-x-8 ' >
                             <div>
                                 <Image
-                                    src={data?.data?.logo_url || "/images/blog/author-image.svg"}
+                                    src={data?.data?.logo_url}
                                     alt={data?.data?.slug || "category-logo"}
                                     width={96}
                                     height={101}
