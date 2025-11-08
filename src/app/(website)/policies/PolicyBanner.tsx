@@ -79,6 +79,7 @@ const PolicyBanner = () => {
                                             width={2000}
                                             height={2000}
                                             alt={policy.name}
+                                            unoptimized
                                             className="block mx-auto w-20 h-14 "
                                         />
                                     </div>

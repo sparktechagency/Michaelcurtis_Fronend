@@ -23,7 +23,7 @@ const MostReview = () => {
                     </div>
                     {/* right side  */}
                     <div className=' max-w-[30%] flex-1 w-full  ' >
-                        <Image src={"/images/policy/car.svg"} width={297} height={109} alt='' className='' />
+                        <Image unoptimized src={"/images/policy/car.svg"} width={297} height={109} alt='' className='' />
                     </div>
                 </div>
             </MaxWidth>

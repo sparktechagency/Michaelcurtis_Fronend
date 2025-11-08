@@ -25,7 +25,7 @@ const PolicyCategory = () => {
                                         <div className="w-44 h-32 shadow shadow-[#00000033] rounded-[8px] flex flex-col justify-center items-center px-2 ">
                                             <span className='h-12   ' >
 
-                                                <Image src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-10 h-8 ' />
+                                                <Image unoptimized src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-10 h-8 ' />
 
 
                                             </span>

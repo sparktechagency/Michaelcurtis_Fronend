@@ -12,7 +12,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
 
                 {/* left side  */}
                 <div className=' w-full  lg:max-w-[40%] flex-1  ' >
-                    <Image src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name} className=' w-[1500px]  h-[336px]  ' />
+                    <Image src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name}  className=' w-[1500px]  h-[336px]  ' />
                 </div>
                 {/* right side  */}
                 <div className=' w-full  lg:max-w-[60%] flex-1 lg:p-0 p-3  ' >
@@ -72,6 +72,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
                             alt={blog.title}
                             width={412}
                             height={227}
+                            unoptimized
                             className=" w-full h-[250px]"
                         />
                         <div className="px-6 pb-8 pt-6 ">

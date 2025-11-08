@@ -406,7 +406,7 @@ const RankingInsurance = () => {
                                         <div className="    ">
 
                                             <span className=' block ml-9  w-[79px] h-[82px]   ' >
-                                                <Image src={item?.logo_url} width={1000} height={1000} alt={item?.name} className={`w-[79px] h-[82px] rounded-[7px] border border-[#E9D1A7] `} />
+                                                <Image unoptimized src={item?.logo_url} width={1000} height={1000} alt={item?.name} className={`w-[79px] h-[82px] rounded-[7px] border border-[#E9D1A7] `} />
                                             </span>
 
                                         </div>

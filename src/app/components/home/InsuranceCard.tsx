@@ -111,7 +111,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
     };
 
-    console.log("logo url is",data?.logo_url);
+    console.log("logo url is", data?.logo_url);
 
 
 
@@ -128,14 +128,14 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
                         <div className=" flex justify-center items-center shadow-sm shrink-0 ">
                             {/* Logo placeholder */}
                             <span>
-                               <Image
-  src={data?.logo_url}
-  width={2000}
-  height={2000}
-  alt={data?.name}
-  unoptimized
-  className="w-[68px] h-[71px] rounded-[6px] border border-[#E9D1A7]"
-/>
+                                <Image
+                                    src={data?.logo_url}
+                                    width={2000}
+                                    height={2000}
+                                    alt={data?.name}
+                                    unoptimized
+                                    className="w-[68px] h-[71px] rounded-[6px] border border-[#E9D1A7]"
+                                />
 
 
                             </span>

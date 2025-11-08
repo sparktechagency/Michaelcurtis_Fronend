@@ -111,6 +111,7 @@ export default function Sidebar() {
                     alt="Logo"
                     width={120}
                     height={40}
+                    unoptimized
                     className="object-contain w-16 ml-[38%]  "
                     priority
                 />

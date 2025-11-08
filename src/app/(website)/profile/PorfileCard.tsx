@@ -18,7 +18,7 @@ const PorfileCard = () => {
                         <div className='bg-white shadow shadow-[#00000033] py-8 px-5 rounded-[6px]' >
                             <div className=' flex flex-row  items-center gap-x-9  ' >
                                 <div>
-                                    <Image src={userData?.avatar || "/images/insurance/user-img.svg"} width={61} height={61} alt=" w-16 h-16 rounded-full " className=" w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full " />
+                                    <Image unoptimized src={userData?.avatar || "/images/insurance/user-img.svg"} width={61} height={61} alt=" w-16 h-16 rounded-full " className=" w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full " />
                                 </div>
                                 <div>
                                     <h1 className=' lg:text-xl text-sm  font-normal text-[#000000] ' >{userData?.full_name}</h1>

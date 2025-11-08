@@ -41,7 +41,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
 
                                     <div className='  ' >
                                         <span>
-                                            <Image src={item?.logo_url} width={2000} height={2000} alt={item?.name} className=' w-[51px] h-[53px] border border-[#E9D1A7] rounded-[8px]  ' />
+                                            <Image unoptimized src={item?.logo_url} width={2000} height={2000} alt={item?.name} className=' w-[51px] h-[53px] border border-[#E9D1A7] rounded-[8px]  ' />
                                         </span>
 
                                     </div>

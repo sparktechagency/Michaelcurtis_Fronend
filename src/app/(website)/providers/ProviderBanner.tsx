@@ -424,7 +424,7 @@ const ProviderBanner = () => {
                                                         <div className=' flex gap-x-5  ' >
                                                             <div className=' w-[51px] h-[53px] bg-[#E9D1A7] flex justify-center items-center rounded-[6px]  ' >
                                                                 {/* logo  */}
-                                                                <Image src={item?.logo_url} width={1000} height={1000} alt={item?.name} className='  w-8 h-6    ' />
+                                                                <Image unoptimized src={item?.logo_url} width={1000} height={1000} alt={item?.name} className='  w-8 h-6    ' />
                                                             </div>
                                                             <div>
                                                                 <h1 className=' text-black font-normal lg:text-xl text-sm  ' >{item?.name.slice(0, 15)}...</h1>
