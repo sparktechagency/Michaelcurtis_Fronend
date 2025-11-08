@@ -88,6 +88,7 @@ export default function EmailFrom() {
                                         id="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        required
                                         className="w-full px-4 py-4 border-1 border-[#989DA3] focus:outline-none focus:ring-0   rounded-[10px] "
                                         // placeholder="Enter your email"
                                         style={{

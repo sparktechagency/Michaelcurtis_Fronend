@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     try {
         const response = await fetch(`${url}meta-datas/home`, {
 
-            next: { revalidate: 3600 }, 
+            next: { revalidate: 3600 },
         });
 
         if (!response.ok) {
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
                 "",
         };
     } catch (error) {
-        
+        console.log(error)
         return {
             title: "",
             description: "      ",
