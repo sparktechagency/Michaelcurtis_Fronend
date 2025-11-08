@@ -117,7 +117,8 @@ const AdminNavbar = () => {
                             alt="Admin"
                             width={500}
                             height={500}
-                            className="object-cover w-14 h-14 cursor-pointer "
+                            unoptimized
+                        className="object-cover w-14 h-14 cursor-pointer "
                         />
                     </button>
 

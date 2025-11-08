@@ -11,7 +11,7 @@ const BlogDetails = ({ slug }: { slug: string }) => {
     <>
       <div className=' lg:pt-13 pb-6  ' >
         {/* image  */}
-        <Image src={blog?.featured_image || "/images/blog/blog-details.svg"} width={1198} height={678} alt='' className=' block mx-auto ' />
+        <Image src={blog?.featured_image || "/images/blog/blog-details.svg"} unoptimized width={1198} height={678} alt='' className=' block mx-auto ' />
         <button className=' py-0.5 px-3 bg-[#C4F0C9] text-[#2D9434] rounded-[4px] block mx-auto lg:mt-8 mt-4 ' >Coverage</button>
         <div className=' max-w-5xl mx-auto ' >
           <h1 className=' lg:mt-5 mt-2 lg:text-5xl text-2xl font-bold text-center  ' >{blog?.title}</h1>
@@ -23,6 +23,7 @@ const BlogDetails = ({ slug }: { slug: string }) => {
                   alt={'blog.title'}
                   width={1000}
                   height={1000}
+                  unoptimized
                   className=" w-12 h-12 rounded-full "
                 />
               </div>

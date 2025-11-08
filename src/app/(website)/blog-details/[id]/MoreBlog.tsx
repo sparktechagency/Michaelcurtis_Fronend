@@ -32,6 +32,7 @@ const MoreBlog = () => {
                                     alt={blog.title}
                                     width={412}
                                     height={227}
+                                    unoptimized
                                     className=" w-full h-[300px] "
                                 />
                                 <div className="px-6 pb-8 pt-6 ">
@@ -49,7 +50,7 @@ const MoreBlog = () => {
 
                                         <div className=' flex flex-row items-center gap-x-4 ' >
                                             <div>
-                                                <Image src={blog?.user?.avatar} width={500} height={500} alt={blog?.author_name} className=' w-10 h-10 rounded-full ' />
+                                                <Image unoptimized src={blog?.user?.avatar} width={500} height={500} alt={blog?.author_name} className=' w-10 h-10 rounded-full ' />
                                             </div>
                                             <div>
                                                 <h1 className=' lg:text-lg font-normal text-xl text-black  ' >{blog?.user?.full_name}</h1>

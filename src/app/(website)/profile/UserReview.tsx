@@ -41,7 +41,7 @@ const UserReview = () => {
                                 <div>
                                     <div className=' flex flex-row  items-start gap-x-8  ' >
                                         <div>
-                                            <Image src={item?.user?.avatar || "/images/insurance/user-img.svg"} width={65} height={65} alt="" className=" w-[65px] h-[65px] cursor-pointer rounded-full " />
+                                            <Image unoptimized src={item?.user?.avatar || "/images/insurance/user-img.svg"} width={65} height={65} alt="" className=" w-[65px] h-[65px] cursor-pointer rounded-full " />
                                         </div>
                                         <div>
                                             <h1 className=' lg:text-xl text-sm  font-normal text-[#000000] ' >{item?.user?.full_name} </h1>

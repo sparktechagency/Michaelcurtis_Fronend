@@ -69,6 +69,7 @@ const Navbar = () => {
     currentPage * itemsPerPage
   );
 
+
   const handleNext = () =>
     setCurrentPage((prev) => Math.min(totalPages, prev + 1));
   const handlePrev = () =>
@@ -143,6 +144,7 @@ const Navbar = () => {
                 width={316}
                 height={69}
                 className="object-contain"
+                unoptimized
                 priority
               />
             </Link>
@@ -287,6 +289,8 @@ const Navbar = () => {
                     src={userData?.data?.avatar || "/images/user.png"}
                     width={61}
                     height={61}
+                    
+                    unoptimized
                     alt="User Avatar"
                     className="w-[64px] h-[64px] cursor-pointer border border-[#BD8C3A] p-1 rounded-full"
                   />

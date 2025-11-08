@@ -57,7 +57,7 @@ const InsuranceTable = () => {
                                         <div className="flex flex-col items-center gap-2">
                                             {/* Logo */}
                                             <span className="h-[135px] flex items-center justify-center  w-full">
-                                                <Image src={item?.logo_url} width={127} height={133} alt={item?.name} className='' />
+                                                <Image unoptimized src={item?.logo_url} width={127} height={133} alt={item?.name} className='' />
                                             </span>
 
                                             {/* Insurance Name */}
