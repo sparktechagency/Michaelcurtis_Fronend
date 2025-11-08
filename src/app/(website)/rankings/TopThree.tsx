@@ -194,7 +194,7 @@ const Card = ({ bg }: { bg: string }) => {
 
                             {/* logo  */}
                             {
-                                <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                                <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} unoptimized className=' w-24 h-28 ' />
                             }
                         </div>
                         <div className="mt-6  ">
@@ -359,7 +359,7 @@ const CardTwo = ({ bg }: { bg: string }) => {
                         <div className=' flex justify-center  ' >
 
                             {
-                                <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                                <Image unoptimized src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
                             }
                         </div>
                         <div className="mt-6   ">
@@ -479,7 +479,7 @@ const CardThree = ({ bg }: { bg: string }) => {
                         <div className=' flex justify-center  ' >
 
                             {
-                                <Image src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
+                                <Image unoptimized src={top1?.logo_url} width={1000} height={1000} alt={top1?.name} className=' w-24 h-28 ' />
                             }
                         </div>
                         <div className="mt-6   ">
