@@ -12,7 +12,7 @@ import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/provi
 import ProgressBar from "@ramonak/react-progress-bar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { redirect } from 'next/navigation'
 
 
 
