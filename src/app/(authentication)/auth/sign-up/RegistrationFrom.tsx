@@ -231,7 +231,17 @@ export default function LoginForm() {
                         </form>
                     </div>
                 </div>
+
+
+                <div>
+                    <p className=" text-[#697079] font-medium  block text-center text-[17px] lg:mt-10 mt-5 " >
+                        You have an account ? Please <Link className=" text-[#D09A40]  underline " href={"/auth/login"} >Login</Link>
+                    </p>
+                </div>
+
             </div>
+
+
 
         </div>
     );

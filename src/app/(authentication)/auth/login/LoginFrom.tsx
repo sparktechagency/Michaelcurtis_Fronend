@@ -178,11 +178,11 @@ export default function LoginForm() {
                         </div>
 
 
-                        {/* <div>
+                        <div>
                             <p className=" text-[#697079] font-medium  block text-center text-[17px] lg:mt-10 mt-5 " >
-                                Don’t have an account ? <Link className=" text-[#D09A40]  underline " href={"/auth/registration"} >Sign up</Link>
+                                Don’t have an account ? <Link className=" text-[#D09A40]  underline " href={"/auth/sign-up"} >Sign up</Link>
                             </p>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
 
