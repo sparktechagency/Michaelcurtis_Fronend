@@ -51,6 +51,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
                                     alt={data?.data?.slug || "category-logo"}
                                     width={96}
                                     height={101}
+                                    unoptimized
                                     className="w-24 h-[91px] object-contain rounded-md"
                                 />
                             </div>
@@ -420,7 +421,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
                             <div className=' flex justify-center ' >
                                 <span>
-                                    <Image src = {data?.data?.logo_url} width = {100} height = {100} alt  = {data?.data?.name} className = {` w-24 h-24 `}  />
+                                    <Image  unoptimized src = {data?.data?.logo_url} width = {100} height = {100} alt  = {data?.data?.name} className = {` w-24 h-24 `}  />
                                 </span>
 
 
