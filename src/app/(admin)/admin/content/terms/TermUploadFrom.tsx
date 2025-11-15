@@ -58,7 +58,7 @@ const TermUploadForm: React.FC = () => {
 
     return (
         <div className="pb-10 pt-3.5 px-5 border border-[#B0B0B0] rounded-[14px]">
-            <h1 className="text-[#10101E] font-bold text-4xl">Terms & Conditions</h1>
+            <h1 className="text-[#10101E] font-bold text-4xl">Terms Of Service</h1>
             <p className="mt-3.5">Admin can edit disclaimer</p>
 
             <form onSubmit={handleSubmit} className="mx-auto mt-6 space-y-6">

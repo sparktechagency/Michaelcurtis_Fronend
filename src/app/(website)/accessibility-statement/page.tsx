@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     try {
         const response = await fetch(`${url}meta-datas/statement`, {
 
-            next: { revalidate: 10 }, // every 1 hour
+            next: { revalidate: 1 }, // every 1 hour
         });
 
         if (!response.ok) {

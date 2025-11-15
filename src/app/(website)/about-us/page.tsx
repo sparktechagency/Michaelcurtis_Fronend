@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     try {
         const response = await fetch(`${url}meta-datas/about`, {
 
-            next: { revalidate: 10 }, // every 10 seconds
+            next: { revalidate: 1 }, // every 10 seconds
         });
 
         if (!response.ok) {

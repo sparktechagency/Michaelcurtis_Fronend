@@ -170,7 +170,7 @@ export default function Sidebar() {
                     {openSubmenu && (
                         <div className="ml-6 mt-2 space-y-1">
                             {[
-                                { name: "Terms & Condition", href: "/admin/content/terms" },
+                                { name: "Terms Of Service", href: "/admin/content/terms" },
                                 { name: "Privacy Policy", href: "/admin/content/privacy" },
                                 { name: "FAQ", href: "/admin/content/faq" },
                                 { name: "Contact Info", href: "/admin/content/contact" },
