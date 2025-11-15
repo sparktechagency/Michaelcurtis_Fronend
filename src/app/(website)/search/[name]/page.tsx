@@ -11,13 +11,9 @@ const Page = async ({ params }: PageProps) => {
     const { name } = params;
     const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-    // Fetch data from API
-    const res = await fetch(`${url}/search?search=${name}`);
+    const res = await fetch(`${url}/search?search=${name}`, { cache: "no-store" });
     const json = await res.json();
-    console.log("json data is", json?.data)
     const insurers: TopInsuranceType[] = json?.data || [];
-
-    console.log(insurers)
 
     return (
         <MaxWidth>
