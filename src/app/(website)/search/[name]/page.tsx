@@ -3,12 +3,14 @@ import React from 'react'
 import { InsuranceCard } from '@/app/components/home/InsuranceCard'
 import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType'
 
-interface PageProps {
-    params: { name: string }
-}
+// interface PageProps {
+//     params: async { name: string }
+// }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: {params:Promise<{name:string}>}) {
     const { name } = await params;  // ✅ REQUIRED in your Next.js version
+
+    console.log("params value is",name);
 
     const url = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!url) throw new Error("API_BASE_URL is missing");
