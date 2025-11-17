@@ -13,7 +13,6 @@ const Banner = () => {
 
     const handleSearch = () => {
         const sanitizedValue = searchValue?.replace(/\s+/g, '');
-        console.log(sanitizedValue)
         if (!searchValue) {
             return toast.error("Please enter name")
         }
