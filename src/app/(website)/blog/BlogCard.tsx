@@ -73,7 +73,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
                             width={412}
                             height={227}
                             unoptimized
-                            className=" w-full h-[250px]"
+                            className=" w-full w-[300px] h-[250px]"
                         />
                         <div className="px-6 pb-8 pt-6 ">
                             <button className=' py-0.5 px-3 bg-[#C4F0C9] text-[#2D9434] rounded-[4px] ' >{blog?.policy_categories?.name}</button>
