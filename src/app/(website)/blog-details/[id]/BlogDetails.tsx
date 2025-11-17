@@ -88,7 +88,7 @@ const BlogDetails = ({ slug }: { slug: string }) => {
                       </clipPath>
                     </defs>
                   </svg>
-
+s
                 </svg>
               </a>
             </div>
