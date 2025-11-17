@@ -1,23 +1,67 @@
+"use client"
+
 import MaxWidth from '@/app/components/max-width/MaxWidth'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { InsuranceCard } from '@/app/components/home/InsuranceCard'
 import { TopInsuranceType } from '@/utility/types/admin/insurance-provider/providerType'
 
-// interface PageProps {
-//     params: async { name: string }
-// }
+interface PageProps {
+    params: { name: string }
+}
 
-export default async function Page({ params }: {params:Promise<{name:string}>}) {
-    const { name } = await params;  // ✅ REQUIRED in your Next.js version
+const SearchPage: React.FC<PageProps> = ({ params }) => {
+    const [insurers, setInsurers] = useState<TopInsuranceType[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string | null>(null)
 
-    console.log("params value is",name);
+    const {name} = params;
 
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!url) throw new Error("API_BASE_URL is missing");
+    useEffect(() => {
+        const fetchInsurers = async () => {
+            const url = process.env.NEXT_PUBLIC_API_BASE_URL
+            if (!url) {
+                setError("API_BASE_URL is missing")
+                setLoading(false)
+                return
+            }
 
-    const res = await fetch(`${url}search?search=${name}`, { cache: "no-store" });
-    const json = await res.json();
-    const insurers: TopInsuranceType[] = Array.isArray(json.data) ? json.data : [];
+            try {
+                const res = await fetch(`${url}search?search=${name}`)
+                if (!res.ok) {
+                    setError("Failed to fetch data")
+                    setLoading(false)
+                    return
+                }
+
+                const json = await res.json()
+                const data: TopInsuranceType[] = Array.isArray(json.data) ? json.data : []
+                setInsurers(data)
+            } catch (e) {
+                setError("Error fetching data")
+                console.log(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchInsurers()
+    }, [name])
+
+    if (loading) {
+        return (
+            <MaxWidth>
+                <p className="text-center text-gray-500 text-lg py-10">Loading...</p>
+            </MaxWidth>
+        )
+    }
+
+    if (error) {
+        return (
+            <MaxWidth>
+                <p className="text-center text-red-500 text-lg py-10">{error}</p>
+            </MaxWidth>
+        )
+    }
 
     return (
         <MaxWidth>
@@ -37,5 +81,7 @@ export default async function Page({ params }: {params:Promise<{name:string}>}) 
                 )}
             </div>
         </MaxWidth>
-    );
+    )
 }
+
+export default SearchPage
