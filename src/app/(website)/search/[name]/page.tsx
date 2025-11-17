@@ -7,11 +7,16 @@ interface PageProps {
     params: { name: string }
 }
 
-const Page = async ({ params }: PageProps) => {
-    const { name } = params;
+const Page = async (props: PageProps) => {
+    const { name } = await props.params;
+
     const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-    const res = await fetch(`${url}/search?search=${name}`, { cache: "no-store" });
+    if (!url) {
+        throw new Error("API_BASE_URL is missing");
+    }
+
+    const res = await fetch(`${url}search?search=${name}`, { cache: "no-store" });
     const json = await res.json();
     const insurers: TopInsuranceType[] = json?.data || [];
 
@@ -35,7 +40,8 @@ const Page = async ({ params }: PageProps) => {
                 </div>
             </div>
         </MaxWidth>
-    )
-}
+    );
+};
+
 
 export default Page;

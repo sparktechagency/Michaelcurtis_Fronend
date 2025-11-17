@@ -11,7 +11,6 @@ import { TopInsuranceType } from "@/utility/types/admin/insurance-provider/provi
 
 import ProgressBar from "@ramonak/react-progress-bar";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { redirect } from 'next/navigation'
 
 
@@ -79,7 +78,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
 
     const [ids, setIds] = React.useState<number[]>([]);
-    const router = useRouter();
+
 
     // Function to read selected insurers from localStorage
     const updateIds = () => {
@@ -111,7 +110,7 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
     };
 
-    console.log("logo url is", data?.logo_url);
+
 
 
 
