@@ -575,40 +575,40 @@ const MetaForm = () => {
 
 
 
-    const [loginTitle, setLoginTitle] = useState<string>();
-    const [loginDes, setLoginDes] = useState<string>();
-    const login = useMetaDataByPageNameQuery("login");
+    // const [loginTitle, setLoginTitle] = useState<string>();
+    // const [loginDes, setLoginDes] = useState<string>();
+    // const login = useMetaDataByPageNameQuery("login");
 
-    const handleSubmitLoginPage = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const payload = {
-            page_name: "login",
-            title: loginTitle,
-            description: loginDes
-        }
-        try {
-            const res = await updateAlert();
-            if (res.isConfirmed) {
-                const res = await createMetaData(payload).unwrap();
-                if (res) {
-                    toast.success(res?.message)
-                }
-            }
-        } catch (err) {
-            // ❌ Error Handling
-            const error = err as FetchBaseQueryError & { data?: { message?: string } };
-            const message =
-                (error.data?.message as string) || "Something went wrong ❌";
-            toast.error(message);
-        }
-    };
+    // const handleSubmitLoginPage = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     const payload = {
+    //         page_name: "login",
+    //         title: loginTitle,
+    //         description: loginDes
+    //     }
+    //     try {
+    //         const res = await updateAlert();
+    //         if (res.isConfirmed) {
+    //             const res = await createMetaData(payload).unwrap();
+    //             if (res) {
+    //                 toast.success(res?.message)
+    //             }
+    //         }
+    //     } catch (err) {
+    //         // ❌ Error Handling
+    //         const error = err as FetchBaseQueryError & { data?: { message?: string } };
+    //         const message =
+    //             (error.data?.message as string) || "Something went wrong ❌";
+    //         toast.error(message);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (login) {
-            setLoginTitle(login?.data?.data?.title);
-            setLoginDes(login?.data?.data?.description);
-        }
-    }, [login])
+    // useEffect(() => {
+    //     if (login) {
+    //         setLoginTitle(login?.data?.data?.title);
+    //         setLoginDes(login?.data?.data?.description);
+    //     }
+    // }, [login])
 
 
 
@@ -1411,13 +1411,13 @@ const MetaForm = () => {
 
 
                 {/* Login Page  */}
-                <div className=' w-full ' >
+                {/* <div className=' w-full ' >
 
                     <h1 className=' mb-6 text-3xl font-semibold  ' >Login Page</h1>
                     <div className="max-w-2xl  p-6 bg-white rounded-lg shadow-md">
 
                         <form onSubmit={handleSubmitLoginPage} >
-                            {/* Title */}
+                            
                             <div className="mb-6">
                                 <label htmlFor="title" className="block text-lg font-medium text-gray-700">
                                     Title
@@ -1433,7 +1433,7 @@ const MetaForm = () => {
                                 />
                             </div>
 
-                            {/* Description */}
+                            
                             <div className="mb-6">
                                 <label htmlFor="description" className="block text-lg font-medium text-gray-700">
                                     Description
@@ -1449,7 +1449,7 @@ const MetaForm = () => {
                                 ></textarea>
                             </div>
 
-                            {/* Submit Button */}
+                            
                             <div className="flex justify-end">
                                 <button
                                     type="submit"
@@ -1460,7 +1460,7 @@ const MetaForm = () => {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> */}
 
 
 
