@@ -409,7 +409,6 @@ const MetaForm = () => {
     const [serviceDes, setServiceDes] = useState<string>();
     const service = useMetaDataByPageNameQuery("service");
 
-    console.log("service page is", service?.data?.data)
 
     const handleSubmitServicePage = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -422,7 +421,6 @@ const MetaForm = () => {
             const res = await updateAlert();
             if (res.isConfirmed) {
                 const res = await createMetaData(payload).unwrap();
-                console.log("service meta data is", res);
                 if (res) {
                     toast.success(res?.message)
                 }

@@ -76,7 +76,6 @@ const PolicyView: React.FC<PolicyViewProps> = ({
     const [active, setActive] = useState(true); // true = Active, false = Inactive
 
 
-    console.log(policyId)
 
     const { data } = useSinglePolicyQuery(policyId);
 

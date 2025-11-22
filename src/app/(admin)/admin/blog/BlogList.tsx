@@ -19,7 +19,6 @@ export default function BlogList() {
 
     const { data } = useAllBlogQuery({});
 
-    console.log("All blog is", data?.data);
 
     const initialPosts: BlogApiResponseType[] = data?.data || [];
 
@@ -88,7 +87,6 @@ export default function BlogList() {
 
     const { data: policyResponse } = useAllPolicyQuery({});
 
-    console.log(`policy data is-------------`, policyResponse?.data);
 
     const policyData: AllPolicyApiResponse[] = policyResponse?.data || [];
 

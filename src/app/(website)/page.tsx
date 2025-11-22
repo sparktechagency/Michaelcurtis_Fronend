@@ -31,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
                 "",
         };
     } catch (error) {
-        console.log(error)
+        console.error("Failed to fetch metadata:", error);
         return {
-            title: "",
-            description: "      ",
+            title: "Default Title",
+            description: "Default Description",
         };
     }
 }

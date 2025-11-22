@@ -25,7 +25,6 @@ export default function AdminLoginFrom() {
 
         try {
             const res = await loginOtp(payload).unwrap();
-            console.log(res)
             if (res) {
                 window.location.href = "/admin"
                 setEmail("");
@@ -37,7 +36,6 @@ export default function AdminLoginFrom() {
                 Cookies.set("admin_token", res.data?.access_token, { expires: 7, secure: true, sameSite: "strict" });
             }
         } catch (err) {
-            console.log(err)
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message = error.data?.message || "Something went wrong ❌";
             toast.error(message);

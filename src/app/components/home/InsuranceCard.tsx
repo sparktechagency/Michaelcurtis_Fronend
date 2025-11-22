@@ -77,32 +77,11 @@ export function InsuranceCard({ data }: { data: TopInsuranceType }) {
 
 
 
-    const [ids, setIds] = React.useState<number[]>([]);
+    // Removed unused `ids` state and `updateIds` effect because selection is already managed
+    // by the `selected` state and localStorage in other parts of this component.
 
 
-    // Function to read selected insurers from localStorage
-    const updateIds = () => {
-        const data = localStorage.getItem("selectedInsurers");
-        if (data) {
-            const insurers = JSON.parse(data);
 
-            setIds(insurers);
-        } else {
-            setIds([]);
-        }
-    };
-
-    React.useEffect(() => {
-        // Initial load
-        updateIds();
-
-        // Listen to storage changes from other tabs
-        window.addEventListener("storage", updateIds);
-        return () => window.removeEventListener("storage", updateIds);
-    }, []);
-
-
-    console.log(ids)
 
     const handleOpenCompare = () => {
 

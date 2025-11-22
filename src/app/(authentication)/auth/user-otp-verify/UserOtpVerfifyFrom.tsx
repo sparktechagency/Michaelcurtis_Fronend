@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useOtpVerifyMutation, useResendOtpMutation } from "@/app/api/website/auth/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
@@ -13,9 +13,8 @@ export default function UserOtpVerfifyFrom() {
     const emailFromUrl = searchParams.get("email");
     const [otp, setOtp] = useState<string | undefined>();
 
-    const router = useRouter();
 
-    console.log(router)
+
 
     // otp verify 
 

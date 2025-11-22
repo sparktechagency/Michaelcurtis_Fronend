@@ -85,7 +85,6 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
 
     const { data } = useSingleProviderQuery(providerSlug)
 
-    console.log(data?.data)
 
     const insuranceProvider: InsuranceProvider = data?.data
 
@@ -216,7 +215,6 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
         });
 
         selectedStates.forEach((item, index) => {
-            console.log(item)
             formData.append(`states[${index}]`, item.id.toString());
         });
 
@@ -225,9 +223,9 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
             formData.append(`policies[${index}]`, id.toString());
         });
 
-        formData.append("_method","PUT")
+        formData.append("_method", "PUT")
 
-        
+
 
         try {
             const res = await updateAlert();

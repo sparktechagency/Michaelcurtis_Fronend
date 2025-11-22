@@ -9,7 +9,6 @@ import React from 'react'
 const AboutBanner = () => {
 
     const { data } = useContentApiQuery({ pageName: "about" });
-    console.log(data?.data?.content);
 
     return (
         <div className=' lg:pb-14 pb-7 ' >
@@ -38,7 +37,7 @@ const AboutBanner = () => {
 
 
 
-            
+
 
 
 

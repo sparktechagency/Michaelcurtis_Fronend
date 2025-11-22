@@ -11,10 +11,8 @@ import { FaStar } from 'react-icons/fa6';
 import { toast } from 'sonner';
 
 const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
-    console.log(slug)
     const providerSlug = slug;
     const { data, isLoading } = useSingleProviderQuery(providerSlug);
-    console.log("single provideris", data?.data?.name)
 
 
 
@@ -102,7 +100,7 @@ const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
         },
     };
 
-    console.log(payload)
+
 
 
     const reviewCancel = () => {
@@ -128,7 +126,7 @@ const SpecifyReviewFrom = ({ slug }: { slug: string }) => {
 
     const insuranceName: InsuranceNameType[] = data?.data || [];
 
-    console.log(insuranceName)
+
 
 
 

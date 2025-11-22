@@ -95,7 +95,6 @@ const FaqUpdateModal: React.FC<PolicyViewProps> = ({
 
     const { data } = useSingleFaqQuery(id);
 
-    console.log(data)
 
 
     useEffect(() => {

@@ -64,7 +64,6 @@ const PolicyUpdate: React.FC<PolicyViewProps> = ({
 
     const [preview, setPreview] = useState<string | null>(null);
     const [status, setStatus] = useState(true);
-    console.log(status)
     const [categoryName, setCategoryName] = useState("");
     const [logo, setLogo] = useState<File | null>(null);
 
@@ -123,7 +122,6 @@ const PolicyUpdate: React.FC<PolicyViewProps> = ({
             }
 
         } catch (err) {
-            console.log(err)
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";

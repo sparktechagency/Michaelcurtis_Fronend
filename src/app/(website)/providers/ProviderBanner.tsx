@@ -214,7 +214,7 @@ const ProviderBanner = () => {
     const allInsuranceData: TopInsuranceType[] = insurance?.data || [];
 
 
-    console.log("search", allInsuranceData)
+
 
 
 

@@ -27,7 +27,6 @@ const Report: React.FC = () => {
 
     const [timeframe, setTimeframe] = useState<"weekly" | "monthly">("weekly");
     const { data } = useUserGrowthReportQuery({ timeframe })
-    console.log(data?.data?.user_growth)
 
     const weeklyData = {
         labels: data?.data?.user_growth?.labels,

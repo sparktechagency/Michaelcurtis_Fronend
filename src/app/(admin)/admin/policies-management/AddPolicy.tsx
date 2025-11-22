@@ -51,7 +51,6 @@ const AddPolicy: React.FC<PolicyViewProps> = ({
 
     const [logo, setLogo] = useState<File | null>(null);
 
-    console.log(logo)
 
 
     const [preview, setPreview] = useState<string | null>(null);
@@ -96,7 +95,6 @@ const AddPolicy: React.FC<PolicyViewProps> = ({
             }
 
         } catch (err) {
-            console.log(err)
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";

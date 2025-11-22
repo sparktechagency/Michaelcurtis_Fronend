@@ -10,7 +10,6 @@ import { toast } from 'sonner'
 
 const UserReview = () => {
     const { data } = useUserReviewQuery({});
-    console.log("user review is ", data?.data);
     const allReview: ReviewResponseType[] = data?.data || [];
     const [userReviewDelete] = useUserReviewDeleteMutation();
 

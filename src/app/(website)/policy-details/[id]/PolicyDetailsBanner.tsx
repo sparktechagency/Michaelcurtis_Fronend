@@ -6,7 +6,6 @@ import React from 'react'
 const PolicyDetailsBanner = ({ slug }: { slug: string }) => {
     const { data } = useSinglePolicyDetailsQuery(slug);
 
-    console.log(data?.data?.category)
 
     return (
         <div className=' bg-[#FAF5EC] lg:pt-13 pt-6 pb-7 lg:pb-16   ' >

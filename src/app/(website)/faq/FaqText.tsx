@@ -11,7 +11,7 @@ const FaqText = () => {
 
     const { data } = useWebFaqApiQuery({});
 
-    console.log(data?.data?.data)
+
 
 
     const faqData: FaqData[] = data?.data?.data || [];

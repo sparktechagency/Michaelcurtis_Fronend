@@ -28,7 +28,6 @@ export default function LoginForm() {
 
             // ✅ Safely get role in lowercase
             const role = res?.data?.user?.roles?.[0]?.name?.toLowerCase();
-            console.log(res)
 
             // ✅ Role Based Redirect
             if (role === "admin") {

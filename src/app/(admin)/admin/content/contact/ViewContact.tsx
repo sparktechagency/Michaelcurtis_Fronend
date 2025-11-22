@@ -89,7 +89,6 @@ const ViewContact: React.FC<PolicyViewProps> = ({
     const { data } = useSingleContactQuery(id);
 
 
-    console.log(`single contact is `, data)
 
 
 
