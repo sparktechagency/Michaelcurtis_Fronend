@@ -83,11 +83,9 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
 
     const { data } = useSingleProviderQuery(providerSlug)
 
-    console.log(data?.data)
 
     const insuranceProvider: InsuranceProvider = data?.data;
 
-    console.log("insuranceProvider", insuranceProvider)
 
 
     const [deleteProvider] = useDeleteProviderMutation();

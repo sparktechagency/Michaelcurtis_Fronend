@@ -7,7 +7,6 @@ import UserReview from './UserReview'
 
 const PorfileCard = () => {
     const { data } = useUserProfileQuery({});
-    console.log("user profile is", data?.data);
     const userData = data?.data;
     return (
         <div>

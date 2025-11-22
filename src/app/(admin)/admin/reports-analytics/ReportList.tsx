@@ -30,7 +30,7 @@ export default function ReportList() {
                 }
             );
 
-            console.log(baseUrl)
+
 
             const blobUrl = window.URL.createObjectURL(new Blob([res.data]));
 

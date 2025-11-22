@@ -171,7 +171,6 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
         });
 
         selectedStates.forEach((item, index) => {
-            console.log(item)
             formData.append(`states[${index}]`, item.id.toString());
         });
 
@@ -180,9 +179,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
             formData.append(`policies[${index}]`, id.toString());
         });
 
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
+
 
         try {
             const res = await createInsurance(formData).unwrap();

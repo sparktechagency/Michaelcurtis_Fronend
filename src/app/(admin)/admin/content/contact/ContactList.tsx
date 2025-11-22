@@ -54,7 +54,6 @@ export default function ContactList() {
         startIndex + rowsPerPage
     );
 
-    console.log(paginatedMessages);
 
     const [deleteContactApi] = useDeleteContactApiMutation();
 
@@ -83,7 +82,6 @@ export default function ContactList() {
 
     // ✅ View modal with selected contact
     const handleViewModal = (id: number) => {
-        console.log(id)
         setViewContactModal(true);
         setContactId(id)
     };

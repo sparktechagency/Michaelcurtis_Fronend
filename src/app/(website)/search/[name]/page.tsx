@@ -14,7 +14,7 @@ const SearchPage: React.FC<PageProps> = ({ params }) => {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
-    const {name} = params;
+    const { name } = params;
 
     useEffect(() => {
         const fetchInsurers = async () => {
@@ -37,8 +37,7 @@ const SearchPage: React.FC<PageProps> = ({ params }) => {
                 const data: TopInsuranceType[] = Array.isArray(json.data) ? json.data : []
                 setInsurers(data)
             } catch (e) {
-                setError("Error fetching data")
-                console.log(e)
+                setError(e instanceof Error ? e.message : "An error occurred")
             } finally {
                 setLoading(false)
             }

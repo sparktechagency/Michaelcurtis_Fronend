@@ -41,7 +41,6 @@ export default function NewPasswordFrom() {
         try {
             const res = await newPasswordSetApi(payload).unwrap();
             if (res) {
-                console.log(res);
                 router.push("/")
                 toast.success(res?.message);
                 localStorage.removeItem("resetToken")

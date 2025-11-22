@@ -59,7 +59,6 @@ export default function ProfileUpdateForm() {
 
             const res = await userProfileUpdate(formData).unwrap();
             toast.success("Profile updated successfully ✅");
-            console.log(res);
         } catch (err) {
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message = error.data?.message || "Something went wrong ❌";
@@ -94,7 +93,7 @@ export default function ProfileUpdateForm() {
                             type="file"
                             accept="image/*"
                             className="hidden"
-                            
+
                             onChange={handleImageChange}
                         />
                     </div>

@@ -12,7 +12,6 @@ export default function RecentNotification() {
 
     const { data } = useAllNotificationQuery({});
 
-    console.log(data?.data)
 
     const notification: Notification[] = data?.data || []
 

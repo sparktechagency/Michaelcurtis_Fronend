@@ -110,7 +110,6 @@ const PasswordUpdateFrom: React.FC<PolicyViewProps> = ({
                 setNewPassword(null);
                 setNew_password_confirmation(null);
 
-                console.log(res);
                 toast.success(res?.message)
             }
 

@@ -184,7 +184,7 @@ const RankingInsurance = () => {
     const policyPolicy: AllPolicyApiResponse[] = data?.data || [];
 
 
-    console.log("policyPolicy data is", policyPolicy);
+
 
     // all state 
 
@@ -202,7 +202,7 @@ const RankingInsurance = () => {
     const insuranceData: TopInsuranceType[] = insurance?.data || [];
 
 
-    console.log("search", insuranceData)
+
 
 
 

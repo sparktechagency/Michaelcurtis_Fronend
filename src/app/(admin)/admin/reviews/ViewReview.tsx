@@ -90,7 +90,6 @@ const ViewReview: React.FC<PolicyViewProps> = ({
 
     const { data, isLoading } = useSingleReviewQuery(reviewId);
 
-    console.log(data?.data);
 
     const singleReviewData: Review = data?.data;
 

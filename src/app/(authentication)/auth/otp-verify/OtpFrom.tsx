@@ -66,7 +66,6 @@ export default function OtpFrom() {
             const res = await forgetResendOtp(payload).unwrap();
 
             if (res) {
-                console.log(res)
                 toast.success(res?.message)
             }
 

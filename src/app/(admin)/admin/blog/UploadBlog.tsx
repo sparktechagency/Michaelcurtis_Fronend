@@ -90,7 +90,6 @@ const UploadBlog: React.FC<PolicyViewProps> = ({
 
     const { data } = useAllPolicyQuery({});
 
-    console.log(`policy data is-------------`, data?.data);
 
     const policyData: AllPolicyApiResponse[] = data?.data || [];
 

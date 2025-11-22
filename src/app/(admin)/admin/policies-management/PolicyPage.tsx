@@ -27,7 +27,6 @@ export default function ProvidersTable() {
 
     const { data } = useAllPolicyQuery({});
 
-    console.log(data?.data)
 
 
     const initialProviders: AllPolicyApiResponse[] = data?.data || [];
@@ -92,13 +91,11 @@ export default function ProvidersTable() {
                 const res = await policyDelete(slug);
 
                 if (res) {
-                    console.log(res)
                     toast.success((res as { data?: { message?: string } })?.data?.message || "Policy deleted successfully");
                 }
             }
 
         } catch (err) {
-            console.log(err)
             const error = err as FetchBaseQueryError & { data?: { message?: string } };
             const message =
                 (error.data?.message as string) || "Something went wrong ❌";

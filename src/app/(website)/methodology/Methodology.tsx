@@ -4,7 +4,6 @@ import React from 'react'
 
 const Methodology = () => {
     const { data } = useContentApiQuery({ pageName: "metholodgy" });
-    console.log(data?.data?.content);
     return (
         <div className=' lg:pb-16 pb-8 ' >
             <div className=' bg-[#FAF5EC] py-6 lg:py-12 ' >

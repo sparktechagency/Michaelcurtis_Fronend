@@ -12,7 +12,6 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
 
     const { data } = useSinglePolicyDetailsQuery(slug);
 
-    console.log(data?.data?.top_providers)
 
 
     const topInsurance: InsuranceProvider[] = data?.data?.top_providers || []

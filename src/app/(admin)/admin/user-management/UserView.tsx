@@ -65,7 +65,6 @@ const UserView: React.FC<PolicyViewProps> = ({
 
             const res = await userRoleUpdate({ userId, payload }).unwrap();
             if (res) {
-                console.log("-*----------------------------67", res);
                 toast.success(res?.message);
                 handleClose()
             }

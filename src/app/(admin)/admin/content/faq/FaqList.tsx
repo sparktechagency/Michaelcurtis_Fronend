@@ -41,7 +41,6 @@ const FaqList = () => {
     const faqList: FaqData[] = data?.data?.data || []
 
 
-    console.log(`faq data is`, faqList)
 
 
     // faq delelte
@@ -60,7 +59,6 @@ const FaqList = () => {
                 const res = await faqDelete({ id });
                 if (res) {
 
-                    console.log(res)
                     toast.success(res?.data?.message)
                 }
             }
