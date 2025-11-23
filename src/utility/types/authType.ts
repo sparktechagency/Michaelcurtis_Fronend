@@ -40,7 +40,8 @@ export interface User {
 export interface UserData {
     access_token: string;
     token_type: string;
-    user: User
+    user: User,
+    last_name: string
 }
 
 export interface OtpVerifyApiResponse {

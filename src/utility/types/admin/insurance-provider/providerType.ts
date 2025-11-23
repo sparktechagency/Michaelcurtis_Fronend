@@ -42,6 +42,7 @@ export interface InsuranceProvider {
     updated_at: string;
     policies: Policy[];
     states: State[];
+    sponsored_url: string
 }
 
 
@@ -106,4 +107,5 @@ export interface TopInsuranceType {
     avg_service: number,
     avg_coverage: number,
     states_count: number;
+    sponsored_url: string;
 }

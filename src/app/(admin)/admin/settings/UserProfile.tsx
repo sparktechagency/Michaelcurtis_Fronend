@@ -47,6 +47,7 @@ export default function UserProfile() {
 
         const payload = new FormData();
         payload.append("first_name", formData.first_name);
+        payload.append("last_name", formData.last_name);
         payload.append("address", formData.address);
         payload.append("contact_number", formData.contact_number);
         payload.append("email", formData.email);
@@ -123,14 +124,14 @@ export default function UserProfile() {
                                 className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-0"
                             />
                         </div>
-                        {/* Full Name */}
+                        {/* last_name */}
                         <div className="relative">
                             <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                             <input
                                 type="text"
-                                name="fullName"
-                                placeholder="Full Name"
-                                value={formData.full_name}
+                                name="last_name"
+                                placeholder="last_name"
+                                value={formData.last_name}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-0"
                             />

@@ -142,6 +142,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
     const [pros, setPros] = useState<string[]>([""]);
     const [cons, setCons] = useState<string[]>([""]);
     const [title, setTitle] = useState("");
+    const [hyperLink, setHyperLink] = useState<string>("");
 
     const [policies, setPolicies] = useState<number[]>([]);
 
@@ -157,6 +158,7 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
         formData.append("about", about);
         formData.append("price", price);
         formData.append("title", title);
+        formData.append("sponsored_url", hyperLink);
         if (logo) {
             formData.append("logo_url", logo);
         }
@@ -384,6 +386,31 @@ const CreateProvider: React.FC<PolicyViewProps> = ({
                             required
                         />
                     </div>
+
+
+                    {/*  sponser hyper link */}
+                    <div className="mb-4 mt-6 ">
+                        <label className="block  text-lg font-normal text-[#000000] mb-3 ">Sponser hyper link</label>
+                        <input
+                            type="url"
+                            className="w-full p-3 mt-2 border border-[#989DA3] rounded-md focus:outline-none focus:ring-0"
+                            // placeholder="Enter Provider Name"
+                            value={hyperLink}
+                            onChange={(e) => { setHyperLink(e.target.value) }}
+                            required
+                        />
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
 
                     {/* About Provider */}
                     <div className=" mt-6 ">

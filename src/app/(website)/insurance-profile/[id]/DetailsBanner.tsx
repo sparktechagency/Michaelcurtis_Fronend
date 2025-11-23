@@ -413,15 +413,17 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
                         <div className='shadow shadow-[#00000033] bg-white lg:max-[20%] pt-3.5 px-8 rounded-[10px] pb-6 mt-5  ' >
 
-                            {
-                                data?.data?.is_sponsored && (
-                                    <button className=' px-2 py-1 bg-[#F0E0C4] rounded-[3px] text-[#946D2D] text-sm font-normal ' >Sponsored</button>
-                                )
-                            }
+                            {data?.data?.is_sponsored && data?.data?.sponsored_url && (
+                                <Link target='_blank' className=' cursor-pointer ' href={data?.data.sponsored_url}>
+                                    <button className="text-[#946D2D] lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
+                                        Sponsored
+                                    </button>
+                                </Link>
+                            )}
 
                             <div className=' flex justify-center ' >
                                 <span>
-                                    <Image  unoptimized src = {data?.data?.logo_url} width = {100} height = {100} alt  = {data?.data?.name} className = {` w-24 h-24 `}  />
+                                    <Image unoptimized src={data?.data?.logo_url} width={100} height={100} alt={data?.data?.name} className={` w-24 h-24 `} />
                                 </span>
 
 
@@ -492,7 +494,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
             <MaxWidth>
                 <div className=' shadow shadow-[#00000033] max-w-3xl   lg:py-8 lg:px-10 p-4 rounded-[7px] lg:space-y-0 my-6   ' >
-                    <h1 className=' lg:text-4xl text-lg font-normal text-black ' >About Liberty Mutual</h1>
+                    <h1 className=' lg:text-4xl text-lg font-normal text-black ' >{data?.data?.name}</h1>
                     <p className=' mt-8 text-[#000000] lg:text-lg text-xs font-thin ' >
                         <p
                             dangerouslySetInnerHTML={{ __html: data?.data?.about }}
