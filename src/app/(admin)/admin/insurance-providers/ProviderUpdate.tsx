@@ -152,6 +152,7 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
     const [pros, setPros] = useState<string[]>([""]);
     const [cons, setCons] = useState<string[]>([""]);
     const [title, setTitle] = useState("");
+    const [hyperLink, setHyperLink] = useState<string>("");
 
 
 
@@ -171,6 +172,7 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
             setAbout(insuranceProvider.about || "");
             setPrice(insuranceProvider.price || "");
             setTitle(insuranceProvider.title || "");
+            setHyperLink(insuranceProvider.sponsored_url || "");
 
             // Arrays
             setPros(insuranceProvider.pros || [""]);
@@ -201,6 +203,7 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
         formData.append("about", about);
         formData.append("price", price);
         formData.append("title", title);
+        formData.append("sponsored_url", hyperLink);
         if (logo) {
             formData.append("logo_url", logo);
         }
@@ -428,6 +431,19 @@ const ProviderUpdate: React.FC<PolicyViewProps> = ({
                                 // placeholder="Enter Provider Name"
                                 value={title}
                                 onChange={(e) => { setTitle(e.target.value) }}
+                                required
+                            />
+                        </div>
+
+                        {/*  sponser hyper link */}
+                        <div className="mb-4 mt-6 ">
+                            <label className="block  text-lg font-normal text-[#000000] mb-3 ">Sponser hyper link</label>
+                            <input
+                                type="url"
+                                className="w-full p-3 mt-2 border border-[#989DA3] rounded-md focus:outline-none focus:ring-0"
+                                // placeholder="Enter Provider Name"
+                                value={hyperLink}
+                                onChange={(e) => { setHyperLink(e.target.value) }}
                                 required
                             />
                         </div>

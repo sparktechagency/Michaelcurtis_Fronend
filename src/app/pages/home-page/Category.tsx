@@ -31,11 +31,11 @@ const Category = () => {
                                         <div className="w-44 h-32 shadow shadow-[#00000033] rounded-[8px] flex flex-col justify-center items-center px-2 ">
                                             <span className='h-12   ' >
 
-                                                <Image unoptimized src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-10 h-8 ' />
+                                                <Image unoptimized src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-16 h-14 ' />
 
 
                                             </span>
-                                            <p className=' text-[#697079] lg:text-[16px] text-center font-normal h-12 ' >
+                                            <p className=' text-[#697079] lg:text-[16px] text-center font-normal h-12 mt-3 ' >
                                                 {
                                                     item?.name
                                                 }
