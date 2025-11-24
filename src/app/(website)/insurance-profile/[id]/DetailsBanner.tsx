@@ -415,7 +415,7 @@ const DetailsBanner = ({ slug }: { slug: string }) => {
 
                             {data?.data?.is_sponsored && data?.data?.sponsored_url && (
                                 <Link target='_blank' className=' cursor-pointer ' href={data?.data.sponsored_url}>
-                                    <button className="text-[#946D2D] lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
+                                    <button className="text-[#946D2D] lg:text-[14px] cursor-pointer font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
                                         Sponsored
                                     </button>
                                 </Link>
