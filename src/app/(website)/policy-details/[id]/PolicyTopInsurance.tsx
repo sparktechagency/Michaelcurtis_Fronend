@@ -95,7 +95,7 @@ const PolicyTopInsurance = ({ slug }: { slug: string }) => {
                                     <div className=' lg:mt-5 mt-2 h-6 ' >
                                         {item?.is_sponsored && item?.sponsored_url && (
                                             <Link target='_blank' className=' cursor-pointer ' href={item.sponsored_url}>
-                                                <button className="text-[#946D2D] lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
+                                                <button className="text-[#946D2D] cursor-pointer lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
                                                     Sponsored
                                                 </button>
                                             </Link>

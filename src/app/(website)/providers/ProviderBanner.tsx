@@ -430,7 +430,7 @@ const ProviderBanner = () => {
                                                                 <h1 className=' text-black font-normal lg:text-xl text-sm  ' >{item?.name.slice(0, 15)}...</h1>
                                                                 {item?.is_sponsored && item?.sponsored_url && (
                                                                     <Link target='_blank' className=' cursor-pointer ' href={item.sponsored_url}>
-                                                                        <button className="text-[#946D2D] lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
+                                                                        <button className=" cursor-pointer text-[#946D2D] lg:text-[14px] font-normal bg-[#F0E0C4] py-1 px-2 rounded-[3px] mt-1">
                                                                             Sponsored
                                                                         </button>
                                                                     </Link>
