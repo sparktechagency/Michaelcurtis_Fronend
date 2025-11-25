@@ -65,6 +65,13 @@ export const webInsuranceApi = createApi({
                 url: `/search?search=${name}`,
                 method: "GET"
             })
+        }),
+
+        mostReviewInsurance: builder.query({
+            query: () => ({
+                url: `/reviews/?include=user,provider&sort=overall_rating`,
+                method: "GET"
+            })
         })
     }),
 });
@@ -75,5 +82,6 @@ export const {
     useSearchInsuranceQuery,
     useRankingInsuranceSearchQuery,
     useCompareProvidersQuery,
-    useWebSearchApiQuery
+    useWebSearchApiQuery,
+    useMostReviewInsuranceQuery
 } = webInsuranceApi;
