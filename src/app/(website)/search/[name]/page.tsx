@@ -28,7 +28,7 @@ const SearchPage: React.FC<PageProps> = ({ params }) => {
             try {
                 const res = await fetch(`${url}search?search=${name}`)
                 if (!res.ok) {
-                    setError("Failed to fetch data")
+                    setError("Insurance not found")
                     setLoading(false)
                     return
                 }
@@ -37,6 +37,7 @@ const SearchPage: React.FC<PageProps> = ({ params }) => {
                 const data: TopInsuranceType[] = Array.isArray(json.data) ? json.data : []
                 setInsurers(data)
             } catch (e) {
+                console.log("error is",e)
                 setError(e instanceof Error ? e.message : "An error occurred")
             } finally {
                 setLoading(false)
@@ -57,7 +58,7 @@ const SearchPage: React.FC<PageProps> = ({ params }) => {
     if (error) {
         return (
             <MaxWidth>
-                <p className="text-center text-red-500 text-lg py-10">{error}</p>
+                <p className="text-center text-black text-lg py-10 none ">{error}</p>
             </MaxWidth>
         )
     }
