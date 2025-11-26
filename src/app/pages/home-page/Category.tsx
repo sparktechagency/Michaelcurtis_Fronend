@@ -4,6 +4,7 @@ import MaxWidth from '@/app/components/max-width/MaxWidth'
 import PolicyLoader from '@/app/components/skeleton/PolicyLoader'
 import { AllPolicyApiResponse } from '@/utility/types/admin/policy/policyType'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const Category = () => {
@@ -28,19 +29,23 @@ const Category = () => {
                             allPolicy.map((item, i) => {
                                 return (
                                     <div key={i} >
-                                        <div className="w-44 h-32 shadow shadow-[#00000033] rounded-[8px] flex flex-col justify-center items-center px-2 ">
-                                            <span className='h-12   ' >
+                                        <Link href={"/policies"}>
+                                            <div className="w-44 h-32 shadow shadow-[#00000033] rounded-[8px] flex flex-col justify-center items-center px-2 ">
 
-                                                <Image unoptimized src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-16 h-14 ' />
+                                                <span className='h-12   ' >
+
+                                                    <Image unoptimized src={item?.logo_url} width={10000} height={1000000} alt='' className=' w-16 h-14 ' />
 
 
-                                            </span>
-                                            <p className=' text-[#697079] lg:text-[16px] text-center font-normal h-12 mt-3 ' >
-                                                {
-                                                    item?.name
-                                                }
-                                            </p>
-                                        </div>
+                                                </span>
+                                                <p className=' text-[#697079] lg:text-[16px] text-center font-normal h-12 mt-3 ' >
+                                                    {
+                                                        item?.name
+                                                    }
+                                                </p>
+
+                                            </div>
+                                        </Link>
                                     </div>
                                 )
                             })
