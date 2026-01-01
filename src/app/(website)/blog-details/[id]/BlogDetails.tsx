@@ -7,6 +7,7 @@ import React from 'react'
 const BlogDetails = ({ slug }: { slug: string }) => {
   const { data } = useWebSingleBlogQuery(slug);
   const blog = data?.data?.blog
+  console.log("blog data is", blog);
   return (
     <>
       <div className=' lg:pt-13 pb-6  ' >
@@ -88,7 +89,7 @@ const BlogDetails = ({ slug }: { slug: string }) => {
                       </clipPath>
                     </defs>
                   </svg>
-s
+                  s
                 </svg>
               </a>
             </div>

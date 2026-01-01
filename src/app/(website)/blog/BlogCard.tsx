@@ -5,6 +5,7 @@ import React from 'react'
 
 const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => {
     const firstBlog = currentBlogs[0]
+    console.log(currentBlogs[0].slug)
     return (
         <div>
 
@@ -12,7 +13,7 @@ const BlogCard = ({ currentBlogs }: { currentBlogs: BlogApiResponseType[] }) => 
 
                 {/* left side  */}
                 <div className=' w-full  lg:max-w-[40%] flex-1  ' >
-                    <Image unoptimized src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name}  className=' w-[1500px]  h-[336px]  ' />
+                    <Image unoptimized src={firstBlog?.featured_image} width={1000} height={1000} alt={firstBlog?.author_name} className=' w-[1500px]  h-[336px]  ' />
                 </div>
                 {/* right side  */}
                 <div className=' w-full  lg:max-w-[60%] flex-1 lg:p-0 p-3  ' >
