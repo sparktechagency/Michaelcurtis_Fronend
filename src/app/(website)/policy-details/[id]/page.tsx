@@ -1,15 +1,14 @@
-import React from 'react'
+'use client'
+
+import { useParams } from 'next/navigation'
 import PolicyDetailsBanner from './PolicyDetailsBanner'
 import PolicyDetails from './PolicyDetails'
 import PolicyTopInsurance from './PolicyTopInsurance'
 import PolicyCategory from './PolicyCategory'
 
-interface PageProps {
-    params: { id: string }
-}
-
-const Page: React.FC<PageProps> = ({ params }) => {
-    const { id } = params
+const Page = () => {
+    const params = useParams()
+    const id = params.id as string
 
     return (
         <div className="bg-[#f9fafb] border-b border-[#989DA3]">

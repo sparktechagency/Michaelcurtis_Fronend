@@ -1,20 +1,17 @@
-import React from "react";
-import DetailsBanner from "./DetailsBanner";
+'use client'
 
-interface PageProps {
-    params: {
-        id: string;
-    };
-}
+import { useParams } from 'next/navigation'
+import DetailsBanner from './DetailsBanner'
 
-const Page: React.FC<PageProps> = ({ params }) => {
-    const { id } = params;
+const Page = () => {
+    const params = useParams()
+    const id = params.id as string
 
     return (
         <div>
             <DetailsBanner slug={id} />
         </div>
-    );
-};
+    )
+}
 
-export default Page;
+export default Page
